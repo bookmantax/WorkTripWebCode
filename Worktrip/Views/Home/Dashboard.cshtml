@@ -357,6 +357,103 @@
             });
         }
 
+        function dataURIToBlob(dataURI, callback) {
+
+            var binStr = atob(dataURI.split(',')[1]),
+                len = binStr.length,
+                arr = new Uint8Array(len),
+                mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0]
+
+            for (var i = 0; i < len; i++) {
+                arr[i] = binStr.charCodeAt(i);
+            }
+
+            return new Blob([arr], {
+                type: mimeString
+            });
+
+        }
+
+        function downloadDataURI(dataURI, filename) {
+
+            var blob = dataURIToBlob(dataURI);
+            var url = URL.createObjectURL(blob);
+            var blobAnchor = document.createElement('a');
+
+            blobAnchor.download = filename;
+            blobAnchor.href = url;
+            blobAnchor.style.display = "none;";
+
+            document.body.appendChild(blobAnchor);
+
+            blobAnchor.click();
+
+            requestAnimationFrame(function () {
+                URL.revokeObjectURL(url);
+                document.body.removeChild(blobAnchor);
+            });
+        }
+
+        function getTaxYear() {
+            var selectedTaxYear = $("#taxYear").text();
+            var curUserId = prefetchedUserTaxInfo.Id;
+            document.getElementById("hiddenTaxYearLogin").value = selectedTaxYear;
+            document.getElementById("hiddenUserId").value = curUserId;
+        }
+
+        function downloadTaxReturn() {
+            $.ajax({
+                cache: false,
+                url: "/Home/GetuserTaxReturn",
+                type: "POST",
+                data: {
+                    userId: prefetchedUserTaxInfo.Id,
+                    taxYear: $("#taxYear").text()
+                },
+                success: function (response) {
+                    if (response.status == 0 && response.files.length > 0) {
+                        if (!$('div#tax-return-container').is(":visible")) {
+                            console.log('in' + elemId);
+                            $('div.box-dashboard-container').hide();
+                            $('div#Personal-info').hide();
+                            $('div#tax-question').hide();
+                            $('div#make-payment').hide();
+                            $('div#tax-documents-container').hide();
+                            $('div#tax-return-container').fadeIn(500);
+                            $('div#no-tax-return-container').hide();
+                            $('div#work-schedule-container').hide();
+                            $('div.btn-container').css('background', '#999');
+                            elem.closest('div.btn-container').css('background', '#E74139');
+
+                            if (!$('div#options .menu-dashboard').is(":visible"))
+                                $('div.left-menu-collapse').slideUp(500);
+                        }
+                    }
+                    else {
+                        if (!$('div#tax-return-container').is(":visible")) {
+                            console.log('in' + elemId);
+                            $('div.box-dashboard-container').hide();
+                            $('div#Personal-info').hide();
+                            $('div#tax-question').hide();
+                            $('div#make-payment').hide();
+                            $('div#tax-documents-container').hide();
+                            $('div#tax-return-container').hide();
+                            $('div#no-tax-return-container').fadeIn(500);
+                            $('div#work-schedule-container').hide();
+                            $('div.btn-container').css('background', '#999');
+                            elem.closest('div.btn-container').css('background', '#E74139');
+
+                            if (!$('div#options .menu-dashboard').is(":visible"))
+                                $('div.left-menu-collapse').slideUp(500);
+                        }
+                    }
+                },
+                complete: function () {
+                    $("#loading-cover").fadeOut(500);
+                }
+            });
+        }
+
         $(function(){
             $("#welcome-popup").css("opacity", 1);
 
@@ -583,6 +680,23 @@
                     data: {},
                     success: function(userInfo){
                         refreshDashboardViews(userInfo, $("#taxYear").text());
+                        //Return view to Personal Info
+                        if (!$('div#Personal-info').is(":visible")) {
+                            console.log('in' + elemId);
+                            $('div.box-dashboard-container').hide();
+                            $('div#Personal-info').fadeIn(500);
+                            $('div#tax-question').hide();
+                            $('div#make-payment').hide();
+                            $('div#tax-documents-container').hide();
+                            $('div#tax-return-container').hide();
+                            $('div#no-tax-return-container').hide();
+                            $('div#work-schedule-container').hide();
+                            $('div.btn-container').css('background', '#999');
+                            elem.closest('div.btn-container').css('background', '#E74139');
+
+                            if (!$('div#options .menu-dashboard').is(":visible"))
+                                $('div.left-menu-collapse').slideUp(500);
+                        }
                     },
                     complete: function(){
                         $("#loading-cover").fadeOut(500);
@@ -1174,17 +1288,16 @@
             <div class="left-menu-collapse ">
                 <ul>
                     <!-- <li class="dashboard-button-container">
-                        <div class="btn-container" style="background: #E74139;">
-                        <div class="dashboard-icon-cotainer">
-                            <img src="img/dashboard.png" />
-                            </div>
-                        <div class="dashboard-button-name">
-                            <a id="dashboard">Dashboard</a>
-                            </div>
+        <div class="btn-container" style="background: #E74139;">
+        <div class="dashboard-icon-cotainer">
+            <img src="img/dashboard.png" />
+            </div>
+        <div class="dashboard-button-name">
+            <a id="dashboard">Dashboard</a>
+            </div>
 
-                        </div>
-                    </li> -->
-
+        </div>
+    </li> -->
 
                     <li class="dashboard-button-container">
                         <div class="btn-container" style="background: #E74139;">
@@ -1194,10 +1307,8 @@
                             <div class="dashboard-button-name">
                                 <a id="pInfo">Personal Info</a>
                             </div>
-
                         </div>
                     </li>
-
 
                     <li class="dashboard-button-container">
                         <div class="btn-container">
@@ -1207,10 +1318,8 @@
                             <div class="dashboard-button-name">
                                 <a id="tDoc">Tax Documents</a>
                             </div>
-
                         </div>
                     </li>
-
 
                     <li class="dashboard-button-container">
                         <div class="btn-container">
@@ -1220,10 +1329,8 @@
                             <div class="dashboard-button-name">
                                 <a id="wSch">Layovers</a>
                             </div>
-
                         </div>
                     </li>
-
                     <li class="dashboard-button-container">
                         <div class="btn-container">
                             <div class="dashboard-icon-cotainer">
@@ -1232,10 +1339,8 @@
                             <div class="dashboard-button-name">
                                 <a id="tQuest">Tax Questions</a>
                             </div>
-
                         </div>
                     </li>
-
                     <li class="dashboard-button-container">
                         <div class="btn-container">
                             <div class="dashboard-icon-cotainer">
@@ -1243,6 +1348,16 @@
                             </div>
                             <div class="dashboard-button-name">
                                 <a id="mPay">Sign and Pay</a>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="dashboard-button-container">
+                        <div class="btn-container">
+                            <div class="dashboard-icon-cotainer">
+                                <img src="~/Content/img/money.png" />
+                            </div>
+                            <div class="dashboard-button-name">
+                                <a id="tReturn">Tax Return</a>
                             </div>
                         </div>
                     </li>
@@ -1266,13 +1381,12 @@
                 <div class="container ">
                     <ul class="nav navbar-nav" style="width: 100% !important;">
                         <!-- <li  class="navbar-left dropdown custom-width taxYear-container"><a  class="same-height dropdown-toggle" data-toggle="dropdown" href="#"><span id="taxYear">2016</span>  Taxes<span class="caret"></span>    </a>
-                            <ul class="dropdown-menu " style="background: #152D58;">
-                                 <li class="borderB"><a style="color: #fff" href="#">2016</a></li>
-                                 <li ><a href="#" style="color: #fff">2015</a></li>
-                                 <li ><a href="#" style="color: #fff">2014</a></li>
-                            </ul>
-                        </li> -->
-
+        <ul class="dropdown-menu " style="background: #152D58;">
+             <li class="borderB"><a style="color: #fff" href="#">2016</a></li>
+             <li ><a href="#" style="color: #fff">2015</a></li>
+             <li ><a href="#" style="color: #fff">2014</a></li>
+        </ul>
+    </li> -->
 
                         <li class="dropdown custom-width taxYear-container">
                             <div class="dropdown" style="margin-bottom: 5px;">
@@ -1292,7 +1406,6 @@
                             </div>
                         </li>
                         <li class="top-menu-steps-items">
-
                             <div id="pInfo-status" class="guide-container">
                                 <div class="guide-message">
                                     <i class="fa" aria-hidden="true"></i>
@@ -1300,16 +1413,11 @@
                                 </div>
                             </div>
 
-
                         </li>
-
                         <li class="top-menu-steps-items">
-
                             <div class="arrow-right"></div>
-
                         </li>
                         <li class="top-menu-steps-items">
-
                             <div id="tDoc-status" class="guide-container">
                                 <div class="guide-message">
                                     <i class="fa" aria-hidden="true"></i>
@@ -1317,15 +1425,11 @@
                                 </div>
                             </div>
 
-
                         </li>
-
 
                         <li class="top-menu-steps-items"><div class="arrow-right"></div></li>
 
-
                         <li class="top-menu-steps-items">
-
                             <div id="wSch-status" class="guide-container">
                                 <div class="guide-message">
                                     <i class="fa" aria-hidden="true"></i>
@@ -1333,13 +1437,9 @@
                                 </div>
                             </div>
 
-
                         </li>
-
                         <li class="top-menu-steps-items"><div class="arrow-right"></div></li>
-
                         <li class="top-menu-steps-items">
-
                             <div id="tQuest-status" class="guide-container">
                                 <div class="guide-message">
                                     <i class="fa" aria-hidden="true"></i>
@@ -1347,11 +1447,8 @@
                                 </div>
                             </div>
                         </li>
-
                         <li class="top-menu-steps-items"><div class="arrow-right"></div></li>
-
                         <li class="top-menu-steps-items">
-
                             <div id="mPay-status" class="guide-container">
                                 <div class="guide-message">
                                     <i class="fa" aria-hidden="true"></i>
@@ -1359,19 +1456,24 @@
                                 </div>
                             </div>
 
+                        </li>
+                        <li class="top-menu-steps-items"><div class="arrow-right"></div></li>
+                        <li class="top-menu-steps-items">
+                            <div id="tReturn-status" class="guide-container">
+                                <div class="guide-message">
+                                    <i class="fa" aria-hidden="true"></i>
+                                    <p>Tax Return</p>
+                                </div>
+                            </div>
 
                         </li>
-
                     </ul>
                 </div>
             </div>
         </div>
         <div class="content-center">
-
             <div class="row formContainer" style="display: none;" id="tax-question">
-
                 <h2 class="lets-talk-header">Tax Questions</h2>
-
                 <div class="panel with-nav-tabs panel-default" id="questions-panel">
                     <div class="panel-heading">
                         <ul class="nav nav-tabs question-tabs">
@@ -1384,7 +1486,6 @@
                     <div class="tab-content">
                         <div class="tab-pane fade in active" id="tab1primary">
                             <div class="field col-lg-offset-3 col-md-offset-3 col-lg-6 col-md-6 col-sm-12 col-xs-12">
-
                                 <span class="input-title">1. What state is your Drivers License in?</span><br>
                                 <div class="field input-group">
                                     <select class="form-control" name="licenseState" id="dl-select">
@@ -1449,7 +1550,6 @@
                                 </div>
                             </div>
                             <div class="field col-lg-offset-3 col-md-offset-3 col-lg-6 col-md-6 col-sm-12 col-xs-12">
-
                                 <span id="training-days-title" class="input-title">2. How many days were you training in ?</span><br>
                                 <div class="field input-group">
                                     <input type="text" class="form-control" name="DaysInTrainingOrAway" id="days-input">
@@ -1460,11 +1560,9 @@
                                     </span>
                                 </div>
                             </div>
-
                             <div class="field col-lg-offset-3 col-md-offset-3 col-lg-6 col-md-6 col-sm-12 col-xs-12">
                                 <span>3. Total money spent on cabs, trains, ubers, etc while away on layovers?</span>
                                 <div class="input-group">
-
                                     <span class="input-group-addon">$</span>
                                     <input placeholder="" type="text" class="form-control" name="TotalSpentLayoverTransportation">
                                     <span class="input-group-btn">
@@ -1477,7 +1575,6 @@
                             <div class="field col-lg-offset-3 col-md-offset-3 col-lg-6 col-md-6 col-sm-12 col-xs-12">
                                 <span>4. Currency exchange fees, atm, or foriegn fees on debit/credit cards?</span>
                                 <div class="input-group">
-
                                     <span class="input-group-addon">$</span>
                                     <input placeholder="" type="text" class="form-control" name="TransactionalFees">
                                     <span class="input-group-btn">
@@ -1490,7 +1587,6 @@
                             <div class="field col-lg-offset-3 col-md-offset-3 col-lg-6 col-md-6 col-sm-12 col-xs-12">
                                 <span>5. Uniform fees (and any leggings/pantyhose for ladies)?</span>
                                 <div class="input-group">
-
                                     <span class="input-group-addon">$</span>
                                     <input placeholder="" type="text" class="form-control" name="ClothingFees">
                                     <span class="input-group-btn">
@@ -1503,7 +1599,6 @@
                             <div class="field col-lg-offset-3 col-md-offset-3 col-lg-6 col-md-6 col-sm-12 col-xs-12">
                                 <span>6. Laundry/Dry Cleaning costs for Uniforms?</span>
                                 <div class="input-group">
-
                                     <span class="input-group-addon">$</span>
                                     <input placeholder="" type="text" class="form-control" name="LaundryFees">
                                     <span class="input-group-btn">
@@ -1516,7 +1611,6 @@
                             <div class="field col-lg-offset-3 col-md-offset-3 col-lg-6 col-md-6 col-sm-12 col-xs-12">
                                 <span>7. Flight gear/Luggage?</span>
                                 <div class="input-group">
-
                                     <span class="input-group-addon">$</span>
                                     <input placeholder="" type="text" class="form-control" name="FlightGearLuggageFees">
                                     <span class="input-group-btn">
@@ -1529,7 +1623,6 @@
                             <div class="field col-lg-offset-3 col-md-offset-3 col-lg-6 col-md-6 col-sm-12 col-xs-12">
                                 <span>8. Work Equipment Purchases (Cell Phone, iPad, etc)?</span>
                                 <div class="input-group">
-
                                     <span class="input-group-addon">$</span>
                                     <input placeholder="" type="text" class="form-control" name="TechPurchasesFees">
                                     <span class="input-group-btn">
@@ -1542,7 +1635,6 @@
                             <div class="field col-lg-offset-3 col-md-offset-3 col-lg-6 col-md-6 col-sm-12 col-xs-12">
                                 <span>9. Total Cell Phone Bill for the year?</span>
                                 <div class="input-group">
-
                                     <span class="input-group-addon">$</span>
                                     <input placeholder="" type="text" class="form-control" name="CellphoneBill">
                                     <span class="input-group-btn">
@@ -1555,7 +1647,6 @@
                             <div class="field col-lg-offset-3 col-md-offset-3 col-lg-6 col-md-6 col-sm-12 col-xs-12">
                                 <span>10. Total internet bill? </span>
                                 <div class="input-group">
-
                                     <span class="input-group-addon">$</span>
                                     <input placeholder="" type="text" class="form-control" name="InternetBill">
                                     <span class="input-group-btn">
@@ -1568,7 +1659,6 @@
                             <div class="field col-lg-offset-3 col-md-offset-3 col-lg-6 col-md-6 col-sm-12 col-xs-12">
                                 <span>11. Visas, Passport fees, and any misc items needed for work?</span>
                                 <div class="input-group">
-
                                     <span class="input-group-addon">$</span>
                                     <input placeholder="" type="text" class="form-control" name="IdentityFees">
                                     <span class="input-group-btn">
@@ -1581,7 +1671,6 @@
                             <div class="field col-lg-offset-3 col-md-offset-3 col-lg-6 col-md-6 col-sm-12 col-xs-12">
                                 <span>12. Total for all other Unreimbursed Employee expenses?</span>
                                 <div class="input-group">
-
                                     <span class="input-group-addon">$</span>
                                     <input placeholder="" type="text" class="form-control" name="UnreimbursedExpenses">
                                     <span class="input-group-btn">
@@ -1592,7 +1681,6 @@
                                 </div>
                             </div>
 
-
                             <div class="col-md-4 col-md-offset-4 col-sm-4 col-sm-offset-4">
                                 <br>
                                 <button id="save-tax-info-btn" style="width:100%;" type="submit" class="btn btn-primary submit-button">
@@ -1600,365 +1688,345 @@
                                 </button>
                             </div>
                         </div>
-
                         <div class="tab-pane fade" id="tab2primary">
-
-                            <div id="asked-questions" class="messages hidden col-lg-offset-3 col-md-offset-3 col-lg-6 col-md-6 col-sm-12 col-xs-12" >
+                            <div id="asked-questions" class="messages hidden col-lg-offset-3 col-md-offset-3 col-lg-6 col-md-6 col-sm-12 col-xs-12">
                                 <h5>Your questions: </h5>
-                                <ul>
-
-                                </ul>
+                                <ul></ul>
                                 <hr />
                             </div>
-
                             <div class="controls">
-                                
+
                                 <div class="field col-lg-offset-3 col-md-offset-3 col-lg-6 col-md-6 col-sm-12 col-xs-12">
                                     <span>Write a Question or Concern:</span>
                                     <div class="input-group">
                                         <textarea id="question-textarea" placeholder="Message" type="text" rows="6" class="form-control" name="info"></textarea>
                                     </div>
                                 </div>
-
                                 <div class="col-md-4 col-md-offset-4 col-sm-4 col-sm-offset-4">
                                     <br>
                                     <button id="submit-question-btn" style="width:100%;" type="submit" class="btn btn-primary submit-button">
                                         Submit Question
                                     </button>
                                 </div>
-
                             </div>
 
-
                         </div>
-
                     </div>
-
                 </div>
             </div>
             <!--   <ul class="nav nav-tabs">
-                       <li class="active"><a href="#">Answer Questions</a></li>
-                       <li><a href="#">Ask a Question</a></li>
-                   </ul>
-            -->
+               <li class="active"><a href="#">Answer Questions</a></li>
+               <li><a href="#">Ask a Question</a></li>
+           </ul>
+    -->
             <!--       <h2> <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#qSection1">Ask a Question</button></h2>
-             -->
+     -->
             <!-- <div id="qSection1" class="collapse"> -->
             <!-- </div> -->
 
-
-
-        <div class="lets-talk-container2 row formContainer" id="make-payment" style="display: none;">
-            <div id="payment-div" style="text-align:center" class="col-xs-12">
-                <div class="row border-document">
-                    <h2 class="lets-talk-header">Make a Payment</h2>
-                    <br />
-                    <div class="col-xs-12 col-xs-offset-0 col-md-5 col-md-offset-1">
-                        <form id="payment-form" method="post" action="/checkouts">
-                            <img id="credit-cards-img" src="~/Content/img/credit-cards.png"/>
-                            <section>
-                                <div class="bt-drop-in-wrapper">
-                                    <div id="bt-dropin"></div>
-                                </div>
-                            </section>
-                            <button id="payment-btn-hidden" class="button hidden" type="submit"></button>
-                        </form>
-                    </div>
-                    <div class="col-xs-12 col-xs-offset-0 col-md-4 col-md-offset-1">
-                        @{ 
-                            var recentYear = DateTime.Now.AddYears(-1).ToString("yyyy");
-                            var fee = (Model.Statuses.ContainsKey(recentYear) ? (Model.Statuses[recentYear].Fee.HasValue ? Model.Statuses[recentYear].Fee.Value : 0) : 0);
-                            var tax = Math.Round(fee * 0.07M, 2);
-                        }
-                        <div>
-                            <ul id="checkout-ul">
-                                <li>
-                                    <span>Subtotal</span>
-                                    <span class="checkout-price">@fee.ToString("C2")</span>
-                                </li>
-                                <li style="border-bottom: 2px solid gray">
-                                    <span>Tax</span>
-                                    <span class="checkout-price">@tax.ToString("C2")</span>
-                                </li>
-                                <li>
-                                    <span>Total</span>
-                                    <span class="checkout-price payment-total">@(((fee + tax).ToString("C2")))</span>
-                                </li>
-                            </ul>
-                            <button id="payment-submit" class="btn btn-success">Pay @(((fee + tax).ToString("C2")))</button>
+            <div class="lets-talk-container2 row formContainer" id="make-payment" style="display: none;">
+                <div id="payment-div" style="text-align:center" class="col-xs-12">
+                    <div class="row border-document">
+                        <h2 class="lets-talk-header">Make a Payment</h2>
+                        <br />
+                        <div class="col-xs-12 col-xs-offset-0 col-md-5 col-md-offset-1">
+                            <form id="payment-form" method="post" action="/checkouts">
+                                <img id="credit-cards-img" src="~/Content/img/credit-cards.png" />
+                                <section>
+                                    <div class="bt-drop-in-wrapper">
+                                        <div id="bt-dropin"></div>
+                                    </div>
+                                </section>
+                                <button id="payment-btn-hidden" class="button hidden" type="submit"></button>
+                            </form>
+                        </div>
+                        <div class="col-xs-12 col-xs-offset-0 col-md-4 col-md-offset-1">
+                            @{
+                                var recentYear = DateTime.Now.AddYears(-1).ToString("yyyy");
+                                var fee = (Model.Statuses.ContainsKey(recentYear) ? (Model.Statuses[recentYear].Fee.HasValue ? Model.Statuses[recentYear].Fee.Value : 0) : 0);
+                                var tax = Math.Round(fee * 0.07M, 2);
+                            }
+                            <div>
+                                <ul id="checkout-ul">
+                                    <li>
+                                        <span>Subtotal</span>
+                                        <span class="checkout-price">@fee.ToString("C2")</span>
+                                    </li>
+                                    <li style="border-bottom: 2px solid gray">
+                                        <span>Tax</span>
+                                        <span class="checkout-price">@tax.ToString("C2")</span>
+                                    </li>
+                                    <li>
+                                        <span>Total</span>
+                                        <span class="checkout-price payment-total">@(((fee + tax).ToString("C2")))</span>
+                                    </li>
+                                </ul>
+                                <button id="payment-submit" class="btn btn-success">Pay @(((fee + tax).ToString("C2")))</button>
+                            </div>
                         </div>
                     </div>
-                </div>
-                @*<div class="row border-document @(ViewBag.IsAdmin ? "" : "hidden")">
+                    @*<div class="row border-document @(ViewBag.IsAdmin ? "" : "hidden")">
                     <h2 class="lets-talk-header">Sign Documents</h2>
                     <br />
                     <div class="col-xs-12">
                         <img src="~/Content/img/1040x.png" style="width: 250px;cursor:pointer;" id="pdfDemoBtn"/>
                     </div>
                 </div>*@
-            </div>
-            <div id="payment-not-ready" style="text-align:center;" class="border-document col-lg-offset-3 col-md-offset-3 col-lg-6 col-md-6 col-sm-12 col-xs-12">
-                <div style="font-size:20px">
-                    <i class="fa fa-id-card-o" style="text-align: center; font-size: 50px; color: #e74139;"></i>
-                    <br /><br/>
-                    We still need to perform a final review before filing your taxes. 
-                    <br/><br/>
-                    You'll be notified via text when everything is ready to go!
                 </div>
-            </div>
-
-            <div id="payment-finished" style="text-align:center;" class="border-document col-lg-offset-3 col-md-offset-3 col-lg-6 col-md-6 col-sm-12 col-xs-12">
-                <div style="font-size:20px">
-                    <i class="fa" style="text-align: center; font-size: 50px; color:#01af01 ">
-                        &#xf00c; &#xf09d;
-                    </i>
-                    <br /><br />
-                    Your payment of <span class="payment-total">@(((fee + tax).ToString("C2")))</span> has been posted.
-                    <br /><br />
-                    We'll let you know when your taxes are filed! 
-                    <br/>
-                    Feel free to contact us for any further questions.
-                </div>
-            </div>
-        </div>
-
-        <div class="row formContainer" id="Personal-info">
-
-
-            <h2 class="lets-talk-header">Personal Info</h2>
-            <br />
-            <div style="z-index:100" class="col-lg-offset-3 col-md-offset-3 col-lg-6 col-md-6 col-sm-12 col-xs-12">
-                @*<div class="field input-group">
-                        <span>First Name</span><br>
-                        <input type="text" class=" col-10 form-control" name="firstName"><button class="btn btn-primary">
-                            <span class="glyphicon glyphicon-edit"></span>
-
-                        </button>
-                    </div>*@
-                <span class="input-title">First Name</span><br>
-                <div class="field input-group">
-                    <input placeholder="First Name" type="text" class="form-control" name="FirstName" id="firstname-input">
-                    <span class="input-group-btn">
-                        <button class="btn btn-primary input-edit">
-                            <span class="glyphicon glyphicon-edit"></span>
-                        </button>
-                    </span>
-                </div>
-
-                <span class="input-title">Middle Name</span><br>
-                <div class="field input-group">
-                    <input type="text" class="form-control" name="MiddleName" id="middlename-input">
-                    <span class="input-group-btn">
-                        <button class="btn btn-primary input-edit">
-                            <span class="glyphicon glyphicon-edit"></span>
-                        </button>
-                    </span>
-                </div>
-
-                <span class="input-title">Last Name</span><br>
-                <div class="field input-group">
-                    <input placeholder="Last Name" type="text" class="form-control" name="LastName" id="lastname-input">
-                    <span class="input-group-btn">
-                        <button class="btn btn-primary input-edit">
-                            <span class="glyphicon glyphicon-edit"></span>
-                        </button>
-                    </span>
-                </div>
-
-                <span class="input-title">Airline</span><br>
-                <div class="field input-group">
-                    <select class="form-control" name="Airline" id="airline-select">
-                        @{
-                            foreach (var airline in ViewBag.Airlines)
-                            {
-                                @Html.Raw(String.Format("<option value='{0}'>{1}</option>", airline.Name, airline.Name))
-                            }
-                        }
-                    </select>
-                    <span class="input-group-btn">
-                        <button class="btn btn-primary input-edit">
-                            <span class="glyphicon glyphicon-edit"></span>
-                        </button>
-                    </span>
-                </div>
-
-                <span class="input-title">Base Airport 1st Day of <span id="base-airport-date">@DateTime.Now.AddYears(-1).ToString("yyyy")</span></span><br>
-                <div class="field input-group select2-bootstrap-append">
-                    <select class="form-control" name="BaseAirport" id="base-airport-select">
-                    </select>
-                    <span class="input-group-btn">
-                        <button class="btn btn-primary input-edit">
-                            <span class="glyphicon glyphicon-edit"></span>
-                        </button>
-                    </span>
-                </div>
-
-                <span class="input-title">Email</span><br>
-                <div class="field input-group">
-                    <input type="text" class="form-control" name="Email" id="email-input">
-                    <span class="input-group-btn">
-                        <button class="btn btn-primary input-edit">
-                            <span class="glyphicon glyphicon-edit "></span>
-                        </button>
-                    </span>
-                </div>
-
-                <span class="input-title">Phone Number</span><br>
-                <div class="field input-group">
-                    <input type="text" class="form-control" name="PhoneNumber" id="phone-number-input">
-                    <span class="input-group-btn">
-                        <button class="btn btn-primary input-edit">
-                            <span class="glyphicon glyphicon-edit"></span>
-                        </button>
-                    </span>
-                </div>
-
-                <span class="input-title">Date of Birth</span>
-                <div class="field input-group">
-                    <input class="form-control" placeholder="mm/dd/yyyy" type="date" name="DOB" id="dob-input">
-                    <span class="input-group-btn">
-                        <button class="btn btn-primary input-edit">
-                            <span class="glyphicon glyphicon-edit"></span>
-                        </button>
-                    </span>
-                </div>
-
-                <span class="input-title">Current Tax Address: Street, City, State Zip</span><br>
-                <div class="field input-group">
-                    <input type="text" class="form-control" name="Address" id="address-input">
-                    <span class="input-group-btn">
-                        <button class="btn btn-primary input-edit">
-                            <span class="glyphicon glyphicon-edit"></span>
-                        </button>
-                    </span>
-                </div>
-
-                <div class="panel panel-warning">
-                    <div class="panel-heading">
-                        Refund Direct Deposit Information 
-                        <a id="dd-tooltip" href="#" data-toggle="tooltip" data-placement="top" title="To receive your refunds faster, please enter your bank info. Otherwise, the refund will be mailed to your address on file.">
-                            (optional)
-                        </a>
-                    </div>
-                    <div class="panel-body">
-                        <span class="input-title">Bank Name</span><br>
-                        <div class="field input-group">
-                            <input type="text" class="form-control" name="BankName" id="bankname-input">
-                            <span class="input-group-btn">
-                                <button class="btn btn-primary input-edit">
-                                    <span class="glyphicon glyphicon-edit"></span>
-                                </button>
-                            </span>
-                        </div>
-
-                        <span class="input-title">Bank Routing Number</span><br>
-                        <div class="field input-group">
-                            <input type="text" class="form-control" name="RoutingNumber" id="routingnumber-input" />
-                            <span class="input-group-btn">
-                                <button class="btn btn-primary input-edit">
-                                    <span class="glyphicon glyphicon-edit"></span>
-                                </button>
-                            </span>
-                        </div>
-
-                        <div id="routingnumber-confirm" class="input-confirm hidden">
-                            <span class="input-title">Retype Routing Number</span><br>
-                            <input type="text" class="form-control" />
-                        </div>
-
-                        <span class="input-title">Bank Account Number</span><br>
-                        <div class="field input-group">
-                            <input type="text" class="form-control" name="BankAccountNumber" id="bankaccountnumber-input">
-                            <span class="input-group-btn">
-                                <button class="btn btn-primary input-edit">
-                                    <span class="glyphicon glyphicon-edit"></span>
-                                </button>
-                            </span>
-                        </div>
-
-                        <div id="bankaccountnumber-confirm" class="input-confirm hidden">
-                            <span class="input-title">Retype Account Number</span><br>
-                            <input type="text" class="form-control">
-                        </div>
-
+                <div id="payment-not-ready" style="text-align:center;" class="border-document col-lg-offset-3 col-md-offset-3 col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                    <div style="font-size:20px">
+                        <i class="fa fa-id-card-o" style="text-align: center; font-size: 50px; color: #e74139;"></i>
+                        <br /><br />
+                        We still need to perform a final review before filing your taxes.
+                        <br /><br />
+                        You'll be notified via text when everything is ready to go!
                     </div>
                 </div>
-
-
-
+                <div id="payment-finished" style="text-align:center;" class="border-document col-lg-offset-3 col-md-offset-3 col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                    <div style="font-size:20px">
+                        <i class="fa" style="text-align: center; font-size: 50px; color:#01af01 ">
+                            &#xf00c; &#xf09d;
+                        </i>
+                        <br /><br />
+                        Your payment of <span class="payment-total">@(((fee + tax).ToString("C2")))</span> has been posted.
+                        <br /><br />
+                        We'll let you know when your taxes are filed!
+                        <br />
+                        Feel free to contact us for any further questions.
+                    </div>
+                </div>
             </div>
-            <br>
-            <div style="z-index:99" class="col-md-4 col-md-offset-4 col-sm-4 col-sm-offset-4">
+            <div class="row formContainer" id="Personal-info">
+
+                <h2 class="lets-talk-header">Personal Info</h2>
                 <br />
-                <button id="save-personal-info-btn" style="width:100%;" type="submit" class="btn btn-primary submit-button">
-                    Save Changes
-                </button>
+                <div style="z-index:100" class="col-lg-offset-3 col-md-offset-3 col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                    @*<div class="field input-group">
+                    <span>First Name</span><br>
+                    <input type="text" class=" col-10 form-control" name="firstName"><button class="btn btn-primary">
+                        <span class="glyphicon glyphicon-edit"></span>
+
+                    </button>
+                </div>*@
+                    <span class="input-title">First Name</span><br>
+                    <div class="field input-group">
+                        <input placeholder="First Name" type="text" class="form-control" name="FirstName" id="firstname-input">
+                        <span class="input-group-btn">
+                            <button class="btn btn-primary input-edit">
+                                <span class="glyphicon glyphicon-edit"></span>
+                            </button>
+                        </span>
+                    </div>
+                    <span class="input-title">Middle Name</span><br>
+                    <div class="field input-group">
+                        <input type="text" class="form-control" name="MiddleName" id="middlename-input">
+                        <span class="input-group-btn">
+                            <button class="btn btn-primary input-edit">
+                                <span class="glyphicon glyphicon-edit"></span>
+                            </button>
+                        </span>
+                    </div>
+                    <span class="input-title">Last Name</span><br>
+                    <div class="field input-group">
+                        <input placeholder="Last Name" type="text" class="form-control" name="LastName" id="lastname-input">
+                        <span class="input-group-btn">
+                            <button class="btn btn-primary input-edit">
+                                <span class="glyphicon glyphicon-edit"></span>
+                            </button>
+                        </span>
+                    </div>
+                    <span class="input-title">Airline</span><br>
+                    <div class="field input-group">
+                        <select class="form-control" name="Airline" id="airline-select">
+                            @{
+                                foreach (var airline in ViewBag.Airlines)
+                                {
+                                    @Html.Raw(String.Format("<option value='{0}'>{1}</option>", airline.Name, airline.Name))
+                                }
+                            }
+                        </select>
+                        <span class="input-group-btn">
+                            <button class="btn btn-primary input-edit">
+                                <span class="glyphicon glyphicon-edit"></span>
+                            </button>
+                        </span>
+                    </div>
+                    <span class="input-title">Base Airport 1st Day of <span id="base-airport-date">@DateTime.Now.AddYears(-1).ToString("yyyy")</span></span><br>
+                    <div class="field input-group select2-bootstrap-append">
+                        <select class="form-control" name="BaseAirport" id="base-airport-select"></select>
+                        <span class="input-group-btn">
+                            <button class="btn btn-primary input-edit">
+                                <span class="glyphicon glyphicon-edit"></span>
+                            </button>
+                        </span>
+                    </div>
+                    <span class="input-title">Email</span><br>
+                    <div class="field input-group">
+                        <input type="text" class="form-control" name="Email" id="email-input">
+                        <span class="input-group-btn">
+                            <button class="btn btn-primary input-edit">
+                                <span class="glyphicon glyphicon-edit "></span>
+                            </button>
+                        </span>
+                    </div>
+                    <span class="input-title">Phone Number</span><br>
+                    <div class="field input-group">
+                        <input type="text" class="form-control" name="PhoneNumber" id="phone-number-input">
+                        <span class="input-group-btn">
+                            <button class="btn btn-primary input-edit">
+                                <span class="glyphicon glyphicon-edit"></span>
+                            </button>
+                        </span>
+                    </div>
+                    <span class="input-title">Date of Birth</span>
+                    <div class="field input-group">
+                        <input class="form-control" placeholder="mm/dd/yyyy" type="date" name="DOB" id="dob-input">
+                        <span class="input-group-btn">
+                            <button class="btn btn-primary input-edit">
+                                <span class="glyphicon glyphicon-edit"></span>
+                            </button>
+                        </span>
+                    </div>
+                    <span class="input-title">Current Tax Address: Street, City, State Zip</span><br>
+                    <div class="field input-group">
+                        <input type="text" class="form-control" name="Address" id="address-input">
+                        <span class="input-group-btn">
+                            <button class="btn btn-primary input-edit">
+                                <span class="glyphicon glyphicon-edit"></span>
+                            </button>
+                        </span>
+                    </div>
+                    <div class="panel panel-warning">
+                        <div class="panel-heading">
+                            Refund Direct Deposit Information
+                            <a id="dd-tooltip" href="#" data-toggle="tooltip" data-placement="top" title="To receive your refunds faster, please enter your bank info. Otherwise, the refund will be mailed to your address on file.">
+                                (optional)
+                            </a>
+                        </div>
+                        <div class="panel-body">
+                            <span class="input-title">Bank Name</span><br>
+                            <div class="field input-group">
+                                <input type="text" class="form-control" name="BankName" id="bankname-input">
+                                <span class="input-group-btn">
+                                    <button class="btn btn-primary input-edit">
+                                        <span class="glyphicon glyphicon-edit"></span>
+                                    </button>
+                                </span>
+                            </div>
+                            <span class="input-title">Bank Routing Number</span><br>
+                            <div class="field input-group">
+                                <input type="text" class="form-control" name="RoutingNumber" id="routingnumber-input" />
+                                <span class="input-group-btn">
+                                    <button class="btn btn-primary input-edit">
+                                        <span class="glyphicon glyphicon-edit"></span>
+                                    </button>
+                                </span>
+                            </div>
+                            <div id="routingnumber-confirm" class="input-confirm hidden">
+                                <span class="input-title">Retype Routing Number</span><br>
+                                <input type="text" class="form-control" />
+                            </div>
+                            <span class="input-title">Bank Account Number</span><br>
+                            <div class="field input-group">
+                                <input type="text" class="form-control" name="BankAccountNumber" id="bankaccountnumber-input">
+                                <span class="input-group-btn">
+                                    <button class="btn btn-primary input-edit">
+                                        <span class="glyphicon glyphicon-edit"></span>
+                                    </button>
+                                </span>
+                            </div>
+                            <div id="bankaccountnumber-confirm" class="input-confirm hidden">
+                                <span class="input-title">Retype Account Number</span><br>
+                                <input type="text" class="form-control">
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <br>
+                <div style="z-index:99" class="col-md-4 col-md-offset-4 col-sm-4 col-sm-offset-4">
+                    <br />
+                    <button id="save-personal-info-btn" style="width:100%;" type="submit" class="btn btn-primary submit-button">
+                        Save Changes
+                    </button>
+                </div>
 
             </div>
 
+            <div class=" jumbotron file-upload-container" style="display: none;" id="work-schedule-container">
 
+                <div class="row header">
+                    <h4 class="text-center">Please Upload .CSV Files Downloaded from Your Crew Portal for All of the Months</h4>
+                    <h4 class="text-center">
+                        You Worked as a Flight Attendant
+                    </h4>
+                </div>
+
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <div id="csvdropzone-alerts"></div>
+                        <form action="@Url.Action("UploadUserTaxFile", "Home")" method="post" enctype="multipart/form-data" class="dropzone dropzoneArea" id="csvDropzone">
+                            <div class="fallback">
+                                <input name="file" type="file" multiple />
+                                <input type="submit" value="Upload" />
+                            </div>
+                        </form>
+                        <h5 class="text-center">
+                            (For security purposes, we will not show files you have uploaded in a previous session)
+                        </h5>
+                    </div>
+                </div>
+            </div> <!-- /container -->
+            <div class="jumbotron file-upload-container" id="tax-documents-container" style="display: none;">
+                <div class="row header">
+                    <h4 class="text-center">Please Upload Pictures or PDFs of Your Tax Documents Here</h4>
+                    <h5 class="text-center">
+                        (W2’s, 1099-Misc, Healthcare, Bank Interest, Student Loans, Etc)
+                    </h5>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <div id="taxdropzone-alerts"></div>
+                        <form action="@Url.Action("UploadUserTaxFile", "Home")" method="post" enctype="multipart/form-data" class="dropzone dropzoneArea" id="taxDropzone">
+                            <div class="fallback">
+                                <input name="file" type="file" multiple />
+                                <input type="submit" value="Upload" />
+                            </div>
+                        </form>
+                        <h5 class="text-center">
+                            (For security purposes, we will not show files you have uploaded in a previous session)
+                        </h5>
+                    </div>
+                </div>
+            </div> <!-- /container -->
+            <div class="lets-talk-container2 row formContainer" id="tax-return-container" style="z-index: 999; display: none;overflow-x:hidden;overflow-y:auto;">
+                <div class="lets-talk-inner-wrapper">
+                    <button type="button" class="close cancel-btn" data-dismiss="div.getStartedDiv">×</button>
+                    <h2 class="lets-talk-header">Download Your Return</h2>
+                    <p class="subtitle fancy"><span></span></p>
+                    <form id="loginForm" action="/Account/GetUserTaxReturn" style="justify-content: center" class="" method="post" role="form" novalidate="novalidate">
+                        <div class="input-group" style="visibility: hidden">
+                            <input type="hidden" id="hiddenTaxYearLogin" name="taxYear" value="@DateTime.Now.AddYears(-1).ToString("yyyy")" />
+                            <input type="hidden" id="hiddenUserId" name="userId" />
+                        </div>
+                        <div class="clearfix"></div>
+                        <div class="row text-center" style="padding: 0px 15px;">
+                            <!-- <span style=" color: #999;line-height: 36px; padding-right: 10px;">(Step 2 of 2)</span> -->
+                            <button type="submit" id="taxReturnFormSubmit" style="justify-content: center" class="btn btn-primary" onclick="getTaxYear()"> Download  </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="lets-talk-container2 row formContainer" id="no-tax-return-container" style="display: none;">
+                <div id="payment-not-ready" style="text-align:center;" class="border-document col-lg-offset-3 col-md-offset-3 col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                    <div style="font-size:20px">
+                        <i class="fa fa-id-card-o" style="text-align: center; font-size: 50px; color: #e74139;"></i>
+                        <br /><br />
+                        Your Tax Return has not been completed yet. 
+                    </div>
+                </div>
+            </div>
         </div>
-
-
-        <div class=" jumbotron file-upload-container" style="display: none;" id="work-schedule-container">
-
-
-            <div class="row header">
-
-                <h4 class="text-center">Please Upload .CSV Files Downloaded from Your Crew Portal for All of the Months</h4>
-                <h4 class="text-center">
-                    You Worked as a Flight Attendant
-                </h4>
-
-            </div>
-
-
-            <div class="panel panel-default">
-                <div class="panel-body">
-                    <div id="csvdropzone-alerts" ></div>
-                    <form action="@Url.Action("UploadUserTaxFile", "Home")" method="post" enctype="multipart/form-data" class="dropzone dropzoneArea" id="csvDropzone">
-                        <div class="fallback">
-                            <input name="file" type="file" multiple />
-                            <input type="submit" value="Upload" />
-                        </div>
-                    </form>
-                    <h5 class="text-center">
-                        (For security purposes, we will not show files you have uploaded in a previous session)
-                    </h5>
-                </div>
-            </div>
-        </div> <!-- /container -->
-        <div class="jumbotron file-upload-container" id="tax-documents-container" style="display: none;">
-
-            <div class="row header">
-
-                <h4 class="text-center">Please Upload Pictures or PDFs of Your Tax Documents Here</h4>
-                <h5 class="text-center">
-                    (W2’s, 1099-Misc, Healthcare, Bank Interest, Student Loans, Etc)
-                </h5>
-
-            </div>
-
-            <div class="panel panel-default">
-
-                <div class="panel-body">
-                    <div id="taxdropzone-alerts"></div>
-
-                    <form action="@Url.Action("UploadUserTaxFile", "Home")" method="post" enctype="multipart/form-data" class="dropzone dropzoneArea" id="taxDropzone">
-                        <div class="fallback">
-                            <input name="file" type="file" multiple />
-                            <input type="submit" value="Upload" />
-                        </div>
-                    </form>
-                    <h5 class="text-center">
-                        (For security purposes, we will not show files you have uploaded in a previous session)
-                    </h5>
-                </div>
-            </div>
-
-        </div> <!-- /container -->
-
-    </div>
     </div>
 
 
@@ -2019,6 +2087,8 @@
                         $('div#work-schedule-container').fadeIn(500);
                         $('div#tax-question').hide();
                         $('div#make-payment').hide();
+                        $('div#tax-return-container').hide();
+                        $('div#no-tax-return-container').hide();
                         if (!$('div#options .menu-dashboard').is(":visible"))
                             $('div.left-menu-collapse').slideUp(500);
                         $('div.btn-container').css('background', '#999');
@@ -2034,6 +2104,8 @@
                         $('div#tax-documents-container').hide();
                         $('div#work-schedule-container').hide();
                         $('div#make-payment').hide();
+                        $('div#tax-return-container').hide();
+                        $('div#no-tax-return-container').hide();
                         $('div#tax-question').fadeIn(500);
                         if (!$('div#options .menu-dashboard').is(":visible"))
                             $('div.left-menu-collapse').slideUp(500);
@@ -2049,6 +2121,8 @@
                         $('div#Personal-info').hide();
                         $('div#tax-documents-container').hide();
                         $('div#work-schedule-container').hide();
+                        $('div#tax-return-container').hide();
+                        $('div#no-tax-return-container').hide();
                         $('div#make-payment').fadeIn(500, function(){
                         });
                         $('div#tax-question').hide();
@@ -2059,6 +2133,8 @@
 
                         setupBrainTree();
                     }
+                } else if (elemId == "tReturn") {
+                    downloadTaxReturn();
                 } else if (elemId == "tDoc") {
                     if (!$('div#tax-documents-container').is(":visible")) {
                         console.log('in' + elemId);
@@ -2066,6 +2142,8 @@
                         $('div#Personal-info').hide();
                         $('div#tax-question').hide();
                         $('div#make-payment').hide();
+                        $('div#tax-return-container').hide();
+                        $('div#no-tax-return-container').hide();
                         $('div#tax-documents-container').fadeIn(500);
                         $('div#work-schedule-container').hide();
                         $('div.btn-container').css('background', '#999');
@@ -2080,6 +2158,8 @@
                     if (!$('div#Personal-info').is(":visible")) {
                         console.log('in' + elemId);
                         $('div.box-dashboard-container').hide();
+                        $('div#tax-return-container').hide();
+                        $('div#no-tax-return-container').hide();
                         $('div#Personal-info').fadeIn(500);
                         $('div#tax-documents-container').hide();
                         $('div#work-schedule-container').hide();
@@ -2103,6 +2183,8 @@
                         $('div#tax-documents-container').hide();
                         $('div#tax-question').hide();
                         $('div#make-payment').hide();
+                        $('div#tax-return-container').hide();
+                        $('div#no-tax-return-container').hide();
                         $('div#work-schedule-container').hide();
                         $('div.btn-container').css('background', '#999');
                         if (!$('div#options .menu-dashboard').is(":visible"))
@@ -2127,6 +2209,8 @@
                     $('div#tax-documents-container').hide();
                     $('div#work-schedule-container').hide();
                     $('div#make-payment').hide();
+                    $('div#tax-return-container').hide();
+                    $('div#no-tax-return-container').hide();
                     $('div#tax-question').fadeIn(500);
                     if (!$('div#options .menu-dashboard').is(":visible"))
                         $('div.left-menu-collapse').slideUp(500);
@@ -2145,6 +2229,8 @@
                     $('div#Personal-info').hide();
                     $('div#tax-documents-container').hide();
                     $('div#work-schedule-container').hide();
+                    $('div#tax-return-container').hide();
+                    $('div#no-tax-return-container').hide();
                     $('div#make-payment').fadeIn(500);
                     $('div#tax-question').hide();
                     if (!$('div#options .menu-dashboard').is(":visible"))
@@ -2157,6 +2243,11 @@
             });
 
 
+            $('#tReturn').on('click', function (e) {
+                e.preventDefault();
+                downloadTaxReturn();
+            });
+
             $('#tDoc').on('click', function (e) {
                 e.preventDefault();
                 if (!$('div#tax-documents-container').is(":visible")) {
@@ -2164,6 +2255,8 @@
                     $('div#Personal-info').hide();
                     $('div#tax-question').hide();
                     $('div#make-payment').hide();
+                    $('div#tax-return-container').hide();
+                    $('div#no-tax-return-container').hide();
                     $('div#tax-documents-container').fadeIn(500);
                     $('div#work-schedule-container').hide();
                     $('div.btn-container').css('background', '#999');
@@ -2182,6 +2275,8 @@
                 e.preventDefault();
                 if (!$('div#Personal-info').is(":visible")) {
                     $('div.box-dashboard-container').hide();
+                    $('div#tax-return-container').hide();
+                    $('div#no-tax-return-container').hide();
                     $('div#Personal-info').fadeIn(500);
                     $('div#tax-documents-container').hide();
                     $('div#work-schedule-container').hide();
@@ -2204,6 +2299,8 @@
                 if (!$('div.box-dashboard-container').is(":visible")) {
                     $('div.box-dashboard-container').fadeIn(500);
                     $('div#Personal-info').hide();
+                    $('div#tax-return-container').hide();
+                    $('div#no-tax-return-container').hide();
                     $('div#tax-documents-container').hide();
                     $('div#tax-question').hide();
                     $('div#make-payment').hide();

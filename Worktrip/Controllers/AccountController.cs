@@ -8,12 +8,19 @@ using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
+using Newtonsoft.Json;
 using Worktrip.Models;
 using Twilio;
 using System.Diagnostics;
 using System.Web.Security;
 using Facebook;
 using System.Data.Entity;
+using System.Collections.Generic;
+using System.Web.Script.Serialization;
+using System.Net;
+using System.Text;
+using System.Net.Http;
+using System.IO;
 
 namespace Worktrip.Controllers
 {
@@ -97,6 +104,37 @@ namespace Worktrip.Controllers
             }
         }
 
+        //Json Class for getting Tax return data from the database and converting it into a downloadable file
+        class MyJsonClass
+        {
+            public int status { get; set; }
+            
+            public string fileName { get; set; }
+            
+            public string fileContentType { get; set; }
+            
+            public byte[] fileContents { get; set; }
+        }
+
+        public FileContentResult GetUserTaxReturn(string userId, int taxYear)
+        {
+            byte[] bytes = new byte[64000];
+            string contentType = "application/pdf";
+            FileContentResult taxReturn = new FileContentResult(bytes, contentType);
+
+            var home = new HomeController();
+            string jsonResult = new JavaScriptSerializer().Serialize(home.GetSingleUserTaxReturn(User.Identity.GetUserId(), taxYear).Data);
+            MyJsonClass response = JsonConvert.DeserializeObject<MyJsonClass>(jsonResult);
+            if (response.status == 0 && response != null)
+            {
+                if (response.fileContentType == "application/pdf")
+                {
+                    bytes = response.fileContents;
+                    return File(bytes, response.fileContentType, response.fileName);
+                }
+            }
+            return taxReturn;
+        }
 
         [HttpPost]
         [AllowAnonymous]

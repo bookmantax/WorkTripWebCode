@@ -206,21 +206,26 @@ namespace Worktrip.Controllers
 
                     var user = db.Users.FirstOrDefault(u => u.Id == userId);
 
-                    var files = db.UserMiscDocs.Where(d => d.UserId == userId && d.Year == taxYear);
+                    var miscDocs = db.UserMiscDocs.Where(d => d.UserId == userId && d.Year == taxYear);
+                    var taxReturn = db.UserTaxReturns.Where(d => d.UserId == userId && d.Year == taxYear);
 
-                    files = files.OrderBy(d => d.Id);
+                    miscDocs = miscDocs.OrderBy(d => d.Id);
+                    taxReturn = taxReturn.OrderBy(d => d.Id);
 
                     if (skip.HasValue)
                     {
-                        files = files.Skip(skip.Value);
+                        miscDocs = miscDocs.Skip(skip.Value);
+                        taxReturn = taxReturn.Skip(skip.Value);
                     }
 
                     if (amount.HasValue)
                     {
-                        files = files.Take(amount.Value);
+                        miscDocs = miscDocs.Take(amount.Value);
+                        taxReturn = taxReturn.Take(amount.Value);
                     }
 
-                    var fileUrls = files.Select(d => d.Path).ToList();
+                    var fileUrls = miscDocs.Select(d => d.Path).ToList();
+                    fileUrls.AddRange(taxReturn.Select(d => d.Path).ToList());
 
                     var parsedFilePaths = new List<Tuple<string, string>>();
 

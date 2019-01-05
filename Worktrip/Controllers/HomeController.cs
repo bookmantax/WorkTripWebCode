@@ -93,6 +93,266 @@ namespace Worktrip.Controllers
             return Json(UserInfoViewModel.GetUserInfo(User.Identity.GetUserId()));
         }
 
+        private string ConvertStreamToBase64String(Stream stream)
+        {
+            using (var memoryStream = new MemoryStream())
+            {
+                stream.Position = 0;
+                stream.CopyTo(memoryStream);
+                return Convert.ToBase64String(memoryStream.ToArray());
+            }
+        }
+
+        [Authorize]
+        public JsonResult GetuserTaxReturn(string userId, int taxYear)
+        {
+            bool downloadSuccessful = true;
+            var results = new List<Tuple<string, string, string>>();
+
+            using (var db = new WorktripEntities())
+            {
+                try
+                {
+                    Regex filePattern = new Regex(@"http.*\/.*\/(?<directory>.*)\/(?<filename>.*)");
+
+                    var user = db.Users.FirstOrDefault(u => u.Id == userId);
+                    var taxReturn = db.UserTaxReturns.Where(d => d.UserId == userId && d.Year == taxYear);
+
+                    taxReturn = taxReturn.OrderBy(d => d.Id);
+
+                    var fileUrls = new List<UserTaxReturn>();
+                    if (taxReturn.Count() != 0)
+                    {
+                        fileUrls.Add(taxReturn.AsEnumerable().Last());
+
+
+                        var parsedFilePaths = new List<Tuple<string, string>>();
+
+                        foreach (var url in fileUrls)
+                        {
+                            Match match = filePattern.Match(url.Path);
+
+                            if (match.Success)
+                            {
+                                var newTuple = new Tuple<string, string>(
+                                    match.Groups["directory"].Value,
+                                    match.Groups["filename"].Value
+                                );
+
+                                parsedFilePaths.Add(newTuple);
+                            }
+                        }
+
+                        CloudStorageAccount storageAccount = CloudStorageAccount.Parse(
+                            CloudConfigurationManager.GetSetting("StorageConnectionString"));
+
+                        CloudFileClient fileClient = storageAccount.CreateCloudFileClient();
+
+                        CloudFileShare share = fileClient.GetShareReference("worktripdocs");
+
+                        CloudFileDirectory rootDir = share.GetRootDirectoryReference();
+
+                        CloudFileDirectory userDir = null;
+
+                        var userDirName = "";
+
+                        foreach (var parsedPath in parsedFilePaths)
+                        {
+                            if (userDirName != parsedPath.Item1)
+                            {
+                                userDir = rootDir.GetDirectoryReference(parsedPath.Item1);
+
+                                if (!userDir.Exists())
+                                {
+                                    continue;
+                                }
+
+                                userDirName = parsedPath.Item1;
+                            }
+
+                            var filename = parsedPath.Item2;
+
+                            CloudFile file = userDir.GetFileReference(filename);
+
+                            if (!file.Exists())
+                            {
+                                continue;
+                            }
+
+                            file.FetchAttributes();
+
+                            string fileContents = "";
+
+                            if (file.Properties.ContentType.ToLower() == "application/pdf")
+                            {
+                                MemoryStream fileStream = new MemoryStream();
+                                file.DownloadToStream(fileStream);
+
+                                fileContents = ConvertStreamToBase64String(fileStream);
+                            }
+                            else
+                            {
+                                fileContents = file.DownloadText();
+                            }
+
+                            results.Add(
+                                new Tuple<string, string, string>(filename, file.Properties.ContentType, fileContents)
+                            );
+                        }
+                    }
+                }
+                catch (Exception e)
+                {
+                    //Do some error logging here..
+                    downloadSuccessful = false;
+                }
+            }
+
+            if (downloadSuccessful)
+            {
+                return Json(new
+                {
+                    status = 0,
+                    files = results
+                });
+            }
+            else
+            {
+                return Json(new { status = -1, message = "Error in downloading files" });
+            }
+
+        }
+
+        [Authorize]
+        public JsonResult GetSingleUserTaxReturn(string userId, int taxYear)
+        {
+            bool downloadSuccessful = true;
+            var results = new List<Tuple<string, string, byte[]>>();
+
+            using (var db = new WorktripEntities())
+            {
+                try
+                {
+                    Regex filePattern = new Regex(@"http.*\/.*\/(?<directory>.*)\/(?<filename>.*)");
+
+                    var user = db.Users.FirstOrDefault(u => u.Id == userId);
+                    var taxReturn = db.UserTaxReturns.Where(d => d.UserId == userId && d.Year == taxYear);
+
+                    taxReturn = taxReturn.OrderBy(d => d.Id);
+
+                    var fileUrls = new List<UserTaxReturn>();
+                    if (taxReturn.Count() != 0)
+                    {
+                        fileUrls.Add(taxReturn.AsEnumerable().Last());
+                        byte[] bytes = new byte[64000];
+
+                        var parsedFilePaths = new List<Tuple<string, string>>();
+
+                        foreach (var url in fileUrls)
+                        {
+                            Match match = filePattern.Match(url.Path);
+
+                            if (match.Success)
+                            {
+                                var newTuple = new Tuple<string, string>(
+                                    match.Groups["directory"].Value,
+                                    match.Groups["filename"].Value
+                                );
+
+                                parsedFilePaths.Add(newTuple);
+                            }
+                        }
+
+                        CloudStorageAccount storageAccount = CloudStorageAccount.Parse(
+                            CloudConfigurationManager.GetSetting("StorageConnectionString"));
+
+                        CloudFileClient fileClient = storageAccount.CreateCloudFileClient();
+
+                        CloudFileShare share = fileClient.GetShareReference("worktripdocs");
+
+                        CloudFileDirectory rootDir = share.GetRootDirectoryReference();
+
+                        CloudFileDirectory userDir = null;
+
+                        var userDirName = "";
+
+                        foreach (var parsedPath in parsedFilePaths)
+                        {
+                            if (userDirName != parsedPath.Item1)
+                            {
+                                userDir = rootDir.GetDirectoryReference(parsedPath.Item1);
+
+                                if (!userDir.Exists())
+                                {
+                                    continue;
+                                }
+
+                                userDirName = parsedPath.Item1;
+                            }
+
+                            var filename = parsedPath.Item2;
+
+                            CloudFile file = userDir.GetFileReference(filename);
+
+                            if (!file.Exists())
+                            {
+                                continue;
+                            }
+
+                            file.FetchAttributes();
+
+                            string fileContents = "";
+
+                            if (file.Properties.ContentType.ToLower() == "application/pdf")
+                            {
+                                MemoryStream fileStream = new MemoryStream();
+                                file.DownloadToStream(fileStream);
+                                bytes = fileStream.ToArray();
+                                fileContents = ConvertStreamToBase64String(fileStream);
+                            }
+                            else
+                            {
+                                fileContents = file.DownloadText();
+                            }
+
+                            results.Add(
+                                new Tuple<string, string, byte[]>(filename, file.Properties.ContentType, bytes)
+                            );
+                        }
+                    }
+                }
+                catch (Exception e)
+                {
+                    //Do some error logging here..
+                    downloadSuccessful = false;
+                }
+            }
+
+            if (downloadSuccessful && results.Count > 0)
+            {
+                return Json(new MyJsonResult
+                {
+                    status = 0,
+                    fileName = results.ElementAtOrDefault(0).Item1,
+                    fileContentType = results.ElementAtOrDefault(0).Item2,
+                    fileContents = results.ElementAtOrDefault(0).Item3
+            });
+            }
+            else
+            {
+                return Json(new { status = -1, message = "Error in downloading files" });
+            }
+
+        }
+
+        public class MyJsonResult
+        {
+            public int status { get; set; }
+            public string fileName { get; set; }
+            public string fileContentType { get; set; }
+            public byte[] fileContents { get; set; }
+        }
+
         [Authorize]
         public JsonResult SubmitQuestion(string question, int taxYear)
         {
@@ -265,6 +525,103 @@ namespace Worktrip.Controllers
             if (uploadedSuccessfully)
             {
                 return Json(new { status = 0});
+            }
+            else
+            {
+                return Json(new { status = -1, message = "Error in saving file" });
+            }
+        }
+
+        [Authorize]
+        public JsonResult UploadUserTaxReturn(int taxYear, string subFolder, string userId)
+        {
+            var curUserId = userId == null ? User.Identity.GetUserId() : userId;
+
+            bool uploadedSuccessfully = false;
+            string uploadedURI = "";
+
+            using (var db = new WorktripEntities())
+            {
+                try
+                {
+                    var user = db.Users.FirstOrDefault(u => u.Id == curUserId);
+
+                    HttpPostedFileBase uploadedFile = Request.Files.Get(0);
+
+                    var compressedStream = uploadedFile.InputStream;
+
+                    if (uploadedFile.ContentType.StartsWith("image/"))
+                    {
+                        compressedStream = ResizePictureForBandwidth(uploadedFile);
+                    }
+
+                    CloudStorageAccount storageAccount = CloudStorageAccount.Parse(
+                        CloudConfigurationManager.GetSetting("StorageConnectionString"));
+
+                    CloudFileClient fileClient = storageAccount.CreateCloudFileClient();
+
+                    CloudFileShare share = fileClient.GetShareReference("worktripdocs");
+
+                    CloudFileDirectory rootDir = share.GetRootDirectoryReference();
+
+                    CloudFileDirectory userDir = rootDir.GetDirectoryReference(user.FirstName + " " + user.LastName + " " + user.PhoneNumber);
+
+                    userDir.CreateIfNotExists();
+
+                    if (!string.IsNullOrEmpty(subFolder))
+                    {
+                        userDir = userDir.GetDirectoryReference(subFolder);
+
+                        userDir.CreateIfNotExists();
+                    }
+
+                    var newFileName = uploadedFile.FileName;
+                    var fileExtension = Path.GetExtension(newFileName);
+
+                    CloudFile file = userDir.GetFileReference(newFileName);
+
+                    int fileDuplicateCount = 1;
+
+                    while (file.Exists())
+                    {
+                        //generate a file name that doesn't exist yet
+                        newFileName = Path.GetFileNameWithoutExtension(newFileName) + "(" + (fileDuplicateCount++) + ")" + fileExtension;
+
+                        file = userDir.GetFileReference(newFileName); ;
+                    }
+
+                    file.Properties.ContentType = uploadedFile.ContentType;
+
+                    file.UploadFromStream(compressedStream);
+
+                    uploadedURI = file.Uri.ToString();
+
+                    UserTaxReturn newReturn = new UserTaxReturn()
+                    {
+                        UserId = curUserId,
+                        Date = DateTime.UtcNow,
+                        Path = uploadedURI,
+                        Year = taxYear
+                    };
+
+                    db.UserTaxReturns.Add(newReturn);
+
+                    db.SaveChanges();
+
+                    uploadedSuccessfully = true;
+
+                    UserInfoViewModel.UpdateUserActionsLog(curUserId, "uploaded " + taxYear + " " + (fileExtension == ".pdf" ? "tax return" : "tax form(s)"));
+                }
+                catch (Exception e)
+                {
+                    //Do some error logging here..
+                    uploadedSuccessfully = false;
+                }
+            }
+
+            if (uploadedSuccessfully)
+            {
+                return Json(new { status = 0 });
             }
             else
             {

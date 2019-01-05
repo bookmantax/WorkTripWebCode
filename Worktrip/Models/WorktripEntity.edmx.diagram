@@ -32,6 +32,8 @@
         <EntityTypeShape EntityType="WorktripModel.UserActionsLog" Width="1.5" PointX="8" PointY="9.375" />
         <AssociationConnector Association="WorktripModel.FK_ActionUser_User" />
         <EntityTypeShape EntityType="WorktripModel.PerDiemRate" Width="1.5" PointX="7.625" PointY="14.875" />
+        <EntityTypeShape EntityType="WorktripModel.UserTaxReturn" Width="1.5" PointX="14.375" PointY="16.75" />
+        <AssociationConnector Association="WorktripModel.FK_UserTaxReturn" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

@@ -428,14 +428,15 @@
 
                                     $img = $img.parent();
 
-                                } else if (file.Item2 == "application/pdf") {
+                                }
+                                else if (file.Item2 == "application/pdf") {
                                     $img
                                         .addClass("no-preview")
                                         .attr("src", "/Content/img/pdf-thumbnail.png");
 
                                     $img.click(function(fileData){
                                         return function () {
-                                            openDataURI("data:application/pdf;base64," + fileData.Item3);
+                                            downloadDataURI("data:application/pdf;base64," + fileData.Item3, fileData.Item1);
                                         }
                                     }(file));
                                 } else {
@@ -820,6 +821,33 @@
                                 formData.append("userId", currentUserInfo.userId);
 
                                 //formData.append("subFolder", "Layover CSVs");
+                            });
+
+                            this.on("success", function (file) {
+                                var response = JSON.parse(file.xhr.response);
+
+                                if (response.status == 0) {
+                                    setTimeout(function () {
+                                        $(".dz-success-mark", file.previewElement).css("opacity", 1);
+                                    }, 500);
+                                } else {
+                                    alert("We failed to upload your file, please try again later");
+                                }
+                            });
+                        }
+                    });
+
+                    $(".admin-pdf-upload", $userModal).dropzone({
+                        url: "@Url.Action("UploadUserTaxReturn", "Home")",
+                        maxFilesize: 3,
+                        dictDefaultMessage: "Drop files here or click to upload",
+                        acceptedFiles: ".pdf",
+                        autoProcessQueue: true,
+                        init: function () {                          
+                            this.on("sending", function (file, xhr, formData) {
+                                formData.append("taxYear", currentUserInfo.taxYear);
+                                formData.append("userId", currentUserInfo.userId);
+                                
                             });
 
                             this.on("success", function (file) {
@@ -1369,10 +1397,21 @@
                                     </form>
                                 </div>
                             </div>
-
-
                         </div>
+                        <div class="modal-admin-upload">
+                            <div class="panel panel-success">
+                                <div class="panel-heading">Upload User Tax Return</div>
+                                <div class="modal-admin-upload panel-body">
+                                    <form action="@Url.Action("UploadUserTaxReturn", "Home")" method="post" enctype="multipart/form-data" class="dropzone dropzoneArea admin-pdf-upload">
+                                        <div class="fallback">
+                                            <input name="file" type="file" multiple />
+                                            <input type="submit" value="Upload" />
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
                         </div>
+                    </div>
 
                 </div>
 

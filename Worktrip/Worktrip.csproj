@@ -276,6 +276,9 @@
     <Compile Include="Models\UserQuestion.cs">
       <DependentUpon>WorktripEntity.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\UserTaxReturn.cs">
+      <DependentUpon>WorktripEntity.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\UserToPreparer.cs">
       <DependentUpon>WorktripEntity.tt</DependentUpon>
     </Compile>

@@ -189,7 +189,40 @@ $(document).ready(function () {
 		}
 
 		return false;
-	});
+    });
+
+    $("#taxReturnFormSubmit").on("click", function (e) {
+        e.preventDefault();
+        containerDiv = $(this).closest("div.lets-talk-inner-wrapper");
+        $('div#message').remove();
+
+        if (loopForm("loginForm")) {
+
+            $(".login").hide();
+
+            $.ajax({
+                type: "POST",
+                url: "/Account/LoginAjax",
+                data: {
+                    Email: $("#loginForm input[name='email']").val(),
+                    Password: $("#loginForm input[name='password']").val(),
+                    UserId: $("#signupForm input[name='userid']").val()
+                },
+                success: function (response) {
+                    if (response.status == 0) {
+                        window.location = "/";
+                    } else {
+                        $(".login").show();
+
+                        showError("This password does not match with the email");
+                    }
+                }
+            });
+
+        }
+
+        return false;
+    });
 
 	$("button#letsTalkFormSubmit").on("click", function (e) {
 		e.preventDefault();
