@@ -56,6 +56,52 @@ namespace Worktrip.Controllers
             return Json(UserAction.GetUserActions(hours));
         }
 
+        public JsonResult SetFirstModified(string userId, int year)
+        {
+            using (var db = new WorktripEntities())
+            {
+                var user = db.UserToPreparers.FirstOrDefault(up => up.UserId == userId && up.Year == year);
+
+                if(user != null && user.FirstModified == null)
+                {
+                    user.FirstModified = DateTime.Now;
+
+                    db.SaveChanges();
+                }
+                return Json(new { status = 0 });
+            }
+        }
+
+        public JsonResult SetInternationalLayovers(string userId, int year, bool isChecked)
+        {
+            using (var db = new WorktripEntities())
+            {
+                var miscTaxInfo = db.UserMiscTaxInfoes.FirstOrDefault(umt => umt.UserId == userId && umt.TaxYear == year);
+
+                //If no record exists, create new in the db
+                if (miscTaxInfo == null)
+                {
+                    miscTaxInfo = new UserMiscTaxInfo
+                    {
+                        UserId = userId,
+                        TaxYear = year,
+                        InternationalLayovers = isChecked
+                    };
+
+                    db.UserMiscTaxInfoes.Add(miscTaxInfo);
+                }
+                else
+                {
+                    miscTaxInfo.InternationalLayovers = isChecked;
+                }
+
+                db.SaveChanges();
+                return Json(new { status = 0 });
+            }
+
+            return Json(new { status = -1 });
+        }
+
         public JsonResult UpdateTaxColorCode(string userId, string color, int year)
         {
             using (var db = new WorktripEntities())

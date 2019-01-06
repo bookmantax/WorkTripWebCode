@@ -15,34 +15,30 @@ namespace Worktrip.Models
 using System;
     using System.Collections.Generic;
     
-public partial class UserToPreparer
+public partial class PreparerNote
 {
 
     public int Id { get; set; }
 
-    public string UserId { get; set; }
-
     public string PreparerId { get; set; }
 
-    public int StatusId { get; set; }
+    public string UserId { get; set; }
 
-    public int Year { get; set; }
+    public string Notes { get; set; }
 
-    public Nullable<decimal> Fee { get; set; }
+    public System.DateTime Date { get; set; }
 
-    public Nullable<decimal> PaidAmount { get; set; }
+    public int TaxYear { get; set; }
 
-    public string ColorCode { get; set; }
-
-    public Nullable<System.DateTime> FirstModified { get; set; }
+    public string NoteCreatorId { get; set; }
 
 
-
-    public virtual Status Status { get; set; }
 
     public virtual User User { get; set; }
 
     public virtual User User1 { get; set; }
+
+    public virtual User User2 { get; set; }
 
 }
 

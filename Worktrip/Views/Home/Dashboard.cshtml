@@ -93,6 +93,8 @@
                     $editButton.removeClass("hidden");
                 }
             });
+            
+
 
             //populate airline and base airport based on tax year
             var taxYear = $("#taxYear").text();
@@ -182,6 +184,24 @@
             });
 
             if (userInfo.TaxInfos[taxYear]) {
+
+                $("#international-layover-checkbox").prop('checked', userInfo.TaxInfos[taxYear].InternationalLayovers);
+                //show or hide navigation Items based on InternationalLayovers boolean
+                if (userInfo.TaxInfos[taxYear].InternationalLayovers) {
+                    $("#wSch-status-item").prop("style").display = "inherit";
+                    $("#wSch-arrow").prop("style").display = "inherit";
+                    $("#tQuest-status-item").prop("style").display = "inherit";
+                    $("#tQuest-arrow").prop("style").display = "inherit";
+                    $("#wSch-side-item").prop("style").display = "inherit";
+                    $("#tQuest-side-item").prop("style").display = "inherit";
+                } else {
+                    $("#wSch-status-item").prop("style").display = "none";
+                    $("#wSch-arrow").prop("style").display = "none";
+                    $("#tQuest-status-item").prop("style").display = "none";
+                    $("#tQuest-arrow").prop("style").display = "none";
+                    $("#wSch-side-item").prop("style").display = "none";
+                    $("#tQuest-side-item").prop("style").display = "none";
+                }
 
                 var existingState = userInfo.TaxInfos[taxYear].DLState;
 
@@ -459,8 +479,19 @@
 
             refreshDashboardViews(prefetchedUserTaxInfo, $("#taxYear").text());
 
-            $("#Personal-info>div>.input-group>input").change(function(){
-                $("#save-personal-info-btn").trigger("click", {"passive":true});
+            $("#Personal-info>div>.input-group>input").change(function () {
+                //check for valid zip code format
+                if ($(this).attr("name") == "Zip") {
+                    var isValidZip = /(^\d{5}$)|(^\d{5}-\d{4}$)/.test(this.value);
+                    if (isValidZip == true) {
+                        $("#save-personal-info-btn").trigger("click", { "passive": true });
+                        $("#zip-error-label").prop("style").display = "none";
+                    } else {
+                        $("#zip-error-label").prop("style").display = "initial";
+                    }
+                } else {
+                    $("#save-personal-info-btn").trigger("click", { "passive": true });
+                }
             });
 
             $("#Personal-info>div>.input-group>select").on("select2:select", function(){
@@ -518,6 +549,11 @@
                     }
                 });
 
+                var state = $("#state-select").val();
+                if (state != null || state === null) {
+                    updateInfo["State"] = state;
+                }
+
                 var taxYear = $("#taxYear").text();
 
                 if (taxYear && ($("#airline-select").val() || $("#base-airport-select").val())) {
@@ -544,6 +580,54 @@
                             $(window).scrollTop(0);
                             $('div.left-menu-collapse').slideDown(500);
                         }
+                    }
+                });
+            });
+
+            $("#international-layover-checkbox").change(function (e, obj) {
+                if (!obj || !obj.passive) {
+                    $("#loading-cover").show();
+                }
+
+                var taxYear = $("#taxYear").text();
+
+                var updateInfo = { TaxInfos: {} };
+
+                updateInfo.TaxInfos[taxYear] = { Year: taxYear };
+
+                $("#tax-question input").each(function () {
+                    var fieldProperty = $(this).attr("name");
+
+                    var val = $(this).val();
+
+                    if (fieldProperty == "DaysInTrainingOrAway") {
+                        //parse in case we get inputs like '10 days'
+                        val = parseInt(val);
+                    } else {
+                        val = parseFloat(val.replace(/[^0-9\.]/g, ""));
+                    }
+
+                    if (isNaN(val)) {
+                        val = "";
+                    }
+
+                    //Filter out undefined fields
+                    updateInfo.TaxInfos[taxYear][fieldProperty] = val;
+                });
+
+                updateInfo.TaxInfos[taxYear]['DLState'] = $("#dl-select").val();
+                updateInfo.TaxInfos[taxYear]['InternationalLayovers'] = e.target.checked;
+
+                $.ajax({
+                    url: "/Home/UpdateTaxInfo",
+                    type: "POST",
+                    data: updateInfo,
+                    success: function (userInfo) {
+                        refreshTaxInfo(userInfo, $("#taxYear").text());
+                    },
+                    complete: function () {
+                        $("#loading-cover").fadeOut(500);
+
                     }
                 });
             });
@@ -1321,7 +1405,7 @@
                         </div>
                     </li>
 
-                    <li class="dashboard-button-container">
+                    <li id="wSch-side-item" class="dashboard-button-container">
                         <div class="btn-container">
                             <div class="dashboard-icon-cotainer">
                                 <img src="~/Content/img/Layover.png" />
@@ -1331,7 +1415,7 @@
                             </div>
                         </div>
                     </li>
-                    <li class="dashboard-button-container">
+                    <li id="tQuest-side-item" class="dashboard-button-container">
                         <div class="btn-container">
                             <div class="dashboard-icon-cotainer">
                                 <img src="~/Content/img/Question.png" />
@@ -1429,7 +1513,7 @@
 
                         <li class="top-menu-steps-items"><div class="arrow-right"></div></li>
 
-                        <li class="top-menu-steps-items">
+                        <li id="wSch-status-item" class="top-menu-steps-items">
                             <div id="wSch-status" class="guide-container">
                                 <div class="guide-message">
                                     <i class="fa" aria-hidden="true"></i>
@@ -1438,8 +1522,9 @@
                             </div>
 
                         </li>
-                        <li class="top-menu-steps-items"><div class="arrow-right"></div></li>
-                        <li class="top-menu-steps-items">
+                        <li id="wSch-arrow" class="top-menu-steps-items"><div class="arrow-right"></div></li>
+
+                        <li id="tQuest-status-item" class="top-menu-steps-items">
                             <div id="tQuest-status" class="guide-container">
                                 <div class="guide-message">
                                     <i class="fa" aria-hidden="true"></i>
@@ -1447,7 +1532,7 @@
                                 </div>
                             </div>
                         </li>
-                        <li class="top-menu-steps-items"><div class="arrow-right"></div></li>
+                        <li id="tQuest-arrow" class="top-menu-steps-items"><div class="arrow-right"></div></li>
                         <li class="top-menu-steps-items">
                             <div id="mPay-status" class="guide-container">
                                 <div class="guide-message">
@@ -1714,15 +1799,7 @@
                     </div>
                 </div>
             </div>
-            <!--   <ul class="nav nav-tabs">
-               <li class="active"><a href="#">Answer Questions</a></li>
-               <li><a href="#">Ask a Question</a></li>
-           </ul>
-    -->
-            <!--       <h2> <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#qSection1">Ask a Question</button></h2>
-     -->
-            <!-- <div id="qSection1" class="collapse"> -->
-            <!-- </div> -->
+            
 
             <div class="lets-talk-container2 row formContainer" id="make-payment" style="display: none;">
                 <div id="payment-div" style="text-align:center" class="col-xs-12">
@@ -1802,12 +1879,12 @@
                 <br />
                 <div style="z-index:100" class="col-lg-offset-3 col-md-offset-3 col-lg-6 col-md-6 col-sm-12 col-xs-12">
                     @*<div class="field input-group">
-                    <span>First Name</span><br>
-                    <input type="text" class=" col-10 form-control" name="firstName"><button class="btn btn-primary">
-                        <span class="glyphicon glyphicon-edit"></span>
+            <span>First Name</span><br>
+            <input type="text" class=" col-10 form-control" name="firstName"><button class="btn btn-primary">
+                <span class="glyphicon glyphicon-edit"></span>
 
-                    </button>
-                </div>*@
+            </button>
+        </div>*@
                     <span class="input-title">First Name</span><br>
                     <div class="field input-group">
                         <input placeholder="First Name" type="text" class="form-control" name="FirstName" id="firstname-input">
@@ -1860,6 +1937,10 @@
                             </button>
                         </span>
                     </div>
+                    <div class="field input-group">
+                        <span style="font-weight:bold;">Were Over 50% Of Your Layovers International?&emsp;&emsp;&emsp;Yes</span>
+                        <span><input id="international-layover-checkbox" style="display:inline-block; vertical-align:middle" type="checkbox" /></span>
+                    </div>
                     <span class="input-title">Email</span><br>
                     <div class="field input-group">
                         <input type="text" class="form-control" name="Email" id="email-input">
@@ -1887,7 +1968,8 @@
                             </button>
                         </span>
                     </div>
-                    <span class="input-title">Current Tax Address: Street, City, State Zip</span><br>
+                    <span class="input-title">Current Tax Address:</span><br />
+                    <span class="input-title">Street:</span><br />
                     <div class="field input-group">
                         <input type="text" class="form-control" name="Address" id="address-input">
                         <span class="input-group-btn">
@@ -1895,6 +1977,87 @@
                                 <span class="glyphicon glyphicon-edit"></span>
                             </button>
                         </span>
+                    </div>
+                    <span class="input-title">City:</span><br />
+                    <div class="field input-group">
+                        <input type="text" class="form-control" name="City" id="city-input">
+                        <span class="input-group-btn">
+                            <button class="btn btn-primary input-edit">
+                                <span class="glyphicon glyphicon-edit"></span>
+                            </button>
+                        </span>
+                    </div>
+                    <span class="input-title">State:</span><br />
+                    <div class="field input-group">
+                        <select class="form-control" name="State" id="state-select">
+                            <option value="" disabled selected>Select your state</option>
+                            <option value="AL">Alabama</option>
+                            <option value="AK">Alaska</option>
+                            <option value="AZ">Arizona</option>
+                            <option value="AR">Arkansas</option>
+                            <option value="CA">California</option>
+                            <option value="CO">Colorado</option>
+                            <option value="CT">Connecticut</option>
+                            <option value="DE">Delaware</option>
+                            <option value="DC">District Of Columbia</option>
+                            <option value="FL">Florida</option>
+                            <option value="GA">Georgia</option>
+                            <option value="HI">Hawaii</option>
+                            <option value="ID">Idaho</option>
+                            <option value="IL">Illinois</option>
+                            <option value="IN">Indiana</option>
+                            <option value="IA">Iowa</option>
+                            <option value="KS">Kansas</option>
+                            <option value="KY">Kentucky</option>
+                            <option value="LA">Louisiana</option>
+                            <option value="ME">Maine</option>
+                            <option value="MD">Maryland</option>
+                            <option value="MA">Massachusetts</option>
+                            <option value="MI">Michigan</option>
+                            <option value="MN">Minnesota</option>
+                            <option value="MS">Mississippi</option>
+                            <option value="MO">Missouri</option>
+                            <option value="MT">Montana</option>
+                            <option value="NE">Nebraska</option>
+                            <option value="NV">Nevada</option>
+                            <option value="NH">New Hampshire</option>
+                            <option value="NJ">New Jersey</option>
+                            <option value="NM">New Mexico</option>
+                            <option value="NY">New York</option>
+                            <option value="NC">North Carolina</option>
+                            <option value="ND">North Dakota</option>
+                            <option value="OH">Ohio</option>
+                            <option value="OK">Oklahoma</option>
+                            <option value="OR">Oregon</option>
+                            <option value="PA">Pennsylvania</option>
+                            <option value="RI">Rhode Island</option>
+                            <option value="SC">South Carolina</option>
+                            <option value="SD">South Dakota</option>
+                            <option value="TN">Tennessee</option>
+                            <option value="TX">Texas</option>
+                            <option value="UT">Utah</option>
+                            <option value="VT">Vermont</option>
+                            <option value="VA">Virginia</option>
+                            <option value="WA">Washington</option>
+                            <option value="WV">West Virginia</option>
+                            <option value="WI">Wisconsin</option>
+                            <option value="WY">Wyoming</option>
+                        </select>
+                        <span class="input-group-btn">
+                            <button class="btn btn-primary input-edit">
+                                <span class="glyphicon glyphicon-edit"></span>
+                            </button>
+                        </span>
+                    </div>
+                    <span class="input-title">Zip:</span><br />
+                    <div class="field input-group">
+                        <input type="text" class="form-control" name="Zip" id="zip-input">
+                        <span class="input-group-btn">
+                            <button class="btn btn-primary input-edit">
+                                <span class="glyphicon glyphicon-edit"></span>
+                            </button>
+                        </span>
+                        <label id="zip-error-label" style="color:red; display:none">Please Enter A Valid Zip Code</label>
                     </div>
                     <div class="panel panel-warning">
                         <div class="panel-heading">

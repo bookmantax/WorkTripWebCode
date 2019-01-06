@@ -127,6 +127,8 @@ namespace Worktrip.Models
         public string PreparerId { get; set; }
         public string Preparer { get; set; }
         public string Color { get; set; }
+        public DateTime? FirstModified { get; set; }
+        public string FirstModifiedString { get; set; }
 
         public static List<UserSmallInfo> GetMyUsers(string preparerId, bool getActive, int year)
         {
@@ -151,10 +153,13 @@ namespace Worktrip.Models
                     DOB = u.DOB.HasValue ? u.DOB.Value.ToString("yyyy-MM-dd") : null,
                     Status = links[u.Id].Status.Name,
                     Price = links[u.Id].Fee,
-                    Color = links[u.Id].ColorCode
+                    Color = links[u.Id].ColorCode,
+                    FirstModifiedString = links[u.Id].FirstModified.HasValue ? DateTime.SpecifyKind(links[u.Id].FirstModified.Value, DateTimeKind.Utc).ToString("s") + "Z" : ""
                 });
 
-                return customers.ToList();
+                var customersSorted = customers.OrderByDescending(c => c.Color).ThenBy(b => b.FirstModified);
+
+                return customersSorted.ToList();
             }
         }
 
@@ -181,23 +186,37 @@ namespace Worktrip.Models
                         Status = sj.Name == null ? "Waiting for Assignment to Preparer" : sj.Name,
                         Price = upj.Fee,
                         PreparerId = upj.PreparerId,
-                        Color = upj.ColorCode
+                        Color = upj.ColorCode,
+                        FirstModified = upj.FirstModified.HasValue ? upj.FirstModified : null,
+                        FirstModifiedString = ""
                     };
+
+                var resultsList = results.ToList();
+
+                foreach( var r in resultsList)
+                {
+                    if(r.FirstModified != null)
+                    {
+                        r.FirstModifiedString = DateTime.SpecifyKind(r.FirstModified.Value, DateTimeKind.Utc).ToString("s") + "Z";
+                    }
+                }
+
+                var resultsSorted = resultsList.OrderByDescending(c => c.Color).ThenByDescending(b => b.FirstModified.HasValue).ThenBy(a => a.FirstModified);
 
 
                 if (!String.IsNullOrEmpty(query))
                 {
-                    results = results.Where(u => 
+                    resultsSorted = resultsSorted.Where(u => 
                         ((      u.FirstName + " " + u.LastName).StartsWith(query) ||
                                 u.LastName.StartsWith(query) ||
                                 (u.FirstName + " " + u.MiddleName + " " + u.LastName).StartsWith(query) ||
                                 u.Email.StartsWith(query)
-                        ));
+                        )).OrderBy(l => l.LastName);
                 }
 
                 var preparers = Preparers.GetPreparers().ToDictionary(p => p.Id, p => p);
 
-                var retrieved = results.ToList();
+                var retrieved = resultsSorted.ToList();
 
                 foreach (var r in retrieved)
                 {

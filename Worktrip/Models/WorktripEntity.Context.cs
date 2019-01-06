@@ -50,17 +50,19 @@ public partial class WorktripEntities : DbContext
 
     public virtual DbSet<UserQuestion> UserQuestions { get; set; }
 
-    public virtual DbSet<UserMiscTaxInfo> UserMiscTaxInfoes { get; set; }
-
-    public virtual DbSet<UserToPreparer> UserToPreparers { get; set; }
-
-    public virtual DbSet<User> Users { get; set; }
-
     public virtual DbSet<UserActionsLog> UserActionsLogs { get; set; }
 
     public virtual DbSet<PerDiemRate> PerDiemRates { get; set; }
 
     public virtual DbSet<UserTaxReturn> UserTaxReturns { get; set; }
+
+    public virtual DbSet<UserMiscTaxInfo> UserMiscTaxInfoes { get; set; }
+
+    public virtual DbSet<PreparerNote> PreparerNotes { get; set; }
+
+    public virtual DbSet<User> Users { get; set; }
+
+    public virtual DbSet<UserToPreparer> UserToPreparers { get; set; }
 
 }
 

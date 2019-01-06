@@ -35,6 +35,18 @@
     <Property Name="AirportCode" Type="nvarchar" MaxLength="50" Nullable="false" />
     <Property Name="Rate" Type="float" Nullable="false" />
   </EntityType>
+  <EntityType Name="PreparerNotes">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="PreparerId" Type="nvarchar" MaxLength="128" Nullable="false" />
+    <Property Name="UserId" Type="nvarchar" MaxLength="128" Nullable="false" />
+    <Property Name="Notes" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Date" Type="datetime" Nullable="false" />
+    <Property Name="TaxYear" Type="int" Nullable="false" />
+    <Property Name="NoteCreatorId" Type="nvarchar" MaxLength="128" Nullable="false" />
+  </EntityType>
   <EntityType Name="Role">
     <Key>
       <PropertyRef Name="Id" />
@@ -75,6 +87,9 @@
     <Property Name="BankName" Type="nvarchar" MaxLength="300" />
     <Property Name="RoutingNumber" Type="nvarchar" MaxLength="12" />
     <Property Name="BankAccountNumber" Type="nvarchar" MaxLength="20" />
+    <Property Name="City" Type="nvarchar" MaxLength="256" />
+    <Property Name="State" Type="nvarchar" MaxLength="256" />
+    <Property Name="Zip" Type="nvarchar" MaxLength="5" />
   </EntityType>
   <EntityType Name="UserActionsLog">
     <Key>
@@ -140,6 +155,7 @@
     <Property Name="TaxReturnDocument" Type="nvarchar(max)" />
     <Property Name="LayoversPerDiem" Type="float" />
     <Property Name="DLState" Type="varchar" MaxLength="50" />
+    <Property Name="InternationalLayovers" Type="bit" />
   </EntityType>
   <EntityType Name="UserPerDiem">
     <Key>
@@ -193,6 +209,7 @@
     <Property Name="Fee" Type="money" />
     <Property Name="PaidAmount" Type="money" />
     <Property Name="ColorCode" Type="nvarchar" MaxLength="10" />
+    <Property Name="FirstModified" Type="datetime" />
   </EntityType>
   <Association Name="FK_ActionUser_User">
     <End Role="User" Type="Self.User" Multiplicity="0..1" />
@@ -282,6 +299,42 @@
         <PropertyRef Name="Id" />
       </Principal>
       <Dependent Role="UserMiscTaxInfo">
+        <PropertyRef Name="UserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_PreparerNotes_TaxPreparer">
+    <End Role="User" Type="Self.User" Multiplicity="1" />
+    <End Role="PreparerNotes" Type="Self.PreparerNotes" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="PreparerNotes">
+        <PropertyRef Name="PreparerId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_PreparerNotes_TaxPreparer_NoteCreator">
+    <End Role="User" Type="Self.User" Multiplicity="1" />
+    <End Role="PreparerNotes" Type="Self.PreparerNotes" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="PreparerNotes">
+        <PropertyRef Name="NoteCreatorId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_PreparerNotes_User">
+    <End Role="User" Type="Self.User" Multiplicity="1" />
+    <End Role="PreparerNotes" Type="Self.PreparerNotes" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="PreparerNotes">
         <PropertyRef Name="UserId" />
       </Dependent>
     </ReferentialConstraint>
@@ -386,6 +439,7 @@
     <EntitySet Name="Airline" EntityType="Self.Airline" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Airport" EntityType="Self.Airport" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="PerDiemRates" EntityType="Self.PerDiemRates" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="PreparerNotes" EntityType="Self.PreparerNotes" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Role" EntityType="Self.Role" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Status" EntityType="Self.Status" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="User" EntityType="Self.User" Schema="dbo" store:Type="Tables" />
@@ -426,6 +480,18 @@
     <AssociationSet Name="FK_MiscTax_User" Association="Self.FK_MiscTax_User">
       <End Role="User" EntitySet="User" />
       <End Role="UserMiscTaxInfo" EntitySet="UserMiscTaxInfo" />
+    </AssociationSet>
+    <AssociationSet Name="FK_PreparerNotes_TaxPreparer" Association="Self.FK_PreparerNotes_TaxPreparer">
+      <End Role="User" EntitySet="User" />
+      <End Role="PreparerNotes" EntitySet="PreparerNotes" />
+    </AssociationSet>
+    <AssociationSet Name="FK_PreparerNotes_TaxPreparer_NoteCreator" Association="Self.FK_PreparerNotes_TaxPreparer_NoteCreator">
+      <End Role="User" EntitySet="User" />
+      <End Role="PreparerNotes" EntitySet="PreparerNotes" />
+    </AssociationSet>
+    <AssociationSet Name="FK_PreparerNotes_User" Association="Self.FK_PreparerNotes_User">
+      <End Role="User" EntitySet="User" />
+      <End Role="PreparerNotes" EntitySet="PreparerNotes" />
     </AssociationSet>
     <AssociationSet Name="FK_UserMiscDocs_User" Association="Self.FK_UserMiscDocs_User">
       <End Role="User" EntitySet="User" />

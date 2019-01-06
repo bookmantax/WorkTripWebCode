@@ -62,6 +62,8 @@ public partial class UserMiscTaxInfo
 
     public string DLState { get; set; }
 
+    public Nullable<bool> InternationalLayovers { get; set; }
+
 
 
     public virtual Airport Airport { get; set; }

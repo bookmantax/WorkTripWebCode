@@ -245,6 +245,9 @@
     <Compile Include="Models\PerDiemRate.cs">
       <DependentUpon>WorktripEntity.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\PreparerNote.cs">
+      <DependentUpon>WorktripEntity.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\Role.cs">
       <DependentUpon>WorktripEntity.tt</DependentUpon>
     </Compile>

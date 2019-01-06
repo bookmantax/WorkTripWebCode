@@ -100,9 +100,40 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+    <EntitySetMapping Name="UserActionsLogs">
+      <EntityTypeMapping TypeName="WorktripModel.UserActionsLog">
+        <MappingFragment StoreEntitySet="UserActionsLog">
+          <ScalarProperty Name="Timestamp" ColumnName="Timestamp" />
+          <ScalarProperty Name="Action" ColumnName="Action" />
+          <ScalarProperty Name="UserId" ColumnName="UserId" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="PerDiemRates">
+      <EntityTypeMapping TypeName="WorktripModel.PerDiemRate">
+        <MappingFragment StoreEntitySet="PerDiemRates">
+          <ScalarProperty Name="Rate" ColumnName="Rate" />
+          <ScalarProperty Name="AirportCode" ColumnName="AirportCode" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="UserTaxReturns">
+      <EntityTypeMapping TypeName="WorktripModel.UserTaxReturn">
+        <MappingFragment StoreEntitySet="UserTaxReturn">
+          <ScalarProperty Name="Year" ColumnName="Year" />
+          <ScalarProperty Name="UserId" ColumnName="UserId" />
+          <ScalarProperty Name="Date" ColumnName="Date" />
+          <ScalarProperty Name="Path" ColumnName="Path" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
     <EntitySetMapping Name="UserMiscTaxInfoes">
       <EntityTypeMapping TypeName="WorktripModel.UserMiscTaxInfo">
         <MappingFragment StoreEntitySet="UserMiscTaxInfo">
+          <ScalarProperty Name="InternationalLayovers" ColumnName="InternationalLayovers" />
           <ScalarProperty Name="DLState" ColumnName="DLState" />
           <ScalarProperty Name="LayoversPerDiem" ColumnName="LayoversPerDiem" />
           <ScalarProperty Name="TaxReturnDocument" ColumnName="TaxReturnDocument" />
@@ -128,16 +159,15 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <EntitySetMapping Name="UserToPreparers">
-      <EntityTypeMapping TypeName="WorktripModel.UserToPreparer">
-        <MappingFragment StoreEntitySet="UserToPreparer">
-          <ScalarProperty Name="ColorCode" ColumnName="ColorCode" />
-          <ScalarProperty Name="PaidAmount" ColumnName="PaidAmount" />
-          <ScalarProperty Name="Fee" ColumnName="Fee" />
-          <ScalarProperty Name="Year" ColumnName="Year" />
-          <ScalarProperty Name="StatusId" ColumnName="StatusId" />
-          <ScalarProperty Name="PreparerId" ColumnName="PreparerId" />
+    <EntitySetMapping Name="PreparerNotes">
+      <EntityTypeMapping TypeName="WorktripModel.PreparerNote">
+        <MappingFragment StoreEntitySet="PreparerNotes">
+          <ScalarProperty Name="NoteCreatorId" ColumnName="NoteCreatorId" />
+          <ScalarProperty Name="TaxYear" ColumnName="TaxYear" />
+          <ScalarProperty Name="Date" ColumnName="Date" />
+          <ScalarProperty Name="Notes" ColumnName="Notes" />
           <ScalarProperty Name="UserId" ColumnName="UserId" />
+          <ScalarProperty Name="PreparerId" ColumnName="PreparerId" />
           <ScalarProperty Name="Id" ColumnName="Id" />
         </MappingFragment>
       </EntityTypeMapping>
@@ -145,6 +175,9 @@
     <EntitySetMapping Name="Users">
       <EntityTypeMapping TypeName="WorktripModel.User">
         <MappingFragment StoreEntitySet="User">
+          <ScalarProperty Name="Zip" ColumnName="Zip" />
+          <ScalarProperty Name="State" ColumnName="State" />
+          <ScalarProperty Name="City" ColumnName="City" />
           <ScalarProperty Name="BankAccountNumber" ColumnName="BankAccountNumber" />
           <ScalarProperty Name="RoutingNumber" ColumnName="RoutingNumber" />
           <ScalarProperty Name="BankName" ColumnName="BankName" />
@@ -178,32 +211,17 @@
         <ScalarProperty Name="Id" ColumnName="RoleId" />
       </EndProperty>
     </AssociationSetMapping>
-    <EntitySetMapping Name="UserActionsLogs">
-      <EntityTypeMapping TypeName="WorktripModel.UserActionsLog">
-        <MappingFragment StoreEntitySet="UserActionsLog">
-          <ScalarProperty Name="Timestamp" ColumnName="Timestamp" />
-          <ScalarProperty Name="Action" ColumnName="Action" />
-          <ScalarProperty Name="UserId" ColumnName="UserId" />
-          <ScalarProperty Name="Id" ColumnName="Id" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
-    <EntitySetMapping Name="PerDiemRates">
-      <EntityTypeMapping TypeName="WorktripModel.PerDiemRate">
-        <MappingFragment StoreEntitySet="PerDiemRates">
-          <ScalarProperty Name="Rate" ColumnName="Rate" />
-          <ScalarProperty Name="AirportCode" ColumnName="AirportCode" />
-          <ScalarProperty Name="Id" ColumnName="Id" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
-    <EntitySetMapping Name="UserTaxReturns">
-      <EntityTypeMapping TypeName="WorktripModel.UserTaxReturn">
-        <MappingFragment StoreEntitySet="UserTaxReturn">
+    <EntitySetMapping Name="UserToPreparers">
+      <EntityTypeMapping TypeName="WorktripModel.UserToPreparer">
+        <MappingFragment StoreEntitySet="UserToPreparer">
+          <ScalarProperty Name="FirstModified" ColumnName="FirstModified" />
+          <ScalarProperty Name="ColorCode" ColumnName="ColorCode" />
+          <ScalarProperty Name="PaidAmount" ColumnName="PaidAmount" />
+          <ScalarProperty Name="Fee" ColumnName="Fee" />
           <ScalarProperty Name="Year" ColumnName="Year" />
+          <ScalarProperty Name="StatusId" ColumnName="StatusId" />
+          <ScalarProperty Name="PreparerId" ColumnName="PreparerId" />
           <ScalarProperty Name="UserId" ColumnName="UserId" />
-          <ScalarProperty Name="Date" ColumnName="Date" />
-          <ScalarProperty Name="Path" ColumnName="Path" />
           <ScalarProperty Name="Id" ColumnName="Id" />
         </MappingFragment>
       </EntityTypeMapping>

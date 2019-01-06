@@ -18,6 +18,9 @@ namespace Worktrip.Models
         public string PhoneNumber { get; set; }
         public string DOB { get; set; }
         public string Address { get; set; }
+        public string City { get; set; }
+        public string State { get; set; }
+        public string Zip { get; set; }
         public bool FirstTimeLogin { get; set; }
         public string BankName { get; set; }
         public string RoutingNumber { get; set; }
@@ -44,6 +47,9 @@ namespace Worktrip.Models
                 userInfo.PhoneNumber = this.PhoneNumber;
                 userInfo.DOB = String.IsNullOrEmpty(this.DOB) ? (DateTime?)null : DateTime.Parse(this.DOB);
                 userInfo.Address = this.Address;
+                userInfo.City = this.City;
+                userInfo.State = this.State;
+                userInfo.Zip = this.Zip;
                 userInfo.BankName = this.BankName;
                 userInfo.BankAccountNumber = this.BankAccountNumber;
                 userInfo.RoutingNumber = this.RoutingNumber;
@@ -99,6 +105,7 @@ namespace Worktrip.Models
                         taxInfo.TransactionalFees = u.TransactionalFees;
                         taxInfo.UnreimbursedExpenses = u.UnreimbursedExpenses;
                         taxInfo.DLState = u.DLState;
+                        taxInfo.InternationalLayovers = u.InternationalLayovers;
                     }
                 }
 
@@ -257,6 +264,9 @@ namespace Worktrip.Models
                     PhoneNumber = userInfo.PhoneNumber,
                     DOB = userInfo.DOB.HasValue ? userInfo.DOB.Value.ToString("yyyy-MM-dd") : null,
                     Address = userInfo.Address,
+                    City = userInfo.City,
+                    State = userInfo.State,
+                    Zip = userInfo.Zip,
                     FirstTimeLogin = userInfo.FirstTimeLogin,
                     BankName = userInfo.BankName,
                     BankAccountNumber = userInfo.BankAccountNumber,
@@ -281,7 +291,8 @@ namespace Worktrip.Models
                         PreparerNotes = d.PreparerNotes,
                         TaxReturn = d.TaxReturn,
                         PerDiemsTotal = d.LayoversPerDiem,
-                        DLState = d.DLState
+                        DLState = d.DLState,
+                        InternationalLayovers = d.InternationalLayovers
                     }).ToDictionary(t => t.Year.ToString(), t => t),
                     Questions = db.UserQuestions.Include(q => q.User1).Where(q => q.AskedBy == userId).Select(q => new Question
                     {
@@ -314,6 +325,9 @@ namespace Worktrip.Models
                 }
 
                 return !String.IsNullOrEmpty(userInfo.Address) &&
+                        !String.IsNullOrEmpty(userInfo.State) &&
+                        !String.IsNullOrEmpty(userInfo.City) &&
+                        !String.IsNullOrEmpty(userInfo.Zip) &&
                        !String.IsNullOrEmpty(userInfo.Email) &&
                        !String.IsNullOrEmpty(userInfo.FirstName) &&
                        !String.IsNullOrEmpty(userInfo.LastName) &&
@@ -394,6 +408,7 @@ namespace Worktrip.Models
         public decimal? TaxReturn { get; set; }
         public double? PerDiemsTotal { get; set; }
         public string DLState { get; set; }
+        public Boolean? InternationalLayovers { get; set; }
 }
 
     public class Question

@@ -22,6 +22,14 @@ public partial class User
     public User()
     {
 
+        this.PreparerNotes = new HashSet<PreparerNote>();
+
+        this.PreparerNotes1 = new HashSet<PreparerNote>();
+
+        this.PreparerNotes2 = new HashSet<PreparerNote>();
+
+        this.UserActionsLogs = new HashSet<UserActionsLog>();
+
         this.UserClaims = new HashSet<UserClaim>();
 
         this.UserLogins = new HashSet<UserLogin>();
@@ -36,15 +44,13 @@ public partial class User
 
         this.UserQuestions1 = new HashSet<UserQuestion>();
 
-        this.UserToPreparers = new HashSet<UserToPreparer>();
-
-        this.UserToPreparers1 = new HashSet<UserToPreparer>();
+        this.UserTaxReturns = new HashSet<UserTaxReturn>();
 
         this.Roles = new HashSet<Role>();
 
-        this.UserActionsLogs = new HashSet<UserActionsLog>();
+        this.UserToPreparers = new HashSet<UserToPreparer>();
 
-        this.UserTaxReturns = new HashSet<UserTaxReturn>();
+        this.UserToPreparers1 = new HashSet<UserToPreparer>();
 
     }
 
@@ -93,7 +99,29 @@ public partial class User
 
     public string BankAccountNumber { get; set; }
 
+    public string City { get; set; }
 
+    public string State { get; set; }
+
+    public string Zip { get; set; }
+
+
+
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+
+    public virtual ICollection<PreparerNote> PreparerNotes { get; set; }
+
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+
+    public virtual ICollection<PreparerNote> PreparerNotes1 { get; set; }
+
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+
+    public virtual ICollection<PreparerNote> PreparerNotes2 { get; set; }
+
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+
+    public virtual ICollection<UserActionsLog> UserActionsLogs { get; set; }
 
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
 
@@ -125,11 +153,7 @@ public partial class User
 
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
 
-    public virtual ICollection<UserToPreparer> UserToPreparers { get; set; }
-
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-
-    public virtual ICollection<UserToPreparer> UserToPreparers1 { get; set; }
+    public virtual ICollection<UserTaxReturn> UserTaxReturns { get; set; }
 
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
 
@@ -137,11 +161,11 @@ public partial class User
 
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
 
-    public virtual ICollection<UserActionsLog> UserActionsLogs { get; set; }
+    public virtual ICollection<UserToPreparer> UserToPreparers { get; set; }
 
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
 
-    public virtual ICollection<UserTaxReturn> UserTaxReturns { get; set; }
+    public virtual ICollection<UserToPreparer> UserToPreparers1 { get; set; }
 
 }
 

@@ -52,6 +52,23 @@
             "Finished": "Finished"
         }
 
+        var colorMapping = {
+            '#fc58a1': 'New Sign Up',
+            '#58c4fc': 'Existing Sign Up',
+            '#58fc60': 'Scheduled Call',
+            '#fc9816': 'Tax WIP',
+            '#f6fc58': 'Final Call Schd',
+            '#0d9ebd': 'Complete',
+            '#fc302b': 'State Unfinished',
+            '#FFFFFF': 'White',
+            '#F6F792': 'Yellow',
+            '#EB7F00': 'Orange',
+            '#2980B9': 'Blue',
+            '#00A388': 'Green',
+            '#E74C3C': 'Red',
+            '#FF8598': 'Pink'
+        };
+
         var curTaxYear = parseInt("@DateTime.Now.AddYears(-1).ToString("yyyy")");
 
         var preparers = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(ViewBag.Preparers));
@@ -62,6 +79,20 @@
                 this._makeDraggableBase();
                 this.uiDialog.draggable("option", "containment", false);
             };
+        }
+
+        function toggleInternational(element) {
+            var year = $("#select-tax-year").val();
+            var checked = $('#internationalLayoverCheckbox').checked;
+
+            $.ajax({
+                url: "/Admin/GetMyUsersActive",
+                type: "POST",
+                data: {
+                    year: year,
+                    isChecked: checked
+                }
+            });
         }
 
         function refreshUnboundUsers(year){
@@ -128,14 +159,23 @@
                     for (var d in response) {
                         var user = response[d];
 
+                        var signupDate = user.FirstModifiedString ? new Date(user.FirstModifiedString) : "";
+                        var dateStr = "";
+
+                        if (signupDate) {
+                            dateStr = signupDate.toLocaleString();
+                        }
+
                         var $tr = $(String.format(
-                            "<tr class='user-detail'><td style='background-color:{0}'></td><td>{1}</td><td>{2}</td><td>{3}</td><td>{4}</td><td>{5}</td></tr>",
+                            "<tr class='user-detail'><td style='background-color:{0};color:white'>{1}<td>{2}</td><td>{3}</td><td>{4}</td><td>{5}</td><td>{6}</td></td><td>{7}</td></tr>",
                             user.Color,
+                            colorMapping[user.Color] || '',
                             user.FirstName,
                             user.LastName,
                             user.PhoneNumber,
                             user.Email,
-                            statusDict[user.Status]
+                            statusDict[user.Status] || user.Status,
+                            dateStr
                         ));
 
                         $tr.data("filing-data", {userId: user.Id, status: user.Status, price: user.Price, color:user.Color})
@@ -158,15 +198,23 @@
 
                     for (var d in response) {
                         var user = response[d];
+                        var signupDate = user.FirstModifiedString ? new Date(user.FirstModifiedString) : "";
+                        var dateStr = "";
+
+                        if (signupDate) {
+                            dateStr = signupDate.toLocaleString();
+                        }
 
                         var $tr = $(String.format(
-                            "<tr class='user-detail'><td style='background-color:{0}'></td><td>{1}</td><td>{2}</td><td>{3}</td><td>{4}</td><td>{5}</td></tr>",
+                            "<tr class='user-detail'><td style='background-color:{0};color:white'>{1}<td>{2}</td><td>{3}</td><td>{4}</td><td>{5}</td><td>{6}</td></td><td>{7}</td></tr>",
                             user.Color,
+                            colorMapping[user.Color] || '',
                             user.FirstName,
                             user.LastName,
                             user.PhoneNumber,
                             user.Email,
-                            statusDict[user.Status]
+                            statusDict[user.Status] || user.Status,
+                            dateStr
                         ));
 
                         $tr.data("filing-data", {userId: user.Id, status: user.Status, price: user.Price, color:user.Color})
@@ -196,16 +244,24 @@
 
                     for (var d in response) {
                         var user = response[d];
+                        var signupDate = user.FirstModifiedString ? new Date(user.FirstModifiedString) : "";
+                        var dateStr = "";
+
+                        if (signupDate) {
+                            dateStr = signupDate.toLocaleString();
+                        }
 
                         var $tr = $(String.format(
-                            "<tr class='user-detail'><td style='background-color:{0}'><td>{1}</td><td>{2}</td><td>{3}</td><td>{4}</td><td>{5}</td></td><td>{6}</td></tr>",
+                            "<tr class='user-detail'><td style='background-color:{0};color:white'>{1}<td>{2}</td><td>{3}</td><td>{4}</td><td>{5}</td><td>{6}</td></td><td>{7}</td><td>{8}</td></tr>",
                             user.Color,
+                            colorMapping[user.Color] || '',
                             user.FirstName,
                             user.LastName,
                             user.PhoneNumber,
                             user.Email,
                             user.Preparer || "Unassigned",
-                            statusDict[user.Status] || user.Status
+                            statusDict[user.Status] || user.Status,
+                            dateStr
                         ));
 
                         $tr.data("filing-data", {userId: user.Id, status: user.Status, price: user.Price, color:user.Color})
@@ -475,6 +531,21 @@
 
         var currentUserInfo;
 
+        function setFirstDateModified($modal, userInfo, taxYear, filingData) {
+
+            $.ajax({
+                url: "/Admin/SetFirstModified",
+                type: "POST",
+                data: {
+                    userId: userInfo.Id,
+                    year: curTaxYear
+                },
+                success: function () {
+                }
+            });
+
+        }
+
         function populateUserModal($modal, userInfo, taxYear, filingData) {
             userInfo.TaxInfos[taxYear] = userInfo.TaxInfos[taxYear] || {};
 
@@ -488,6 +559,9 @@
             $(".modal-email", $modal).text(userInfo.Email);
             $(".modal-dob", $modal).text(userInfo.DOB || "");
             $(".modal-address", $modal).text(userInfo.Address || "");
+            $(".modal-city", $modal).text(userInfo.City || "");
+            $(".modal-state", $modal).text(userInfo.State || "");
+            $(".modal-zip", $modal).text(userInfo.Zip || "");
             $(".modal-airline", $modal).text(userInfo.TaxInfos[taxYear].Airline || "");
             $(".modal-airport", $modal).text(userInfo.TaxInfos[taxYear].BaseAirportCode || "");
 
@@ -499,6 +573,12 @@
                 (userInfo.TaxInfos[taxYear].DriverLayoverTips || 0)));
 
             $(".modal-dl-state", $modal).text(userInfo.TaxInfos[taxYear].DLState || "");
+
+            if (userInfo.TaxInfos[taxYear].InternationalLayovers != null) {
+                $(".modal-internationalLayovers", $modal).prop('checked', userInfo.TaxInfos[taxYear].InternationalLayovers);
+            } else {
+                $(".modal-internationalLayovers", $modal).prop('checked', false);
+            }
 
             $(".modal-travel-expenses", $modal).text(formatExpense(
                 (userInfo.TaxInfos[taxYear].TotalSpentLayoverTransportation || 0)));
@@ -574,6 +654,24 @@
                     }
                 });
             });
+
+            $(".modal-internationalLayovers", $modal).off().click(function () {
+                $("#loading-cover").show();
+
+                $.ajax({
+                    url: "/Admin/SetInternationalLayovers",
+                    type: "POST",
+                    data: {
+                        userId: userInfo.Id,
+                        year: curTaxYear,
+                        isChecked: this.checked
+                    },
+                    success: function () {
+                        $("#loading-cover").fadeOut(500);
+                    }
+                });
+            });
+
 
             $(".modal-notes>textarea", $modal)
                 .off()
@@ -674,6 +772,7 @@
                 },
                 success: function(userInfo){
                     populateUserModal($userModal, userInfo, $('.tax-year', $userModal).text(), filingData);
+                    setFirstDateModified($userModal, userInfo, $('.tax-year', $userModal).text(), filingData);
 
                     $userModal
                         .dialog({
@@ -1183,7 +1282,16 @@
 
                     <span style="margin-left:5px;margin-right: 5px;">Color:</span>
                     <select class="form-control color-select" style="color: #FFF;width:150px">
-                        <option value="#FFFFFF" style="background: #FFFFFF;color:black" selected>White</option>
+                        <option value="#fc58a1" style="background: #fc58a1;color:white">New Sign Up</option>
+                        <option value="#58c4fc" style="background: #58c4fc;color:white">Existing Sign Up</option>
+                        <option value="#58fc60" style="background: #58fc60;color:white">Scheduled Call</option>
+                        <option value="#fc9816" style="background: #fc9816;color:white">Tax WIP</option>
+                        <option value="#f6fc58" style="background: #f6fc58;color:white">Final Call Schd</option>
+                        <option value="#0d9ebd" style="background: #0d9ebd;color:white">Complete</option>
+                        <option value="#fc302b" style="background: #fc302b;color:white">State Unfinished</option>
+
+
+                        <option value="#FFFFFF" style="background: #FFFFFF;color:black" selected="">White</option>
                         <option value="#F6F792" style="background: #F6F792;color:#F6F792">Yellow</option>
 
                         <option value="#EB7F00" style="background: #EB7F00;color:#EB7F00;">Orange</option>
@@ -1194,7 +1302,6 @@
                         <option value="#E74C3C" style="background: #E74C3C;color:#E74C3C">Red</option>
 
                         <option value="#FF8598" style="background: #FF8598;color:#FF8598">Pink</option>
-
                     </select>
 
                     <span style="margin-left:5px; margin-right: 5px;">Status:</span>
@@ -1228,6 +1335,18 @@
                         <div class="panel panel-primary">
                             <div class="panel-heading">Address</div>
                             <div class="modal-address panel-body"></div>
+                        </div>
+                        <div class="panel panel-primary">
+                            <div class="panel-heading">City</div>
+                            <div class="modal-city panel-body"></div>
+                        </div>
+                        <div class="panel panel-primary">
+                            <div class="panel-heading">State</div>
+                            <div class="modal-state panel-body"></div>
+                        </div>
+                        <div class="panel panel-primary">
+                            <div class="panel-heading">Zip</div>
+                            <div class="modal-zip panel-body"></div>
                         </div>
                         <div class="panel panel-primary">
                             <div class="panel-heading">Airline</div>
@@ -1273,7 +1392,6 @@
                                 </div>
                             </div>
                         </div>
-
                     </div>
                     <div class="modal-tax-questions">
                         <div class="panel panel-warning">
@@ -1292,6 +1410,9 @@
                             <div class="panel-heading">Training Days</div>
                             <div class="modal-training-days panel-body"></div>
                         </div>
+                        <div class="panel panel-warning">
+                            <div class="panel-heading">Open User Tabs <input id="internationalLayoverCheckbox" class="modal-internationalLayovers panel-body" type="checkbox"/></div>
+                        </div>
                         <div class="panel panel-danger">
                             <div class="panel-heading detail-questions-heading" role="tab">
                                 <h4 class="panel-title">
@@ -1300,7 +1421,6 @@
                                     </a>
                                 </h4>
                             </div>
-
                             <div class="detail-questions-panel panel-collapse collapse" role="tabpanel" aria-labelledby="detail-questions-heading">
                                 <div class="panel-body">
                                     <div class="panel panel-warning">
@@ -1345,7 +1465,6 @@
                         <div class="panel panel-info">
                             <div class="panel-heading">User Questions</div>
                             <div class="modal-user-questions panel-body">
-
                             </div>
                         </div>
                     </div>
@@ -1509,6 +1628,7 @@
                                         <th>Phone Number</th>
                                         <th>Email</th>
                                         <th>Status</th>
+                                        <th>Date Modified</th>
                                     </tr>
                                 </thead>
                                 <tbody></tbody>
@@ -1534,6 +1654,7 @@
                                             <th>Phone Number</th>
                                             <th>Email</th>
                                             <th>Status</th>
+                                            <th>Date Modified</th>
                                         </tr>
                                     </thead>
                                     <tbody></tbody>
@@ -1556,6 +1677,7 @@
                             <th>Email</th>
                             <th>Assigned To</th>
                             <th>Status</th>
+                            <th>Date Modified</th>
                         </tr>
                     </thead>
                     <tbody></tbody>

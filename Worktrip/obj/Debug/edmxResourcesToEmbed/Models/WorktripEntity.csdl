@@ -69,17 +69,32 @@
     <EntitySet Name="Airports" EntityType="WorktripModel.Airport" />
     <EntitySet Name="UserMiscDocs" EntityType="WorktripModel.UserMiscDoc" />
     <EntitySet Name="UserQuestions" EntityType="WorktripModel.UserQuestion" />
+    <EntitySet Name="UserActionsLogs" EntityType="WorktripModel.UserActionsLog" />
+    <EntitySet Name="PerDiemRates" EntityType="WorktripModel.PerDiemRate" />
+    <EntitySet Name="UserTaxReturns" EntityType="WorktripModel.UserTaxReturn" />
     <EntitySet Name="UserMiscTaxInfoes" EntityType="WorktripModel.UserMiscTaxInfo" />
     <AssociationSet Name="FK_MiscTax_Airport" Association="WorktripModel.FK_MiscTax_Airport">
       <End Role="Airport" EntitySet="Airports" />
       <End Role="UserMiscTaxInfo" EntitySet="UserMiscTaxInfoes" />
     </AssociationSet>
-    <EntitySet Name="UserToPreparers" EntityType="WorktripModel.UserToPreparer" />
-    <AssociationSet Name="FK_UserToPreparer_Status" Association="WorktripModel.FK_UserToPreparer_Status">
-      <End Role="Status" EntitySet="Status" />
-      <End Role="UserToPreparer" EntitySet="UserToPreparers" />
-    </AssociationSet>
+    <EntitySet Name="PreparerNotes" EntityType="WorktripModel.PreparerNote" />
     <EntitySet Name="Users" EntityType="WorktripModel.User" />
+    <AssociationSet Name="FK_PreparerNotes_TaxPreparer" Association="WorktripModel.FK_PreparerNotes_TaxPreparer">
+      <End Role="User" EntitySet="Users" />
+      <End Role="PreparerNote" EntitySet="PreparerNotes" />
+    </AssociationSet>
+    <AssociationSet Name="FK_PreparerNotes_TaxPreparer_NoteCreator" Association="WorktripModel.FK_PreparerNotes_TaxPreparer_NoteCreator">
+      <End Role="User" EntitySet="Users" />
+      <End Role="PreparerNote" EntitySet="PreparerNotes" />
+    </AssociationSet>
+    <AssociationSet Name="FK_PreparerNotes_User" Association="WorktripModel.FK_PreparerNotes_User">
+      <End Role="User" EntitySet="Users" />
+      <End Role="PreparerNote" EntitySet="PreparerNotes" />
+    </AssociationSet>
+    <AssociationSet Name="FK_ActionUser_User" Association="WorktripModel.FK_ActionUser_User">
+      <End Role="User" EntitySet="Users" />
+      <End Role="UserActionsLog" EntitySet="UserActionsLogs" />
+    </AssociationSet>
     <AssociationSet Name="FK_dbo_UserClaim_dbo_User_UserId" Association="WorktripModel.FK_dbo_UserClaim_dbo_User_UserId">
       <End Role="User" EntitySet="Users" />
       <End Role="UserClaim" EntitySet="UserClaims" />
@@ -108,6 +123,19 @@
       <End Role="User" EntitySet="Users" />
       <End Role="UserQuestion" EntitySet="UserQuestions" />
     </AssociationSet>
+    <AssociationSet Name="FK_UserTaxReturn" Association="WorktripModel.FK_UserTaxReturn">
+      <End Role="User" EntitySet="Users" />
+      <End Role="UserTaxReturn" EntitySet="UserTaxReturns" />
+    </AssociationSet>
+    <AssociationSet Name="UserRole" Association="WorktripModel.UserRole">
+      <End Role="Role" EntitySet="Roles" />
+      <End Role="User" EntitySet="Users" />
+    </AssociationSet>
+    <EntitySet Name="UserToPreparers" EntityType="WorktripModel.UserToPreparer" />
+    <AssociationSet Name="FK_UserToPreparer_Status" Association="WorktripModel.FK_UserToPreparer_Status">
+      <End Role="Status" EntitySet="Status" />
+      <End Role="UserToPreparer" EntitySet="UserToPreparers" />
+    </AssociationSet>
     <AssociationSet Name="FK_UserToPreparer_TaxPreparer" Association="WorktripModel.FK_UserToPreparer_TaxPreparer">
       <End Role="User" EntitySet="Users" />
       <End Role="UserToPreparer" EntitySet="UserToPreparers" />
@@ -115,21 +143,6 @@
     <AssociationSet Name="FK_UserToPreparer_User" Association="WorktripModel.FK_UserToPreparer_User">
       <End Role="User" EntitySet="Users" />
       <End Role="UserToPreparer" EntitySet="UserToPreparers" />
-    </AssociationSet>
-    <AssociationSet Name="UserRole" Association="WorktripModel.UserRole">
-      <End Role="Role" EntitySet="Roles" />
-      <End Role="User" EntitySet="Users" />
-    </AssociationSet>
-    <EntitySet Name="UserActionsLogs" EntityType="WorktripModel.UserActionsLog" />
-    <AssociationSet Name="FK_ActionUser_User" Association="WorktripModel.FK_ActionUser_User">
-      <End Role="User" EntitySet="Users" />
-      <End Role="UserActionsLog" EntitySet="UserActionsLogs" />
-    </AssociationSet>
-    <EntitySet Name="PerDiemRates" EntityType="WorktripModel.PerDiemRate" />
-    <EntitySet Name="UserTaxReturns" EntityType="WorktripModel.UserTaxReturn" />
-    <AssociationSet Name="FK_UserTaxReturn" Association="WorktripModel.FK_UserTaxReturn">
-      <End Role="User" EntitySet="Users" />
-      <End Role="UserTaxReturn" EntitySet="UserTaxReturns" />
     </AssociationSet>
   </EntityContainer>
   <EntityType Name="Airport">
@@ -174,6 +187,35 @@
     <NavigationProperty Name="User" Relationship="WorktripModel.FK_UserQuestion_User" FromRole="UserQuestion" ToRole="User" />
     <NavigationProperty Name="User1" Relationship="WorktripModel.FK_UserQuestion_UserAnswerer" FromRole="UserQuestion" ToRole="User" />
   </EntityType>
+  <EntityType Name="UserActionsLog">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="UserId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+    <Property Name="Action" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="Timestamp" Type="DateTime" Precision="3" />
+    <NavigationProperty Name="User" Relationship="WorktripModel.FK_ActionUser_User" FromRole="UserActionsLog" ToRole="User" />
+  </EntityType>
+  <EntityType Name="PerDiemRate">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="AirportCode" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Rate" Type="Double" Nullable="false" />
+  </EntityType>
+  <EntityType Name="UserTaxReturn">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Path" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="Date" Type="DateTime" Nullable="false" Precision="0" />
+    <Property Name="UserId" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+    <Property Name="Year" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="User" Relationship="WorktripModel.FK_UserTaxReturn" FromRole="UserTaxReturn" ToRole="User" />
+  </EntityType>
   <EntityType Name="UserMiscTaxInfo">
     <Key>
       <PropertyRef Name="Id" />
@@ -198,10 +240,11 @@
     <Property Name="PreparerNotes" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
     <Property Name="TaxReturn" Type="Decimal" Precision="19" Scale="4" />
     <Property Name="TaxReturnDocument" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-    <NavigationProperty Name="Airport" Relationship="WorktripModel.FK_MiscTax_Airport" FromRole="UserMiscTaxInfo" ToRole="Airport" />
-    <NavigationProperty Name="User" Relationship="WorktripModel.FK_MiscTax_User" FromRole="UserMiscTaxInfo" ToRole="User" />
     <Property Name="LayoversPerDiem" Type="Double" />
     <Property Name="DLState" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="InternationalLayovers" Type="Boolean" />
+    <NavigationProperty Name="Airport" Relationship="WorktripModel.FK_MiscTax_Airport" FromRole="UserMiscTaxInfo" ToRole="Airport" />
+    <NavigationProperty Name="User" Relationship="WorktripModel.FK_MiscTax_User" FromRole="UserMiscTaxInfo" ToRole="User" />
   </EntityType>
   <Association Name="FK_MiscTax_Airport">
     <End Type="WorktripModel.Airport" Role="Airport" Multiplicity="0..1" />
@@ -215,34 +258,21 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <EntityType Name="UserToPreparer">
+  <EntityType Name="PreparerNote">
     <Key>
       <PropertyRef Name="Id" />
     </Key>
     <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="PreparerId" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
     <Property Name="UserId" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
-    <Property Name="PreparerId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
-    <Property Name="StatusId" Type="Int32" Nullable="false" />
-    <Property Name="Year" Type="Int32" Nullable="false" />
-    <Property Name="Fee" Type="Decimal" Precision="19" Scale="4" />
-    <Property Name="PaidAmount" Type="Decimal" Precision="19" Scale="4" />
-    <Property Name="ColorCode" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
-    <NavigationProperty Name="Status" Relationship="WorktripModel.FK_UserToPreparer_Status" FromRole="UserToPreparer" ToRole="Status" />
-    <NavigationProperty Name="User" Relationship="WorktripModel.FK_UserToPreparer_TaxPreparer" FromRole="UserToPreparer" ToRole="User" />
-    <NavigationProperty Name="User1" Relationship="WorktripModel.FK_UserToPreparer_User" FromRole="UserToPreparer" ToRole="User" />
+    <Property Name="Notes" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="Date" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="TaxYear" Type="Int32" Nullable="false" />
+    <Property Name="NoteCreatorId" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="User" Relationship="WorktripModel.FK_PreparerNotes_TaxPreparer" FromRole="PreparerNote" ToRole="User" />
+    <NavigationProperty Name="User1" Relationship="WorktripModel.FK_PreparerNotes_TaxPreparer_NoteCreator" FromRole="PreparerNote" ToRole="User" />
+    <NavigationProperty Name="User2" Relationship="WorktripModel.FK_PreparerNotes_User" FromRole="PreparerNote" ToRole="User" />
   </EntityType>
-  <Association Name="FK_UserToPreparer_Status">
-    <End Type="WorktripModel.Status" Role="Status" Multiplicity="1" />
-    <End Type="WorktripModel.UserToPreparer" Role="UserToPreparer" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="Status">
-        <PropertyRef Name="Id" />
-      </Principal>
-      <Dependent Role="UserToPreparer">
-        <PropertyRef Name="StatusId" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
   <EntityType Name="User">
     <Key>
       <PropertyRef Name="Id" />
@@ -269,6 +299,13 @@
     <Property Name="BankName" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
     <Property Name="RoutingNumber" Type="String" MaxLength="12" FixedLength="false" Unicode="true" />
     <Property Name="BankAccountNumber" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="City" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+    <Property Name="State" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+    <Property Name="Zip" Type="String" MaxLength="5" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="PreparerNotes" Relationship="WorktripModel.FK_PreparerNotes_TaxPreparer" FromRole="User" ToRole="PreparerNote" />
+    <NavigationProperty Name="PreparerNotes1" Relationship="WorktripModel.FK_PreparerNotes_TaxPreparer_NoteCreator" FromRole="User" ToRole="PreparerNote" />
+    <NavigationProperty Name="PreparerNotes2" Relationship="WorktripModel.FK_PreparerNotes_User" FromRole="User" ToRole="PreparerNote" />
+    <NavigationProperty Name="UserActionsLogs" Relationship="WorktripModel.FK_ActionUser_User" FromRole="User" ToRole="UserActionsLog" />
     <NavigationProperty Name="UserClaims" Relationship="WorktripModel.FK_dbo_UserClaim_dbo_User_UserId" FromRole="User" ToRole="UserClaim" />
     <NavigationProperty Name="UserLogins" Relationship="WorktripModel.FK_dbo_UserLogin_dbo_User_UserId" FromRole="User" ToRole="UserLogin" />
     <NavigationProperty Name="UserMiscTaxInfoes" Relationship="WorktripModel.FK_MiscTax_User" FromRole="User" ToRole="UserMiscTaxInfo" />
@@ -276,12 +313,59 @@
     <NavigationProperty Name="UserPerDiems" Relationship="WorktripModel.FK_UserPerDiem_User" FromRole="User" ToRole="UserPerDiem" />
     <NavigationProperty Name="UserQuestions" Relationship="WorktripModel.FK_UserQuestion_User" FromRole="User" ToRole="UserQuestion" />
     <NavigationProperty Name="UserQuestions1" Relationship="WorktripModel.FK_UserQuestion_UserAnswerer" FromRole="User" ToRole="UserQuestion" />
+    <NavigationProperty Name="UserTaxReturns" Relationship="WorktripModel.FK_UserTaxReturn" FromRole="User" ToRole="UserTaxReturn" />
+    <NavigationProperty Name="Roles" Relationship="WorktripModel.UserRole" FromRole="User" ToRole="Role" />
     <NavigationProperty Name="UserToPreparers" Relationship="WorktripModel.FK_UserToPreparer_TaxPreparer" FromRole="User" ToRole="UserToPreparer" />
     <NavigationProperty Name="UserToPreparers1" Relationship="WorktripModel.FK_UserToPreparer_User" FromRole="User" ToRole="UserToPreparer" />
-    <NavigationProperty Name="Roles" Relationship="WorktripModel.UserRole" FromRole="User" ToRole="Role" />
-    <NavigationProperty Name="UserActionsLogs" Relationship="WorktripModel.FK_ActionUser_User" FromRole="User" ToRole="UserActionsLog" />
-    <NavigationProperty Name="UserTaxReturns" Relationship="WorktripModel.FK_UserTaxReturn" FromRole="User" ToRole="UserTaxReturn" />
   </EntityType>
+  <Association Name="FK_PreparerNotes_TaxPreparer">
+    <End Type="WorktripModel.User" Role="User" Multiplicity="1" />
+    <End Type="WorktripModel.PreparerNote" Role="PreparerNote" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="PreparerNote">
+        <PropertyRef Name="PreparerId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_PreparerNotes_TaxPreparer_NoteCreator">
+    <End Type="WorktripModel.User" Role="User" Multiplicity="1" />
+    <End Type="WorktripModel.PreparerNote" Role="PreparerNote" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="PreparerNote">
+        <PropertyRef Name="NoteCreatorId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_PreparerNotes_User">
+    <End Type="WorktripModel.User" Role="User" Multiplicity="1" />
+    <End Type="WorktripModel.PreparerNote" Role="PreparerNote" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="PreparerNote">
+        <PropertyRef Name="UserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_ActionUser_User">
+    <End Type="WorktripModel.User" Role="User" Multiplicity="0..1" />
+    <End Type="WorktripModel.UserActionsLog" Role="UserActionsLog" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="UserActionsLog">
+        <PropertyRef Name="UserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="FK_dbo_UserClaim_dbo_User_UserId">
     <End Type="WorktripModel.User" Role="User" Multiplicity="1">
       <OnDelete Action="Cascade" />
@@ -370,6 +454,51 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="FK_UserTaxReturn">
+    <End Type="WorktripModel.User" Role="User" Multiplicity="1" />
+    <End Type="WorktripModel.UserTaxReturn" Role="UserTaxReturn" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="UserTaxReturn">
+        <PropertyRef Name="UserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="UserRole">
+    <End Type="WorktripModel.Role" Role="Role" Multiplicity="*" />
+    <End Type="WorktripModel.User" Role="User" Multiplicity="*" />
+  </Association>
+  <EntityType Name="UserToPreparer">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="UserId" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+    <Property Name="PreparerId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+    <Property Name="StatusId" Type="Int32" Nullable="false" />
+    <Property Name="Year" Type="Int32" Nullable="false" />
+    <Property Name="Fee" Type="Decimal" Precision="19" Scale="4" />
+    <Property Name="PaidAmount" Type="Decimal" Precision="19" Scale="4" />
+    <Property Name="ColorCode" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Name="FirstModified" Type="DateTime" Precision="3" />
+    <NavigationProperty Name="Status" Relationship="WorktripModel.FK_UserToPreparer_Status" FromRole="UserToPreparer" ToRole="Status" />
+    <NavigationProperty Name="User" Relationship="WorktripModel.FK_UserToPreparer_TaxPreparer" FromRole="UserToPreparer" ToRole="User" />
+    <NavigationProperty Name="User1" Relationship="WorktripModel.FK_UserToPreparer_User" FromRole="UserToPreparer" ToRole="User" />
+  </EntityType>
+  <Association Name="FK_UserToPreparer_Status">
+    <End Type="WorktripModel.Status" Role="Status" Multiplicity="1" />
+    <End Type="WorktripModel.UserToPreparer" Role="UserToPreparer" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Status">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="UserToPreparer">
+        <PropertyRef Name="StatusId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="FK_UserToPreparer_TaxPreparer">
     <End Type="WorktripModel.User" Role="User" Multiplicity="0..1" />
     <End Type="WorktripModel.UserToPreparer" Role="UserToPreparer" Multiplicity="*" />
@@ -390,63 +519,6 @@
         <PropertyRef Name="Id" />
       </Principal>
       <Dependent Role="UserToPreparer">
-        <PropertyRef Name="UserId" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="UserRole">
-    <End Type="WorktripModel.Role" Role="Role" Multiplicity="*" />
-    <End Type="WorktripModel.User" Role="User" Multiplicity="*" />
-  </Association>
-  <EntityType Name="UserActionsLog">
-    <Key>
-      <PropertyRef Name="Id" />
-    </Key>
-    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="UserId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
-    <Property Name="Action" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-    <Property Name="Timestamp" Type="DateTime" Precision="3" />
-    <NavigationProperty Name="User" Relationship="WorktripModel.FK_ActionUser_User" FromRole="UserActionsLog" ToRole="User" />
-  </EntityType>
-  <Association Name="FK_ActionUser_User">
-    <End Type="WorktripModel.User" Role="User" Multiplicity="0..1" />
-    <End Type="WorktripModel.UserActionsLog" Role="UserActionsLog" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="User">
-        <PropertyRef Name="Id" />
-      </Principal>
-      <Dependent Role="UserActionsLog">
-        <PropertyRef Name="UserId" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <EntityType Name="PerDiemRate">
-    <Key>
-      <PropertyRef Name="Id" />
-    </Key>
-    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="AirportCode" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-    <Property Name="Rate" Type="Double" Nullable="false" />
-  </EntityType>
-  <EntityType Name="UserTaxReturn">
-    <Key>
-      <PropertyRef Name="Id" />
-    </Key>
-    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="Path" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
-    <Property Name="Date" Type="DateTime" Nullable="false" Precision="0" />
-    <Property Name="UserId" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
-    <Property Name="Year" Type="Int32" Nullable="false" />
-    <NavigationProperty Name="User" Relationship="WorktripModel.FK_UserTaxReturn" FromRole="UserTaxReturn" ToRole="User" />
-  </EntityType>
-  <Association Name="FK_UserTaxReturn">
-    <End Type="WorktripModel.User" Role="User" Multiplicity="1" />
-    <End Type="WorktripModel.UserTaxReturn" Role="UserTaxReturn" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="User">
-        <PropertyRef Name="Id" />
-      </Principal>
-      <Dependent Role="UserTaxReturn">
         <PropertyRef Name="UserId" />
       </Dependent>
     </ReferentialConstraint>
