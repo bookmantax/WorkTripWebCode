@@ -36,6 +36,8 @@ public partial class UserToPreparer
 
     public Nullable<System.DateTime> FirstModified { get; set; }
 
+    public string PromoCode { get; set; }
+
 
 
     public virtual Status Status { get; set; }

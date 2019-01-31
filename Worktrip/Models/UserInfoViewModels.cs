@@ -117,14 +117,14 @@ namespace Worktrip.Models
             return true;
         }
 
-        public static UserMiscTaxInfo GetOrCreateUserInfo(WorktripEntities dbContext, string userId, int taxYear, bool notifyAdminsIfExistingCustomer = true)
+        public static UserMiscTaxInfo GetOrCreateUserInfo(WorktripEntities dbContext, string userId, int taxYear, string promoCode = null, bool notifyAdminsIfExistingCustomer = true)
         {
             var allTaxInfos = dbContext.UserMiscTaxInfoes.Where(i => i.UserId == userId).ToList();
 
             var taxInfo = allTaxInfos.FirstOrDefault(i => i.TaxYear == taxYear);
             bool createdNewTaxInfo = false;
 
-            if (taxInfo == null)
+            if (taxInfo == null)//New Signup
             {
                 taxInfo = new UserMiscTaxInfo()
                 {
@@ -140,6 +140,7 @@ namespace Worktrip.Models
             }
 
             var upLink = dbContext.UserToPreparers.FirstOrDefault(up => up.Year == taxYear && up.UserId == userId);
+            var newUser = dbContext.UserToPreparers.FirstOrDefault(up => up.UserId == userId);
 
             if (upLink == null)
             {
@@ -147,8 +148,17 @@ namespace Worktrip.Models
                 {
                     UserId = userId,
                     StatusId = 1,
-                    Year = taxYear
+                    Year = taxYear,
+                    PromoCode = promoCode 
                 };
+                if(newUser == null)
+                {
+                    upLink.ColorCode = "#fc58a1"; //New Signup
+                }
+                else
+                {
+                    upLink.ColorCode = "#58c4fc"; //Existing Signup
+                }
 
                 dbContext.UserToPreparers.Add(upLink);
                 dbContext.SaveChanges();
@@ -307,7 +317,8 @@ namespace Worktrip.Models
                         Year = up.Year,
                         PreparerId = up.PreparerId,
                         Status = up.Status.Name,
-                        Fee = up.Fee
+                        Fee = up.Fee,
+                        PromoCode = up.PromoCode
                     }).ToDictionary(up => up.Year.ToString(), up => up)
                 };
             }
@@ -385,6 +396,7 @@ namespace Worktrip.Models
         public string PreparerId { get; set; }
         public string Status { get; set; }
         public decimal? Fee { get; set; }
+        public string PromoCode { get; set; }
     }
 
     public class TaxInfo

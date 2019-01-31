@@ -1,0 +1,1698 @@
+﻿@using Worktrip.Models;
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Admin Page</title>
+    @Styles.Render("~/Content/bootstrap.min.css")
+    @Styles.Render("~/Content/font-awesome.min.css")
+
+    @Styles.Render("~/Content/css/select2.min.css")
+    @Styles.Render("~/Content/css/select2-bootstrap.min.css")
+    @Styles.Render("~/Content/csspin-boxes.css")
+    @Styles.Render("~/Content/bootstrap-table.min.css")
+
+    @Styles.Render("~/Content/themes/base/all.css")
+    @Styles.Render("~/Content/magnific-popup.css")
+
+    @Styles.Render("~/Content/admin.css")
+    @Styles.Render("~/Content/dropzonecss")
+
+
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/Scripts/select2.js")
+    @Scripts.Render("~/Scripts/bootstrap-table.min.js")
+    @Scripts.Render("~/Scripts/bootstrap-table-en-US.min.js")
+
+    @Scripts.Render("~/Scripts/jquery-ui-1.11.0.min.js")
+    @Scripts.Render("~/Scripts/jquery.dialogextend.min.js")
+
+    @Scripts.Render("~/Scripts/jquery.magnific-popup.min.js")
+    @Scripts.Render("~/Scripts/jscolor.min.js")
+
+    @Scripts.Render("~/Scripts/utils.js")
+    @Scripts.Render("~/bundles/dropzone")
+
+
+    <script>
+        var statusDict = {
+            "Started" : "Account created",
+            "WaitingCustomerInfo" : "Waiting on Tax Info",
+            "WaitingCustomerDocs" : "Waiting on Tax Images",
+            "WaitingPreparer": "Ready for final review",
+            "WaitingCustomerPayment": "Ready for Customer Payment",
+            "Finished": "Finished"
+        }
+
+        var colorMapping = {
+            '#fc58a1': 'New Sign Up',
+            '#58c4fc': 'Existing Sign Up',
+            '#58fc60': 'Scheduled Call',
+            '#fc9816': 'Tax WIP',
+            '#f6fc58': 'Final Call Schd',
+            '#0d9ebd': 'Complete',
+            '#fc302b': 'State Unfinished',
+            '#FFFFFF': 'White',
+            '#F6F792': 'Yellow',
+            '#EB7F00': 'Orange',
+            '#2980B9': 'Blue',
+            '#00A388': 'Green',
+            '#E74C3C': 'Red',
+            '#FF8598': 'Pink'
+        };
+
+        var curTaxYear = parseInt("@DateTime.Now.AddYears(-1).ToString("yyyy")");
+
+        var preparers = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(ViewBag.Preparers));
+
+        if (!$.ui.dialog.prototype._makeDraggableBase) {
+            $.ui.dialog.prototype._makeDraggableBase = $.ui.dialog.prototype._makeDraggable;
+            $.ui.dialog.prototype._makeDraggable = function() {
+                this._makeDraggableBase();
+                this.uiDialog.draggable("option", "containment", false);
+            };
+        }
+
+        function toggleInternational(element) {
+            var year = $("#select-tax-year").val();
+            var checked = $('#internationalLayoverCheckbox').checked;
+
+            $.ajax({
+                url: "/Admin/GetMyUsersActive",
+                type: "POST",
+                data: {
+                    year: year,
+                    isChecked: checked
+                }
+            });
+        }
+
+        function refreshUnboundUsers(year){
+            $("#loading-cover").show();
+
+            $.ajax({
+                url: "/Admin/GetUnboundUsers",
+                type: "POST",
+                data: {
+                    year: year
+                },
+                success: function (response) {
+                    $("#loading-cover").fadeOut(500);
+
+                    var $tbody = $("#unbound-users-table").children("tbody");
+
+                    $tbody.empty();
+
+                    for (var d in response) {
+                        var user = response[d];
+
+                        var signupDate = user.SignUpTimeStr ? new Date(user.SignUpTimeStr) : "";
+                        var dateStr = "";
+
+                        if (signupDate)
+                        {
+                            dateStr = signupDate.toLocaleString();
+                        }
+
+                        var $tr = $(String.format(
+                            "<tr><td>{0}</td><td>{1}</td><td>{2}</td><td>{3}</td><td style='width:320px'>{4}</td></tr>",
+                            user.FirstName, user.LastName, user.PhoneNumber, dateStr,
+                            $("#preparer-select-html").text()
+                        ));
+
+                        $tr.appendTo($tbody);
+
+                        $(".preparer-select", $tr)
+                            .attr("data-user-id", user.Id)
+                            .select2({
+                                placeholder: "Select a Preparer",
+                                allowClear: true
+                            });
+                    }
+                }
+            });
+        }
+
+        function refreshMyUser(year) {
+            $("#loading-cover").show();
+
+            $.ajax({
+                url: "/Admin/GetMyUsersActive",
+                type: "POST",
+                data: {
+                    year: year
+                },
+                success: function (response) {
+
+                    var $tbody = $("#my-users-active-table").children("tbody");
+
+                    $tbody.empty();
+
+                    for (var d in response) {
+                        var user = response[d];
+
+                        var signupDate = user.FirstModifiedString ? new Date(user.FirstModifiedString) : "";
+                        var dateStr = "";
+
+                        if (signupDate) {
+                            dateStr = signupDate.toLocaleString();
+                        }
+
+                        var $tr = $(String.format(
+                            "<tr class='user-detail'><td style='background-color:{0};color:white'>{1}<td>{2}</td><td>{3}</td><td>{4}</td><td>{5}</td><td>{6}</td></td><td>{7}</td></tr>",
+                            user.Color,
+                            colorMapping[user.Color] || '',
+                            user.FirstName,
+                            user.LastName,
+                            user.PhoneNumber,
+                            user.Email,
+                            statusDict[user.Status] || user.Status,
+                            dateStr
+                        ));
+
+                        $tr.data("filing-data", {userId: user.Id, status: user.Status, price: user.Price, color:user.Color})
+                           .appendTo($tbody);
+                    }
+                }
+            });
+
+            $.ajax({
+                url: "/Admin/GetMyUsersFinished",
+                type: "POST",
+                data: {
+                    year: year
+                },
+                success: function (response) {
+
+                    var $tbody = $("#my-users-finished-table").children("tbody");
+
+                    $tbody.empty();
+
+                    for (var d in response) {
+                        var user = response[d];
+                        var signupDate = user.FirstModifiedString ? new Date(user.FirstModifiedString) : "";
+                        var dateStr = "";
+
+                        if (signupDate) {
+                            dateStr = signupDate.toLocaleString();
+                        }
+
+                        var $tr = $(String.format(
+                            "<tr class='user-detail'><td style='background-color:{0};color:white'>{1}<td>{2}</td><td>{3}</td><td>{4}</td><td>{5}</td><td>{6}</td></td><td>{7}</td></tr>",
+                            user.Color,
+                            colorMapping[user.Color] || '',
+                            user.FirstName,
+                            user.LastName,
+                            user.PhoneNumber,
+                            user.Email,
+                            statusDict[user.Status] || user.Status,
+                            dateStr
+                        ));
+
+                        $tr.data("filing-data", {userId: user.Id, status: user.Status, price: user.Price, color:user.Color})
+                           .appendTo($tbody);
+                    }
+
+                    $("#loading-cover").fadeOut(500);
+                }
+            });
+        }
+
+        function refreshAllUsers(query, year) {
+            //$("#loading-cover").show();
+
+            $.ajax({
+                url: "/Admin/GetAllUsers",
+                type: "POST",
+                data: {
+                    query: query,
+                    year: year
+                },
+                success: function (response) {
+
+                    var $tbody = $("#all-users-table").children("tbody");
+
+                    $tbody.empty();
+
+                    for (var d in response) {
+                        var user = response[d];
+                        var signupDate = user.FirstModifiedString ? new Date(user.FirstModifiedString) : "";
+                        var dateStr = "";
+
+                        if (signupDate) {
+                            dateStr = signupDate.toLocaleString();
+                        }
+
+                        var $tr = $(String.format(
+                            "<tr class='user-detail'><td style='background-color:{0};color:white'>{1}<td>{2}</td><td>{3}</td><td>{4}</td><td>{5}</td><td>{6}</td></td><td>{7}</td><td>{8}</td></tr>",
+                            user.Color,
+                            colorMapping[user.Color] || '',
+                            user.FirstName,
+                            user.LastName,
+                            user.PhoneNumber,
+                            user.Email,
+                            user.Preparer || "Unassigned",
+                            statusDict[user.Status] || user.Status,
+                            dateStr
+                        ));
+
+                        $tr.data("filing-data", {userId: user.Id, status: user.Status, price: user.Price, color:user.Color})
+                           .appendTo($tbody);
+                    }
+                }
+            });
+        }
+
+        function formatExpense(amount) {
+            if (amount == 0) {
+                return "";
+            } else {
+                return "$" + Math.round(amount * 100) / 100;
+            }
+        }
+
+        function dataURIToBlob(dataURI, callback) {
+
+            var binStr = atob(dataURI.split(',')[1]),
+              len = binStr.length,
+              arr = new Uint8Array(len),
+              mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0]
+
+            for (var i = 0; i < len; i++) {
+                arr[i] = binStr.charCodeAt(i);
+            }
+
+            return new Blob([arr], {
+                type: mimeString
+            });
+
+        }
+
+        function downloadDataURI(dataURI, filename) {
+
+            var blob = dataURIToBlob(dataURI);
+            var url = URL.createObjectURL(blob);
+            var blobAnchor = document.createElement('a');
+
+            blobAnchor.download = filename;
+            blobAnchor.href = url;
+            blobAnchor.style.display = "none;";
+
+            document.body.appendChild(blobAnchor);
+
+            blobAnchor.click();
+
+            requestAnimationFrame(function() {
+                URL.revokeObjectURL(url);
+                document.body.removeChild(blobAnchor);
+            });
+        }
+
+        function openDataURI(dataURI) {
+            var blob = dataURIToBlob(dataURI);
+            var url = URL.createObjectURL(blob);
+
+            window.open(url, '_blank');
+
+            requestAnimationFrame(function() {
+                URL.revokeObjectURL(url);
+            });
+        }
+
+        function magnificyImage($image) {
+            $image.wrap($("<a>", { href: $image.attr("src") }));
+
+            $image.parent().magnificPopup({
+                type: "image",
+                mainClass: "mfp-with-zoom",
+                zoom: {
+                    enabled: true,
+                    duration: 300,
+                    easing: "ease-in-out",
+                    opener: function (openerElement) {
+                        return openerElement.is("img") ? openerElement : openerElement.find("img");
+                    }
+                }
+            });
+
+            return $image.parent();
+        }
+
+        function constructMagnificGallery($container) {
+            $container.magnificPopup({
+                delegate: '.image-zoomable>a',
+                type: 'image',
+                closeOnContentClick: false,
+                closeBtnInside: false,
+                mainClass: 'mfp-with-zoom mfp-img-mobile',
+                image: {
+                    verticalFit: true,
+                    titleSrc: function(item) {
+                        return item.el.attr('title');
+                    }
+                },
+                gallery: {
+                    enabled: true
+                },
+                zoom: {
+                    enabled: true,
+                    duration: 300,
+                    opener: function(element) {
+                        return element.find('img');
+                    }
+                },
+                callbacks: {
+                    open: function(){
+                        if ($.magnificPopup.instance.wrap.find(".mfp-rotate").length > 0) {
+                            return;
+                        }
+
+                        var $rotateBtn = $("<button type='button' class='mfp-rotate mfp-prevent-close'><i class='fa fa-repeat mfp-prevent-close'></i></button>");
+
+                        $rotateBtn.click(function(){
+                            var $img =  $.magnificPopup.instance.content.find(".mfp-img");
+
+                            var existingRotate = $img.attr("data-rotate");
+
+                            if (existingRotate) {
+                                existingRotate = parseInt(existingRotate) + 90;
+                            } else {
+                                existingRotate = 90;
+                            }
+
+                            $img.css("transform" , "rotate(" + existingRotate + "deg)");
+                            $img.attr("data-rotate", existingRotate);
+                        });
+
+                        $.magnificPopup.instance.content.find(".mfp-img").click(function(e){
+                            e.preventDefault();
+                            e.stopPropagation();
+
+                            console.log(e);
+                            var clickX = e.pageX - $(this).position().left,
+                                clickY = e.pageY - $(this).position().top;
+
+                            var existingRotate = "";
+
+                            if ($(this).attr("data-rotate")) {
+                                existingRotate = "rotate(" + $(this).attr("data-rotate") + "deg) ";
+                            }
+
+                            if ($(this).attr("data-scale") == "2"){
+                                $(this).css("transform", existingRotate + "scale(1)");
+                                $(this).attr("data-scale", 1);
+                            } else {
+                                $(this).css("transform", "translate(10%, 60%) " + existingRotate + "scale(2)");
+                                $(this).attr("data-scale", 2);
+                            }
+
+                        });
+
+                        $.magnificPopup.instance.wrap.children(".mfp-container").append($rotateBtn);
+                        $.magnificPopup.instance.wrap.css("overflow-x", "auto");
+                    }
+                }
+
+            });
+        }
+
+        function populateUserFiles($modal, userId, taxYear) {
+            $(".modal-user-docs", $modal).empty();
+            $(".modal-user-csvs", $modal).empty();
+
+            $(".modal-docs-loading", $modal).removeClass("hidden");
+
+            function documentAjax(skip) {
+
+                $.ajax({
+                    url: "/Admin/GetUserDocuments",
+                    type: "POST",
+                    data: {
+                        userId: userId,
+                        taxYear: taxYear,
+                        amount: 2,
+                        skip: skip
+                    },
+                    success: function(response){
+                        if (response.status == 0 && response.files.length > 0) {
+
+                            //var $galleryContainer = $("<div class='gallery-container'/>").appendTo("body");
+
+                            for (var f in response.files) {
+
+                                var file = response.files[f];
+
+                                $thumbnail = $("<div class='tax-thumbnail'>");
+
+                                var $img =
+                                    $("<img/>", {
+                                        "class": "tax-thumbnail-image"
+                                    });
+
+                                if (file.Item2.startsWith("image/")) {
+                                    $img.attr("src", "data:image/png;base64," + file.Item3);
+
+                                    $thumbnail.addClass("image-zoomable");
+
+                                    var maxDim = 150;
+
+                                    var reduceRatio = Math.max($img[0].naturalHeight, $img[0].naturalWidth) / 150;
+
+                                    var imgWidth = $img[0].naturalWidth / reduceRatio;
+                                    var imgHeight = $img[0].naturalHeight / reduceRatio;
+
+                                    //fix exception with some browsers
+                                    imgWidth = 150;
+                                    imgHeight = "auto";
+
+                                    $img.css({
+                                        "height" : imgHeight,
+                                        "width": imgWidth
+                                    });
+
+                                    //$img = magnificyImage($img);
+
+                                    $img.wrap($("<a>", { href: $img.attr("src"), title: file.Item1, target: "_blank" }));
+
+                                    $img = $img.parent();
+
+                                }
+                                else if (file.Item2 == "application/pdf") {
+                                    $img
+                                        .addClass("no-preview")
+                                        .attr("src", "/Content/img/pdf-thumbnail.png");
+
+                                    $img.click(function(fileData){
+                                        return function () {
+                                            //downloadDataURI("data:application/pdf;base64," + fileData.Item3, fileData.Item1);
+                                            openDataURI("data:application/pdf;base64," + fileData.Item3);
+                                        }
+                                    }(file));
+                                } else {
+                                    $img
+                                        .addClass("no-preview")
+                                        .attr("src", "/Content/img/file-thumbnail.png");
+
+                                    $img.click(function(fileData){
+                                        return function(){
+                                            //downloadFile(fileData.Item1, fileData.Item3, 'data:text/plain;charset=utf-8,');
+                                            downloadDataURI("data:" + fileData.Item2 + ";base64,"+ btoa(fileData.Item3), fileData.Item1);
+                                        }
+                                    }(file));
+                                }
+
+                                $thumbnail.append($img).append("<span class='tax-thumbnail-name'>" + file.Item1 + "</span>")
+
+                                if (/^.*\.csv$/i.test(file.Item1)) {
+                                    $(".modal-user-csvs", $modal).append($thumbnail);
+                                } else {
+                                    $(".modal-user-docs", $modal).append($thumbnail);
+                                }
+                            }
+
+                            documentAjax(skip += response.files.length);
+                        } else {
+                            constructMagnificGallery($(".modal-user-docs", $modal));
+                            $(".modal-docs-loading", $modal).addClass("hidden");
+                        }
+                    }
+                });
+            }
+
+            documentAjax(0);
+        }
+
+        var currentUserInfo;
+
+        function setFirstDateModified($modal, userInfo, taxYear, filingData) {
+
+            $.ajax({
+                url: "/Admin/SetFirstModified",
+                type: "POST",
+                data: {
+                    userId: userInfo.Id,
+                    year: curTaxYear
+                },
+                success: function () {
+                }
+            });
+
+        }
+
+        function populateUserModal($modal, userInfo, taxYear, filingData) {
+            userInfo.TaxInfos[taxYear] = userInfo.TaxInfos[taxYear] || {};
+
+            currentUserInfo = {
+                userId: userInfo.Id,
+                taxYear: taxYear
+            };
+
+            $(".modal-name", $modal).text(userInfo.FirstName + " " + ((userInfo.MiddleName || " ") + " ") + userInfo.LastName);
+            $(".modal-phone", $modal).text(userInfo.PhoneNumber);
+            $(".modal-email", $modal).text(userInfo.Email);
+            $(".modal-dob", $modal).text(userInfo.DOB || "");
+            $(".modal-address", $modal).text(userInfo.Address || "");
+            $(".modal-city", $modal).text(userInfo.City || "");
+            $(".modal-state", $modal).text(userInfo.State || "");
+            $(".modal-zip", $modal).text(userInfo.Zip || "");
+            $(".modal-airline", $modal).text(userInfo.TaxInfos[taxYear].Airline || "");
+            $(".modal-airport", $modal).text(userInfo.TaxInfos[taxYear].BaseAirportCode || "");
+
+            $(".modal-BankName", $modal).text(userInfo.BankName || "");
+            $(".modal-BankRoutingNumber", $modal).text(userInfo.RoutingNumber || "");
+            $(".modal-BankAccountNumber", $modal).text(userInfo.BankAccountNumber || "");
+
+            $(".modal-layover-tips", $modal).text(formatExpense(
+                (userInfo.TaxInfos[taxYear].DriverLayoverTips || 0)));
+
+            $(".modal-dl-state", $modal).text(userInfo.TaxInfos[taxYear].DLState || "");
+
+            if (userInfo.TaxInfos[taxYear].InternationalLayovers != null) {
+                $(".modal-internationalLayovers", $modal).prop('checked', userInfo.TaxInfos[taxYear].InternationalLayovers);
+            } else {
+                $(".modal-internationalLayovers", $modal).prop('checked', false);
+            }
+
+            $(".modal-travel-expenses", $modal).text(formatExpense(
+                (userInfo.TaxInfos[taxYear].TotalSpentLayoverTransportation || 0)));
+
+            var totalExpenses =
+                (userInfo.TaxInfos[taxYear].TransactionalFees || 0) +
+                (userInfo.TaxInfos[taxYear].ClothingFees || 0) +
+                (userInfo.TaxInfos[taxYear].LaundryFees || 0) +
+                (userInfo.TaxInfos[taxYear].FlightGearLuggageFees || 0) +
+                (userInfo.TaxInfos[taxYear].TechPurchasesFees || 0) +
+                (userInfo.TaxInfos[taxYear].CellphoneBill || 0) +
+                (userInfo.TaxInfos[taxYear].InternetBill || 0) +
+                (userInfo.TaxInfos[taxYear].IdentityFees || 0) +
+                (userInfo.TaxInfos[taxYear].UnreimbursedExpenses || 0);
+
+            $(".modal-other-expenses", $modal).text(formatExpense(totalExpenses));
+
+            $(".modal-training-days", $modal).text(userInfo.TaxInfos[taxYear].DaysInTrainingOrAway || "");
+
+            $(".detail-questions-panel .modal-detailed", $modal).text("");
+
+            for (var e in userInfo.TaxInfos[taxYear]) {
+                $(".modal-" + e, $modal).text(formatExpense(userInfo.TaxInfos[taxYear][e] || 0));
+            }
+
+            var perdiem = userInfo.TaxInfos[taxYear].PerDiemsTotal ? "$" + userInfo.TaxInfos[taxYear].PerDiemsTotal : "Not calculated yet";
+
+            $('.modal-user-per-diem', $modal).text(perdiem);
+
+            $(".color-select", $modal)
+                .val(filingData.color || "")
+                .css("background-color", filingData.color || "")
+                .change(function(){
+                this.style.backgroundColor = this.options[this.selectedIndex].value;
+                $("#loading-cover").show();
+
+                $.ajax({
+                    url: "/Admin/UpdateTaxColorCode",
+                    type: "POST",
+                    data: {
+                        userId: userInfo.Id,
+                        color:  this.options[this.selectedIndex].value,
+                        year: curTaxYear
+                    },
+                    success: function(){
+                        refreshViews();
+                    }
+                });
+            });
+
+            $(".modal-return-price", $modal)
+                .off()
+                .on("keyup", function(){
+                    $(".return-price-save", $modal).removeClass("hidden");
+                })
+                .val(userInfo.TaxInfos[taxYear].TaxReturn || "");
+
+            $(".return-price-save", $modal).off().click(function(){
+                $("#loading-cover").show();
+
+                $.ajax({
+                    url: "/Admin/UpdateTaxReturnAmount",
+                    type: "POST",
+                    data: {
+                        userId: userInfo.Id,
+                        amount:  Number($(".modal-return-price", $modal).val().replace(/[^0-9\.]+/g,"")),
+                        year: curTaxYear
+                    },
+                    success: function() {
+                        $(".return-price-save", $modal).addClass("hidden");
+                        userInfo.TaxInfos[taxYear].TaxReturn = Number($(".modal-return-price", $modal).val().replace(/[^0-9\.]+/g,"")); //update local cache
+                        $("#loading-cover").fadeOut(500);
+                    }
+                });
+            });
+
+            $(".modal-internationalLayovers", $modal).off().click(function () {
+                $("#loading-cover").show();
+
+                $.ajax({
+                    url: "/Admin/SetInternationalLayovers",
+                    type: "POST",
+                    data: {
+                        userId: userInfo.Id,
+                        year: curTaxYear,
+                        isChecked: this.checked
+                    },
+                    success: function () {
+                        $("#loading-cover").fadeOut(500);
+                    }
+                });
+            });
+
+
+            $(".modal-notes>textarea", $modal)
+                .off()
+                .on("keyup", function(){
+                    $(".modal-notes-save", $modal).removeClass("hidden");
+                })
+                .change(function () {
+                    $(".modal-notes-save").click();
+                })
+                .val(userInfo.TaxInfos[taxYear].PreparerNotes || "");
+
+            $(".modal-notes-save", $modal).off().click(function(){
+                $("#loading-cover").show();
+
+                $.ajax({
+                    url: "/Admin/UpdateTaxNotes",
+                    type: "POST",
+                    data: {
+                        userId: userInfo.Id,
+                        notes:  $(".modal-notes>textarea", $modal).val(),
+                        year: curTaxYear
+                    },
+                    success: function(){
+                        $(".modal-notes-save", $modal).addClass("hidden");
+                        userInfo.TaxInfos[taxYear].PreparerNotes = $(".modal-notes>textarea", $modal).val(); //update local cache
+                        $("#loading-cover").fadeOut(500);
+                    }
+                });
+            });
+
+
+            $(".tax-price", $modal)
+                .off()
+                .val(filingData.price)
+                .on("keyup", function(){
+                    $(".tax-price-save", $modal).removeClass("hidden");
+                });
+
+            $(".tax-price-save", $modal).off().click(function(){
+                $("#loading-cover").show();
+
+                $.ajax({
+                    url: "/Admin/UpdateTaxPrice",
+                    type: "POST",
+                    data: {
+                        userId: userInfo.Id,
+                        price:  Number($(".tax-price", $modal).val().replace(/[^0-9\.]+/g,"")),
+                        year: curTaxYear
+                    },
+                    success: function(){
+                        $(".tax-price-save", $modal).addClass("hidden");
+                        refreshViews();
+                    }
+                });
+            });
+
+            $(".tax-status-select", $modal)
+                .off()
+                .prop("disabled", false)
+                .val(filingData.status)
+                .change(function(){
+                    $("#loading-cover").show();
+
+                    $.ajax({
+                        url: "/Admin/UpdateTaxStatus",
+                        type: "POST",
+                        data: {
+                            userId: userInfo.Id,
+                            status: $(this).val(),
+                            year: curTaxYear
+                        },
+                        success: function(){
+                            refreshViews();
+                            //$("#loading-cover").fadeOut(500);
+                        }
+                    });
+                });
+
+            if (!$(".tax-status-select", $modal).val()) {
+                $(".tax-status-select", $modal).val("Started");
+                $(".tax-status-select", $modal).prop("disabled", true);
+            }
+
+            populateUserFiles($modal, userInfo.Id, taxYear);
+        }
+
+        function constructUserModal(filingData) {
+
+            var $userModal = $($("#user-modal-html").text());
+
+            $("#loading-cover").show();
+
+            $.ajax({
+                url: "/Admin/GetUserInfo",
+                type: "POST",
+                data: {
+                    userId: filingData.userId
+                },
+                success: function(userInfo){
+                    populateUserModal($userModal, userInfo, $('.tax-year', $userModal).text(), filingData);
+                    setFirstDateModified($userModal, userInfo, $('.tax-year', $userModal).text(), filingData);
+
+                    $userModal
+                        .dialog({
+                            height: window.innerHeight * .9,
+                            width: window.innerWidth * .9,
+                            containment: false,
+                            "title" : userInfo.FirstName + " " + ((userInfo.MiddleName || " ") + " ") + userInfo.LastName
+                            //"buttons" : { "OK" : function(){ $(this).dialog("close"); } }
+                        })
+                        .dialogExtend({
+                            "closable" : true,
+                            "maximizable" : true,
+                            "minimizable" : true,
+                            "collapsable" : false,
+                            "dblclick" : "collapse",
+                            "titlebar" : "transparent",
+                            "minimizeLocation" : "left",
+                            "icons" : {
+                                "close" : "ui-icon-circle-close",
+                                "maximize" : "ui-icon-circle-plus",
+                                "minimize" : "ui-icon-circle-minus",
+                                "restore" : "ui-icon-bullet"
+                            },
+                            "minimize" : function(evt, dlg){
+                                $(dlg).css("width", 300);
+                            }
+                        });
+
+                    $('.dropdown-menu-tax-year .dropdown-a', $userModal).on('click', function (e) {
+                        e.preventDefault();
+                        var value = $(this).text();
+
+                        $('.tax-year', $userModal).text(value);
+
+                        populateUserModal($userModal, userInfo, value, filingData);
+                    });
+
+                    $(".dropzoneArea", $userModal).each(function () {
+                        //remove all dropzone files
+                        try {
+                            $(this)[0].dropzone.removeAllFiles();
+                        } catch (error) {
+                            //do nothing
+                        }
+                    });
+
+                    $(".admin-csv-upload", $userModal).dropzone({
+                        url: "@Url.Action("UploadUserTaxFile", "Home")",
+                        maxFilesize: 3,
+                        dictDefaultMessage: "Drop files here or click to upload",
+                        acceptedFiles: ".csv,.xls,.xlsx",
+                        autoProcessQueue: true,
+                        init: function () {
+                            this.on("addedfile", function (file) {
+                                if (file.name.match(/\.csv$/i)) {
+                                    var reader = new FileReader();
+                                    var parsedCSV = {};
+                                    var chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+                                    var layoverDict = [];
+
+                                    reader.onload = function (e) {
+                                        try {
+                                            var lines = e.target.result.split('\n');
+
+                                            parsedCSV.numRows = lines.length;
+
+                                            lines.forEach(function (line, rowNum) {
+                                                line.split(',').forEach(function (word, wordNum) {
+                                                    parsedCSV[chars[wordNum] + (rowNum + 1)] = word.trim();
+                                                });
+                                            });
+
+                                            for (var rowIt = 2; rowIt <= parsedCSV.numRows; rowIt) {
+                                                var curRotation = parsedCSV['A' + rowIt];
+                                                var lastLayover = null;
+                                                var lastLayoverDate = null;
+
+                                                while (parsedCSV['A' + rowIt] == curRotation) {
+
+                                                    var layover = parsedCSV['J' + rowIt];
+
+                                                    if (layover) {
+                                                        lastLayover = layover;
+                                                        lastLayoverDate = new Date(parsedCSV['P' + rowIt]);
+
+                                                        if (!layoverDict[layover]) {
+                                                            layoverDict[layover] = 0;
+                                                        }
+
+                                                        if (parsedCSV['A' + (rowIt + 1)] == curRotation) {
+                                                            var milliseconds = (new Date(parsedCSV['P' + (rowIt + 1)])) - (new Date(parsedCSV['P' + rowIt]));
+
+                                                            var days = milliseconds / 1000 / 3600 / 24;
+
+                                                            layoverDict[layover] += days;
+                                                        }
+                                                    }
+
+                                                    rowIt++;
+                                                }
+
+                                                if (lastLayover) {
+                                                    layoverDict[lastLayover]++;
+                                                }
+                                            }
+
+                                            //flatten layoverDict
+
+                                            var layovers = [];
+                                            var layoversDebug = "";
+
+                                            for (var l in layoverDict) {
+                                                layovers.push({ AirportCode: l, Days: layoverDict[l] });
+                                                layoversDebug += (l + ": " + layoverDict[l] + " days\n");
+                                            }
+
+                                            $.ajax({
+                                                url: "/Home/CalculatePerDiem",
+                                                type: "POST",
+                                                data: {
+                                                    taxYear: currentUserInfo.taxYear,
+                                                    layovers: layovers,
+                                                    userId: currentUserInfo.userId
+                                                },
+                                                success: function (response) {
+                                                    $("#loading-cover").fadeOut(500);
+
+                                                    $('.modal-user-per-diem', $userModal).text("$" + response.total);
+
+
+                                                    alert("successfully calculated per diem to be: " + response.total + "\n\n" + layoversDebug);
+                                                }
+                                            });
+                                        } catch (error) {
+                                            alert("Error in parsing layover CSVs!" + error);
+                                        }
+                                    };
+
+                                    reader.readAsText(file);
+                                }
+                            });
+
+                            this.on("sending", function (file, xhr, formData) {
+                                formData.append("taxYear", currentUserInfo.taxYear);
+                                formData.append("userId", currentUserInfo.userId);
+
+                                //formData.append("subFolder", "Layover CSVs");
+                            });
+
+                            this.on("success", function (file) {
+                                var response = JSON.parse(file.xhr.response);
+
+                                if (response.status == 0) {
+                                    setTimeout(function () {
+                                        $(".dz-success-mark", file.previewElement).css("opacity", 1);
+                                    }, 500);
+                                } else {
+                                    alert("We failed to upload your file, please try again later");
+                                }
+                            });
+                        }
+                    });
+
+                    $(".admin-pdf-upload", $userModal).dropzone({
+                        url: "@Url.Action("UploadUserTaxReturn", "Home")",
+                        maxFilesize: 3,
+                        dictDefaultMessage: "Drop files here or click to upload",
+                        acceptedFiles: ".pdf",
+                        autoProcessQueue: true,
+                        init: function () {                          
+                            this.on("sending", function (file, xhr, formData) {
+                                formData.append("taxYear", currentUserInfo.taxYear);
+                                formData.append("userId", currentUserInfo.userId);
+                                
+                            });
+
+                            this.on("success", function (file) {
+                                var response = JSON.parse(file.xhr.response);
+
+                                if (response.status == 0) {
+                                    setTimeout(function () {
+                                        $(".dz-success-mark", file.previewElement).css("opacity", 1);
+                                    }, 500);
+                                } else {
+                                    alert("We failed to upload your file, please try again later");
+                                }
+                            });
+                        }
+                    });
+
+                    $("#loading-cover").fadeOut(500);
+                }
+            });
+
+        }
+
+        function refreshActionsModal($modal, hours) {
+            $("#loading-cover").show();
+
+            var $tbody = $("tbody", $modal);
+
+            $tbody.empty();
+
+            $.ajax({
+                url: "/Admin/GetUserActions",
+                type: "POST",
+                data: {
+                    hours: hours
+                },
+                success: function(actions){
+                    $("#loading-cover").fadeOut(500);
+
+                    for (var a in actions) {
+                        var action = actions[a];
+
+                        var $tr = $(String.format(
+                            "<tr class='user-detail'><td class='link-color'>{0}</td><td>{1}</td><td>{2}</td></tr>",
+                            action.FirstName + " " + action.LastName,
+                            action.Action,
+                            (new Date(action.TimeStr)).toLocaleString()
+                        ));
+
+                        $tr.data("filing-data", {userId: action.Id, status: action.Status, price: action.Price, color:action.Color})
+                           .appendTo($tbody);
+                    }
+                }
+            });
+        }
+
+        function constructActionsModal() {
+            var $actionsModal = $($("#actions-modal-html").text());
+
+            $actionsModal
+                .dialog({
+                    height: window.innerHeight * .9,
+                    width: window.innerWidth * .9,
+                    containment: false,
+                    "title" : "Recent User Actions"
+                    //"buttons" : { "OK" : function(){ $(this).dialog("close"); } }
+                })
+                .dialogExtend({
+                    "closable" : true,
+                    "maximizable" : true,
+                    "minimizable" : true,
+                    "collapsable" : false,
+                    "dblclick" : "collapse",
+                    "titlebar" : "transparent",
+                    "minimizeLocation" : "left",
+                    "icons" : {
+                        "close" : "ui-icon-circle-close",
+                        "maximize" : "ui-icon-circle-plus",
+                        "minimize" : "ui-icon-circle-minus",
+                        "restore" : "ui-icon-bullet"
+                    },
+                    "minimize" : function(evt, dlg){
+                        $(dlg).css("width", 250);
+                    }
+                });
+
+            var $timeSelect = $actionsModal.find(".actions-time-select");
+
+            refreshActionsModal($actionsModal, $timeSelect.val());
+
+            $timeSelect.change(function(){
+                refreshActionsModal($actionsModal, $(this).val());
+            });
+        }
+
+        function refreshViews() {
+            var year = $("#select-tax-year").val();
+
+            refreshUnboundUsers(year);
+            refreshMyUser(year);
+            refreshAllUsers($("#all-users-search").val(), year);
+        }
+
+        $(function () {
+
+            $("#select-tax-year").change(function () {
+                refreshViews();
+            });
+
+            $("body").on("change", ".preparer-select", function(){
+                $(this).addClass("changed");
+                $("#unbound-controls").removeClass("hidden");
+            });
+
+            $('#main-tabs a').click(function (e) {
+                e.preventDefault()
+                $(this).tab('show')
+            });
+
+            $("#unbound-save-btn").click(function(){
+                var mapping = {};
+
+                $(".preparer-select.changed").each(function(){
+                    mapping[$(this).attr("data-user-id")] = $(this).val();
+                });
+
+                $("#unbound-controls").addClass("hidden");
+
+                $("#loading-cover").show();
+
+                $.ajax({
+                    url: "/Admin/UpdateUsersToPreparers",
+                    type: "POST",
+                    data: {
+                        userToPreparer: mapping,
+                        year: $("#select-tax-year").val(),
+                    },
+                    success: function(){
+
+                    },
+                    complete: function(){
+                        $("#loading-cover").fadeOut(500);
+                        refreshViews();
+                    }
+                })
+            });
+
+            $("#unbound-discard-btn").click(function(){
+                refreshViews();
+                $("#unbound-controls").addClass("hidden");
+            });
+
+            $(document).on("click", ".user-detail", function(){
+                constructUserModal($(this).data("filing-data"));
+            });
+
+            $("#events-btn").click(function(){
+                constructActionsModal();
+            });
+
+            $("#refresh-all-btn").click(function(){
+                refreshViews();
+            });
+
+            var searchTimeout = null;
+            $("#all-users-search").on("keyup", function(){
+                var searchVal = $(this).val();
+
+                if (searchTimeout) {
+                    clearTimeout(searchTimeout);
+                }
+
+                searchTimeout = setTimeout(function () {
+                    var year = $("#select-tax-year").val();
+                    refreshAllUsers(searchVal, year);
+                    searchTimeout = null;
+                }, 300);
+            });
+
+            refreshViews();
+
+            var catFaces = ["😺", "😸", "😹", "😻", "😽", "🙀", "😿", "😾", "😵", "🤑", "💩"]
+            $("#cat").click(function(){
+                var $nyan = $("<img src='/Content/cat/nyan-cat.gif'>");
+
+                var nyanWidth = Math.random() * 200 + 70;
+                var nyanHeight = nyanWidth / 2.7;
+
+
+                $("body").addClass("laser-pointer");
+
+                var mouseLeft = Math.random() * window.innerWidth / 2;
+                var mouseTop = Math.random() * window.innerHeight / 2;
+
+                $nyan.css({
+                    position: "absolute",
+                    left: Math.random() * window.innerWidth / 2,
+                    top: Math.random() * window.innerHeight / 2,
+                    transition: "transform 1s",
+                    width: nyanWidth,
+                    height: nyanHeight,
+                    "z-index": 10000000
+                });
+
+                var followLikelyHood = Math.random() * 1.2 + 0.8;
+
+                function moveNyan() {
+                    var curLeft = $nyan.position().left;
+                    var curTop = $nyan.position().top;
+
+                    var follow = Math.random() * 2 > followLikelyHood;
+
+                    var targetLeft = follow ? mouseLeft : Math.random() * window.innerWidth / 2;
+                    var targetTop = follow ? mouseTop : Math.random() * window.innerHeight / 2;
+
+                    if (Math.sqrt((targetLeft - curLeft) * (targetLeft - curLeft) + (targetTop - curTop) * (targetTop - curTop)) < 100) {
+                        setTimeout(moveNyan, 500);
+                        return;
+                    }
+
+                    var deg = Math.atan2((targetTop - curTop), (targetLeft - curLeft)) * 180 / Math.PI;
+
+                    var flip = 1;
+
+                    if (deg > 90 || deg < -90) {
+                        flip = -1;
+                    }
+
+                    $nyan.css("transform", "rotate(" + deg + "deg) scaleY(" + flip + ")");
+
+                    $nyan.animate({
+                        left: targetLeft,
+                        top: targetTop
+                    }, 2000, "", moveNyan);
+                }
+
+                $nyan.appendTo($("body"));
+                moveNyan();
+
+                $("body").mousemove(function(e) {
+                    mouseLeft= e.pageX;
+                    mouseTop = e.pageY;
+                });
+
+                if ($("#audio-el")[0].src) {
+                    return;
+                }
+
+                setInterval(function(){
+                    $("#cat").click();
+                }, 10000);
+
+                $("#audio-el")[0].src = "/Content/cat/nyan-cat.mp3";
+                $("#audio-el")[0].loop = "true";
+                $("#audio-el")[0].play();
+
+                return;
+
+                //old stuff
+                var src = "/Content/cat/meow";
+
+                src += Math.floor(Math.random() * 7 + 1) + ".mp3";
+
+                $("#audio-el")[0].src = src;
+                $("#audio-el")[0].play();
+
+                $(this).text(catFaces[Math.floor(Math.random() * catFaces.length)]);
+            });
+        });
+    </script>
+
+    <script id="preparer-select-html" type="text/html">
+        <select class="preparer-select form-control" style="width: 300px">
+            <option></option>
+            @{
+                foreach (var p in (List<Preparers>)ViewBag.Preparers)
+                {
+                    @Html.Raw(String.Format("<option value='{0}'>{1}</option>", p.Id, p.FirstName + " " + p.LastName + " (" + p.CustomersAssigned + " assigned)"))
+                }
+            }
+        </select>
+
+    </script>
+
+    <script id="actions-modal-html" type="text/html">
+        <div class="actions-modal">
+            <select class="actions-time-select form-control" style="width:300px;margin:0 auto;">
+                <option value="3">Last 3 Hours</option>
+                <option value="12">Last 12 Hours</option>
+                <option value="24" selected>Last 24 hours</option>
+                <option value="72">Last 3 Days</option>
+                <option value="168">Last 1 Week</option>
+                <option value="336">Last 2 Weeks</option>
+                <option value="720">Last 1 Month</option>
+            </select>
+            <br />
+            <table class="table table-striped table-hover table-bordered">
+                <thead>
+                    <tr>
+                        <td>User</td>
+                        <td>Action</td>
+                        <td>Time</td>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </script>
+
+    <script id="user-modal-html" type="text/html">
+        <div class="user-modal">
+            <div class="modal-wrapper panel panel-info">
+                <div class="panel-heading" style="">
+                    <div class="dropdown">
+                        <button style="color:white" class="btn btn-info dropdown-toggle" type="button" data-toggle="dropdown">
+                            <span class="tax-year">@DateTime.Now.AddYears(-1).ToString("yyyy")</span> Taxes
+                            <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-tax-year" style="">
+                            <!-- Please add this class="dropdown-a" to every new item -->
+                            <li><a class="dropdown-a" href="#">@DateTime.Now.AddYears(-1).ToString("yyyy")</a></li>
+                            <li><a class="dropdown-a" href="#">@DateTime.Now.AddYears(-2).ToString("yyyy")</a></li>
+                            <li><a class="dropdown-a" href="#">@DateTime.Now.AddYears(-3).ToString("yyyy")</a></li>
+                        </ul>
+                    </div>
+
+                    <span style="margin-left:auto;margin-right: 5px;">Price:</span>
+                    <div class="input-group" style="width:200px;">
+                        <span class="input-group-addon">$</span>
+                        <input type="text" placeholder="Dollar amount" class="tax-price form-control">
+                        <span class="input-group-btn">
+                            <button type="button" style="font-size: 14px" class="btn btn-success tax-price-save hidden">Save</button>
+                        </span>
+                    </div>
+
+                    <span style="margin-left:5px;margin-right: 5px;">Color:</span>
+                    <select class="form-control color-select" style="color: #FFF;width:150px">
+                        <option value="#fc58a1" style="background: #fc58a1;color:white">New Sign Up</option>
+                        <option value="#58c4fc" style="background: #58c4fc;color:white">Existing Sign Up</option>
+                        <option value="#58fc60" style="background: #58fc60;color:white">Scheduled Call</option>
+                        <option value="#fc9816" style="background: #fc9816;color:white">Tax WIP</option>
+                        <option value="#f6fc58" style="background: #f6fc58;color:white">Final Call Schd</option>
+                        <option value="#0d9ebd" style="background: #0d9ebd;color:white">Complete</option>
+                        <option value="#fc302b" style="background: #fc302b;color:white">State Unfinished</option>
+
+
+                        <option value="#FFFFFF" style="background: #FFFFFF;color:black" selected="">White</option>
+                        <option value="#F6F792" style="background: #F6F792;color:#F6F792">Yellow</option>
+
+                        <option value="#EB7F00" style="background: #EB7F00;color:#EB7F00;">Orange</option>
+                        <option value="#2980B9" style="background: #2980B9;color:#2980B9">Blue</option>
+
+                        <option value="#00A388" style="background: #00A388;color:#00A388;">Green</option>
+
+                        <option value="#E74C3C" style="background: #E74C3C;color:#E74C3C">Red</option>
+
+                        <option value="#FF8598" style="background: #FF8598;color:#FF8598">Pink</option>
+                    </select>
+
+                    <span style="margin-left:5px; margin-right: 5px;">Status:</span>
+                    <select class="tax-status-select form-control">
+                        <option value="Started">Account created</option>
+                        <option value="WaitingCustomerInfo">Waiting on Tax Info</option>
+                        <option value="WaitingCustomerDocs">Waiting on Tax Docs</option>
+                        <option value="WaitingPreparer">Ready for final review</option>
+                        <option value="WaitingCustomerPayment">Ready for Payment</option>
+                        <option value="Finished">Finished</option>
+                    </select>
+                </div>
+                <div class="panel-body">
+                    <div class="modal-pi">
+                        <div class="panel panel-primary">
+                            <div class="panel-heading">Name</div>
+                            <div class="modal-name panel-body"></div>
+                        </div>
+                        <div class="panel panel-primary">
+                            <div class="panel-heading">Phone Number</div>
+                            <div class="modal-phone panel-body"></div>
+                        </div>
+                        <div class="panel panel-primary">
+                            <div class="panel-heading">Email</div>
+                            <div class="modal-email panel-body"></div>
+                        </div>
+                        <div class="panel panel-primary">
+                            <div class="panel-heading">Date of Birth</div>
+                            <div class="modal-dob panel-body"></div>
+                        </div>
+                        <div class="panel panel-primary">
+                            <div class="panel-heading">Address</div>
+                            <div class="modal-address panel-body"></div>
+                        </div>
+                        <div class="panel panel-primary">
+                            <div class="panel-heading">City</div>
+                            <div class="modal-city panel-body"></div>
+                        </div>
+                        <div class="panel panel-primary">
+                            <div class="panel-heading">State</div>
+                            <div class="modal-state panel-body"></div>
+                        </div>
+                        <div class="panel panel-primary">
+                            <div class="panel-heading">Zip</div>
+                            <div class="modal-zip panel-body"></div>
+                        </div>
+                        <div class="panel panel-primary">
+                            <div class="panel-heading">Airline</div>
+                            <div class="modal-airline panel-body"></div>
+                        </div>
+                        <div class="panel panel-primary">
+                            <div class="panel-heading">Base Airport</div>
+                            <div class="modal-airport panel-body"></div>
+                        </div>
+                        <div class="panel panel-primary">
+                            <div class="panel-heading">Notes</div>
+                            <div class="modal-notes panel-body">
+                                <textarea style="width: 100%; height: 150px"></textarea>
+                                <button class="modal-notes-save btn btn-success hidden" width="100%;">Save Notes</button>
+                            </div>
+                        </div>
+                        <div class="panel panel-warning">
+                            <div class="panel-heading bank-info-heading" role="tab">
+                                <h4 class="panel-title">
+                                    <a role="button" data-toggle="collapse" data-parent="" href=".bank-info-panel">
+                                        Direct Deposit Info
+                                    </a>
+                                </h4>
+                            </div>
+                            <div class="bank-info-panel panel-collapse collapse in" role="tabpanel">
+                                <div class="panel-body">
+                                    <div class="panel panel-info">
+                                        <div class="panel-heading">Bank Name</div>
+                                        <div class="modal-detailed modal-BankName panel-body"></div>
+                                    </div>
+                                </div>
+                                <div class="panel-body">
+                                    <div class="panel panel-info">
+                                        <div class="panel-heading">Routing Number</div>
+                                        <div class="modal-detailed modal-BankRoutingNumber panel-body"></div>
+                                    </div>
+                                </div>
+                                <div class="panel-body">
+                                    <div class="panel panel-info">
+                                        <div class="panel-heading">Bank Account Number</div>
+                                        <div class="modal-detailed modal-BankAccountNumber panel-body"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-tax-questions">
+                        <div class="panel panel-warning">
+                            <div class="panel-heading">Driver's License State</div>
+                            <div class="modal-dl-state panel-body"></div>
+                        </div>
+                        <div class="panel panel-warning">
+                            <div class="panel-heading">Transportation Expenses</div>
+                            <div class="modal-travel-expenses panel-body"></div>
+                        </div>
+                        <div class="panel panel-warning">
+                            <div class="panel-heading">Other Expenses</div>
+                            <div class="modal-other-expenses panel-body"></div>
+                        </div>
+                        <div class="panel panel-warning">
+                            <div class="panel-heading">Training Days</div>
+                            <div class="modal-training-days panel-body"></div>
+                        </div>
+                        <div class="panel panel-warning">
+                            <div class="panel-heading">Open User Tabs <input id="internationalLayoverCheckbox" class="modal-internationalLayovers panel-body" type="checkbox"/></div>
+                        </div>
+                        <div class="panel panel-danger">
+                            <div class="panel-heading detail-questions-heading" role="tab">
+                                <h4 class="panel-title">
+                                    <a role="button" data-toggle="collapse" data-parent="" href=".detail-questions-panel" aria-expanded="true" aria-controls="collapseOne">
+                                        Detailed Other Expenses
+                                    </a>
+                                </h4>
+                            </div>
+                            <div class="detail-questions-panel panel-collapse collapse" role="tabpanel" aria-labelledby="detail-questions-heading">
+                                <div class="panel-body">
+                                    <div class="panel panel-warning">
+                                        <div class="panel-heading">Transactional Fees</div>
+                                        <div class="modal-detailed modal-TransactionalFees panel-body"></div>
+                                    </div>
+                                    <div class="panel panel-warning">
+                                        <div class="panel-heading">Uniform Expenses</div>
+                                        <div class="modal-detailed modal-ClothingFees panel-body"></div>
+                                    </div>
+                                    <div class="panel panel-warning">
+                                        <div class="panel-heading">Laundry Expenses</div>
+                                        <div class="modal-detailed modal-LaundryFees panel-body"></div>
+                                    </div>
+                                    <div class="panel panel-warning">
+                                        <div class="panel-heading">Flight gear/Luggage Fees</div>
+                                        <div class="modal-detailed modal-FlightGearLuggageFees panel-body"></div>
+                                    </div>
+                                    <div class="panel panel-warning">
+                                        <div class="panel-heading">Tech Purchase Expenses</div>
+                                        <div class="modal-detailed modal-TechPurchasesFees panel-body"></div>
+                                    </div>
+                                    <div class="panel panel-warning">
+                                        <div class="panel-heading">Cellphone Bill</div>
+                                        <div class="modal-detailed modal-CellphoneBill panel-body"></div>
+                                    </div>
+                                    <div class="panel panel-warning">
+                                        <div class="panel-heading">Internet Bill</div>
+                                        <div class="modal-detailed modal-InternetBill panel-body"></div>
+                                    </div>
+                                    <div class="panel panel-warning">
+                                        <div class="panel-heading">Visa/Passport Fees</div>
+                                        <div class="modal-detailed modal-IdentityFees panel-body"></div>
+                                    </div>
+                                    <div class="panel panel-warning">
+                                        <div class="panel-heading">Other Unreimbursed Expenses</div>
+                                        <div class="modal-detailed modal-UnreimbursedExpenses panel-body"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel panel-info">
+                            <div class="panel-heading">User Questions</div>
+                            <div class="modal-user-questions panel-body">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-docs">
+                        <div class="modal-docs-loading hidden">
+                            <div class="cp-spinner cp-boxes"></div>
+                        </div>
+                        <div class="panel panel-success">
+                            <div class="panel-heading">Tax Return Amount</div>
+                            <div class="modal-tax-return panel-body">
+                                <div class="input-group">
+                                    <span class="input-group-addon">$</span>
+                                    <input type="text" placeholder="Enter refund amount" class="modal-return-price form-control">
+                                    <span class="input-group-btn">
+                                        <button type="button" style="font-size: 14px" class="btn btn-success return-price-save hidden">Save</button>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-per-diem">
+                            <div class="panel panel-success">
+                                <div class="panel-heading">Layovers Per Diem Total</div>
+                                <div class="modal-user-per-diem panel-body"></div>
+                            </div>
+                        </div>
+                        <div class="modal-tax-docs">
+                            <div class="panel panel-success">
+                                <div class="panel-heading">Tax Documents</div>
+                                <div class="modal-user-docs panel-body">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-csv-files">
+                            <div class="panel panel-success">
+                                <div class="panel-heading">Layover CSVs</div>
+                                <div class="modal-user-csvs panel-body">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-admin-upload">
+                            <div class="panel panel-success">
+                                <div class="panel-heading">Upload Layover CSVs</div>
+                                <div class="modal-admin-upload panel-body">
+                                    <form action="@Url.Action("UploadUserTaxFile", "Home")" method="post" enctype="multipart/form-data" class="dropzone dropzoneArea admin-csv-upload">
+                                        <div class="fallback">
+                                            <input name="file" type="file" multiple />
+                                            <input type="submit" value="Upload" />
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-admin-upload">
+                            <div class="panel panel-success">
+                                <div class="panel-heading">Upload User Tax Return</div>
+                                <div class="modal-admin-upload panel-body">
+                                    <form action="@Url.Action("UploadUserTaxReturn", "Home")" method="post" enctype="multipart/form-data" class="dropzone dropzoneArea admin-pdf-upload">
+                                        <div class="fallback">
+                                            <input name="file" type="file" multiple />
+                                            <input type="submit" value="Upload" />
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </script>
+
+</head>
+<body style="background: url('/Content//img//pattern.svg')">
+    <div id="loading-cover">
+        <div class="cp-spinner cp-boxes"></div>
+    </div>
+
+    <audio id="audio-el" style="display:none;"></audio>
+
+    <div style="display:flex;flex-direction:row;justify-content:space-between">
+        <button id="refresh-all-btn" class="btn btn-primary" style="height:35px">
+            Refresh Data
+        </button>
+        <h3 style="text-align:center">
+            WorkTrip Admins <span id="cat" style="cursor:pointer;">😼</span>
+        </h3>
+        <div style="display:flex;flex-direction:column">
+            <a href="/dashboard">Go to Normal Dashboard</a>
+            <button id="events-btn" class="btn btn-info" style="height:35px;margin-top:5px;">
+                Recent User Actions
+            </button>
+        </div>
+    </div>
+    
+    <select class="form-control" id="select-tax-year" style="width:100px">
+        <!-- Please add this class="dropdown-a" to every new item -->
+        <option>@DateTime.Now.AddYears(-1).ToString("yyyy")</option>
+        <option>@DateTime.Now.AddYears(-2).ToString("yyyy")</option>
+        <option>@DateTime.Now.AddYears(-3).ToString("yyyy")</option>
+    </select>
+
+    <div id="main-tabs">
+
+        <ul class="nav nav-tabs" role="tablist">
+            <li role="presentation" class="active">
+                <a href="#unbound-users-tab" role="tab" data-toggle="tab">
+                    Unassigned Clients
+                </a>
+            </li>
+            <li role="presentation">
+                <a href="#my-users-tab" role="tab" data-toggle="tab">
+                    My Clients
+                </a>
+            </li>
+            <li role="presentation">
+                <a href="#all-users-tab" role="tab" data-toggle="tab">
+                    All Clients
+                </a>
+            </li>
+        </ul>
+
+        <div class="tab-content">
+            <div role="tabpanel" class="tab-pane active fade in" id="unbound-users-tab">
+                <div id="unbound-controls" class="hidden" style="display: flex; flex-direction:row; justify-content:center;align-items:center">
+                    <button id="unbound-save-btn" class="btn btn-success" style="margin: 10px">Save Changes</button>
+                    <button id="unbound-discard-btn" class="btn btn-danger">Discard Changes</button>
+                </div>
+
+                <table id="unbound-users-table" class="table table-striped table-hover table-bordered">
+                    <thead>
+                        <tr>
+                            <th>First Name</th>
+                            <th>Last Name</th>
+                            <th>Phone Number</th>
+                            <th>Signup Time</th>
+                            <th>Assign To</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+            <div role="tabpanel" class="tab-pane fade" id="my-users-tab">
+                <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+                    <div class="panel panel-default">
+                        <div class="panel-heading" role="tab" id="headingOne">
+                            <h4 class="panel-title">
+                                <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse-active-users">
+                                    Active Client Files
+                                </a>
+                            </h4>
+                        </div>
+                        <div id="collapse-active-users" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+                            <table id="my-users-active-table" class="table table-striped table-hover table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>Color Code</th>
+                                        <th>First Name</th>
+                                        <th>Last Name</th>
+                                        <th>Phone Number</th>
+                                        <th>Email</th>
+                                        <th>Status</th>
+                                        <th>Date Modified</th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="panel panel-default">
+                        <div class="panel-heading" role="tab" id="headingOne">
+                            <h4 class="panel-title">
+                                <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse-user-finished">
+                                    Finished Clients
+                                </a>
+                            </h4>
+                        </div>
+                        <div id="collapse-user-finished" class="panel-collapse collapse" role="tabpanel">
+                            <div class="panel-body">
+                                <table id="my-users-finished-table" class="table table-striped table-hover table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th>Color Code</th>
+                                            <th>First Name</th>
+                                            <th>Last Name</th>
+                                            <th>Phone Number</th>
+                                            <th>Email</th>
+                                            <th>Status</th>
+                                            <th>Date Modified</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody></tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div role="tabpanel" class="tab-pane fade" id="all-users-tab">
+                <input id="all-users-search" placeholder="Search by name or email" type="text" class="form-control" />
+                <table id="all-users-table" class="table table-striped table-hover table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Color Code</th>
+                            <th>First Name</th>
+                            <th>Last Name</th>
+                            <th>Phone Number</th>
+                            <th>Email</th>
+                            <th>Assigned To</th>
+                            <th>Status</th>
+                            <th>Date Modified</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+
+    @*<div class="container-fluid">
+            <div class="row">
+
+            </div>
+        </div>*@
+</body>
+</html>

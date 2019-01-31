@@ -61,7 +61,8 @@ $(document).ready(function () {
 		        data: {
 		            phoneNumber: number,
 		            firstName: $("#letsTalkFirstName").val(),
-		            lastName: $("#letsTalkLastName").val()
+                    lastName: $("#letsTalkLastName").val(),
+                    promoCode: $("#letsTalkPromoCode").val()
 		        },
 		        success: function (response) {
 		            console.log(response);

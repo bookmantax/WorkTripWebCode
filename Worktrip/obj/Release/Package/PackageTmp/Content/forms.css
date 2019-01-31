@@ -1,0 +1,319 @@
+
+div.field, div.input-group {
+    padding: 10px 0px !important;
+}
+
+.input-group {
+    width: 100%;
+}
+
+    .input-group input {
+        width: 100% !important;
+    }
+
+.lets-talk-container {
+    height: 100%;
+    width: 100%;
+    overflow-y: hidden;
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    background-color: rgba(0,0,0, .5);
+    z-index: 1000;
+}
+
+/*
+.sheduleCallContainer{
+  height: 150px;
+  width:100%;
+  background-image: url('../img/scheduleCallimg.jpg');
+  /*background-size: cover;*/
+/*background-repeat: round;*/
+/*}*/
+
+
+
+.phone-field:before {
+    content: "-";
+    z-index: 99999;
+    position: absolute;
+    left: -10%;
+    top: 15px;
+    font-size: 15px;
+}
+
+
+
+
+
+@media only screen and (min-width : 1200px) {
+    .lets-talk-inner-wrapper {
+        margin: 0px auto;
+        display: block;
+        border-bottom: 3px solid #e74139;
+        min-width: 100px;
+        width: 200px;
+        /*text-align: center;*/
+        padding-bottom: 10px;
+        margin-bottom: 10px;
+        ;
+    }
+
+
+    .lets-talk-inner-wrapper2 {
+        border: 1px solid #777;
+        box-shadow: 1px 1px 3px #777;
+    }
+
+    .lets-talk-header {
+        margin: 0px auto;
+        display: block;
+        border-bottom: 3px solid #e74139;
+        min-width: 100px;
+        width: 200px;
+        text-align: center;
+        padding-bottom: 10px;
+        margin-bottom: 10px;
+
+    }
+}
+
+@media only screen and (max-width : 992px) {
+
+
+    .container-responsive {
+        width: 90% !important;
+    }
+
+    .lets-talk-inner-wrapper2 {
+        border: 1px solid #777;
+        box-shadow: 1px 1px 3px #777;
+    }
+
+
+
+    .lets-talk-header {
+        margin: 0px auto;
+        display: block;
+        border-bottom: 3px solid #e74139;
+        width: 100%;
+        text-align: center;
+        padding-bottom: 10px;
+        margin-bottom: 10px;
+    }
+}
+
+@media only screen and (max-width : 768px) {
+
+
+    div.field, div.input-group {
+        padding: 5px 0px !important;
+    }
+}
+
+@media only screen and (min-width : 769px) {
+
+    #options .menu-dashboard {
+        display: block;
+    }
+
+    .container-dashboard {
+        margin-top: 2px;
+    }
+
+    .left-menu {
+        position: fixed;
+        z-index: 999;
+    }
+
+    .top-menu {
+        position: fixed;
+        left: 20%;
+        z-index: 998;
+    }
+
+    .content-center {
+        margin-top: 100px;
+        overflow: hidden;
+    }
+
+    #options .menu {
+        display: none !important;
+    }
+
+    div.left-menu-collapse {
+        display: block;
+    }
+
+    .navbar-brand {
+        padding: 12px !important;
+    }
+}
+
+
+
+
+
+/*Random Fixes*/
+
+
+@media (max-width: 500px) {
+    .lets-talk-inner-wrapper {
+        margin-top: 5% !important;
+    }
+}
+
+@media (min-width: 800px) and (max-width: 1100px) {
+
+    .lets-talk-inner-wrapper {
+        width: 60% !important;
+        margin: 5% auto;
+        padding: 20px;
+        background: #f9f9f9;
+        border-radius: 20px;
+        border: 4px solid #E74139;
+    }
+}
+
+
+
+@media (min-width: 768px ) and (max-width: 1199px) {
+
+
+
+
+    .lets-talk-inner-wrapper2 {
+        border: 1px solid #777;
+        box-shadow: 1px 1px 3px #777;
+    }
+
+    .lets-talk-header {
+        margin: 0px auto;
+        display: block;
+        border-bottom: 3px solid #e74139;
+        min-width: 100px;
+        width: 200px;
+        text-align: center;
+        padding-bottom: 10px;
+        margin-bottom: 10px;
+    }
+}
+
+.lets-talk-inner-wrapper {
+    width: 400px;
+    margin: 3vh auto;
+    padding: 20px;
+    background: #f9f9f9;
+    border-radius: 20px;
+    border: 4px solid #444;
+}
+
+
+
+@media (max-width: 800px) {
+    .lets-talk-inner-wrapper {
+        width: 90%;
+        margin: 5% auto;
+        padding: 20px;
+        background: #f9f9f9;
+        border-radius: 20px;/
+        border: 4px solid #E74139;
+    }
+}
+
+
+
+#Personal-info, #tax-question {
+    margin: 50px auto;
+}
+
+    .input-group button span, #tax-question .input-group button span {
+        color: #888 !important;
+    }
+
+    .input-group button, #tax-question .input-group button {
+        background: #f1f1f1;
+        border: 1px solid #999 !important;
+    }
+
+    .input-group input, #tax-question .input-group input, #tax-question .input-group textarea {
+        border: none !important;
+        width: 85% !important;
+        margin-right: 10px;
+        background: #e1e1e1 !important;
+    }
+
+
+
+        .input-group input:focus, #tax-question .input-group input:focus, #tax-question .input-group textarea:focus {
+            background: #f1f1f1 !important;
+            border: none !important;
+            box-shadow: none !important;
+        }
+
+.submit-button {
+    clear: both;
+}
+
+    .submit-button input {
+        background: #e74139 !important;
+        margin-top: 20px !important;
+        border: 1px solid #e74139 !important;
+    }
+
+        .submit-button input:hover {
+            background: #FFF !important;
+            border: 1px solid #FFF !important;
+        }
+
+
+
+
+
+#letsTalkVerify, #letsTalkNext, #loginFormSubmit, #letsTalkFormSubmit {
+    background: #e74139 !important;
+    border: none;
+    height: 35px;
+    margin-top: -1px;
+}
+
+
+
+    #letsTalkVerify:hover, #letsTalkNext:hover, #loginFormSubmit:hover, #letsTalkFormSubmit:hover {
+        color: #e74139 !important;
+        background: #FFF !important;
+    }
+
+.letsTalkSubmit {
+    background: #152D58 !important;
+}
+
+
+.checkbox-inline {
+    padding-bottom: 20px !important;
+}
+
+    .checkbox-inline input {
+        height: 18px;
+    }
+
+#whyInfo:hover {
+    cursor: help;
+}
+
+
+.fb-button {
+    background: #12274C;
+    background: -webkit-linear-gradient(#45629D, #12274C);
+    background: -o-linear-gradient(#45629D, #12274C);
+    background: -moz-linear-gradient(#45629D, #12274C);
+    background: linear-gradient(#45629D, #12274C);
+}
+
+.lets-talk-inner-wrapper {
+    background: #F1f1f1;
+    background: -webkit-linear-gradient(#f1f1f1, #E6E6E6);
+    background: -o-linear-gradient(#f1f1f1, #E6E6E6);
+    background: -moz-linear-gradient(#f1f1f1, #E6E6E6);
+    background: linear-gradient(#f1f1f1, #E6E6E6);
+}

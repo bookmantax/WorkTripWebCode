@@ -1,0 +1,230 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="WorktripModelStoreContainer" CdmEntityContainer="WorktripEntities">
+    <EntitySetMapping Name="Airlines">
+      <EntityTypeMapping TypeName="WorktripModel.Airline">
+        <MappingFragment StoreEntitySet="Airline">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="IATA" ColumnName="IATA" />
+          <ScalarProperty Name="ICAO" ColumnName="ICAO" />
+          <ScalarProperty Name="Callsign" ColumnName="Callsign" />
+          <ScalarProperty Name="HubAirport" ColumnName="HubAirport" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Roles">
+      <EntityTypeMapping TypeName="WorktripModel.Role">
+        <MappingFragment StoreEntitySet="Role">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Status">
+      <EntityTypeMapping TypeName="WorktripModel.Status">
+        <MappingFragment StoreEntitySet="Status">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="UserClaims">
+      <EntityTypeMapping TypeName="WorktripModel.UserClaim">
+        <MappingFragment StoreEntitySet="UserClaim">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="UserId" ColumnName="UserId" />
+          <ScalarProperty Name="ClaimType" ColumnName="ClaimType" />
+          <ScalarProperty Name="ClaimValue" ColumnName="ClaimValue" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="UserLogins">
+      <EntityTypeMapping TypeName="WorktripModel.UserLogin">
+        <MappingFragment StoreEntitySet="UserLogin">
+          <ScalarProperty Name="LoginProvider" ColumnName="LoginProvider" />
+          <ScalarProperty Name="ProviderKey" ColumnName="ProviderKey" />
+          <ScalarProperty Name="UserId" ColumnName="UserId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="UserPerDiems">
+      <EntityTypeMapping TypeName="WorktripModel.UserPerDiem">
+        <MappingFragment StoreEntitySet="UserPerDiem">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="UserId" ColumnName="UserId" />
+          <ScalarProperty Name="Month" ColumnName="Month" />
+          <ScalarProperty Name="Year" ColumnName="Year" />
+          <ScalarProperty Name="Allowance" ColumnName="Allowance" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Airports">
+      <EntityTypeMapping TypeName="WorktripModel.Airport">
+        <MappingFragment StoreEntitySet="Airport">
+          <ScalarProperty Name="City" ColumnName="City" />
+          <ScalarProperty Name="NumAirports" ColumnName="NumAirports" />
+          <ScalarProperty Name="Lon" ColumnName="Lon" />
+          <ScalarProperty Name="Lat" ColumnName="Lat" />
+          <ScalarProperty Name="Timezone" ColumnName="Timezone" />
+          <ScalarProperty Name="CountryCode" ColumnName="CountryCode" />
+          <ScalarProperty Name="CountryName" ColumnName="CountryName" />
+          <ScalarProperty Name="CityName" ColumnName="CityName" />
+          <ScalarProperty Name="CityCode" ColumnName="CityCode" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Code" ColumnName="Code" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="UserMiscDocs">
+      <EntityTypeMapping TypeName="WorktripModel.UserMiscDoc">
+        <MappingFragment StoreEntitySet="UserMiscDocs">
+          <ScalarProperty Name="Year" ColumnName="Year" />
+          <ScalarProperty Name="UserId" ColumnName="UserId" />
+          <ScalarProperty Name="Date" ColumnName="Date" />
+          <ScalarProperty Name="Path" ColumnName="Path" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="UserQuestions">
+      <EntityTypeMapping TypeName="WorktripModel.UserQuestion">
+        <MappingFragment StoreEntitySet="UserQuestion">
+          <ScalarProperty Name="Date" ColumnName="Date" />
+          <ScalarProperty Name="TaxYear" ColumnName="TaxYear" />
+          <ScalarProperty Name="AnsweredBy" ColumnName="AnsweredBy" />
+          <ScalarProperty Name="Answer" ColumnName="Answer" />
+          <ScalarProperty Name="AskedBy" ColumnName="AskedBy" />
+          <ScalarProperty Name="Question" ColumnName="Question" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="UserActionsLogs">
+      <EntityTypeMapping TypeName="WorktripModel.UserActionsLog">
+        <MappingFragment StoreEntitySet="UserActionsLog">
+          <ScalarProperty Name="Timestamp" ColumnName="Timestamp" />
+          <ScalarProperty Name="Action" ColumnName="Action" />
+          <ScalarProperty Name="UserId" ColumnName="UserId" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="PerDiemRates">
+      <EntityTypeMapping TypeName="WorktripModel.PerDiemRate">
+        <MappingFragment StoreEntitySet="PerDiemRates">
+          <ScalarProperty Name="Rate" ColumnName="Rate" />
+          <ScalarProperty Name="AirportCode" ColumnName="AirportCode" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="UserTaxReturns">
+      <EntityTypeMapping TypeName="WorktripModel.UserTaxReturn">
+        <MappingFragment StoreEntitySet="UserTaxReturn">
+          <ScalarProperty Name="Year" ColumnName="Year" />
+          <ScalarProperty Name="UserId" ColumnName="UserId" />
+          <ScalarProperty Name="Date" ColumnName="Date" />
+          <ScalarProperty Name="Path" ColumnName="Path" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="UserMiscTaxInfoes">
+      <EntityTypeMapping TypeName="WorktripModel.UserMiscTaxInfo">
+        <MappingFragment StoreEntitySet="UserMiscTaxInfo">
+          <ScalarProperty Name="InternationalLayovers" ColumnName="InternationalLayovers" />
+          <ScalarProperty Name="DLState" ColumnName="DLState" />
+          <ScalarProperty Name="LayoversPerDiem" ColumnName="LayoversPerDiem" />
+          <ScalarProperty Name="TaxReturnDocument" ColumnName="TaxReturnDocument" />
+          <ScalarProperty Name="TaxReturn" ColumnName="TaxReturn" />
+          <ScalarProperty Name="PreparerNotes" ColumnName="PreparerNotes" />
+          <ScalarProperty Name="Airline" ColumnName="Airline" />
+          <ScalarProperty Name="UnreimbursedExpenses" ColumnName="UnreimbursedExpenses" />
+          <ScalarProperty Name="IdentityFees" ColumnName="IdentityFees" />
+          <ScalarProperty Name="InternetBill" ColumnName="InternetBill" />
+          <ScalarProperty Name="CellphoneBill" ColumnName="CellphoneBill" />
+          <ScalarProperty Name="TechPurchasesFees" ColumnName="TechPurchasesFees" />
+          <ScalarProperty Name="FlightGearLuggageFees" ColumnName="FlightGearLuggageFees" />
+          <ScalarProperty Name="LaundryFees" ColumnName="LaundryFees" />
+          <ScalarProperty Name="ClothingFees" ColumnName="ClothingFees" />
+          <ScalarProperty Name="TransactionalFees" ColumnName="TransactionalFees" />
+          <ScalarProperty Name="TotalSpentLayoverTransportation" ColumnName="TotalSpentLayoverTransportation" />
+          <ScalarProperty Name="DriverLayoverTips" ColumnName="DriverLayoverTips" />
+          <ScalarProperty Name="DaysInTrainingOrAway" ColumnName="DaysInTrainingOrAway" />
+          <ScalarProperty Name="BaseAirportCode" ColumnName="BaseAirportCode" />
+          <ScalarProperty Name="TaxYear" ColumnName="TaxYear" />
+          <ScalarProperty Name="UserId" ColumnName="UserId" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="PreparerNotes">
+      <EntityTypeMapping TypeName="WorktripModel.PreparerNote">
+        <MappingFragment StoreEntitySet="PreparerNotes">
+          <ScalarProperty Name="NoteCreatorId" ColumnName="NoteCreatorId" />
+          <ScalarProperty Name="TaxYear" ColumnName="TaxYear" />
+          <ScalarProperty Name="Date" ColumnName="Date" />
+          <ScalarProperty Name="Notes" ColumnName="Notes" />
+          <ScalarProperty Name="UserId" ColumnName="UserId" />
+          <ScalarProperty Name="PreparerId" ColumnName="PreparerId" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Users">
+      <EntityTypeMapping TypeName="WorktripModel.User">
+        <MappingFragment StoreEntitySet="User">
+          <ScalarProperty Name="Zip" ColumnName="Zip" />
+          <ScalarProperty Name="State" ColumnName="State" />
+          <ScalarProperty Name="City" ColumnName="City" />
+          <ScalarProperty Name="BankAccountNumber" ColumnName="BankAccountNumber" />
+          <ScalarProperty Name="RoutingNumber" ColumnName="RoutingNumber" />
+          <ScalarProperty Name="BankName" ColumnName="BankName" />
+          <ScalarProperty Name="SignUpTime" ColumnName="SignUpTime" />
+          <ScalarProperty Name="FirstTimeLogin" ColumnName="FirstTimeLogin" />
+          <ScalarProperty Name="DOB" ColumnName="DOB" />
+          <ScalarProperty Name="Address" ColumnName="Address" />
+          <ScalarProperty Name="LastName" ColumnName="LastName" />
+          <ScalarProperty Name="MiddleName" ColumnName="MiddleName" />
+          <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+          <ScalarProperty Name="UserName" ColumnName="UserName" />
+          <ScalarProperty Name="AccessFailedCount" ColumnName="AccessFailedCount" />
+          <ScalarProperty Name="LockoutEnabled" ColumnName="LockoutEnabled" />
+          <ScalarProperty Name="LockoutEndDateUtc" ColumnName="LockoutEndDateUtc" />
+          <ScalarProperty Name="TwoFactorEnabled" ColumnName="TwoFactorEnabled" />
+          <ScalarProperty Name="PhoneNumberConfirmed" ColumnName="PhoneNumberConfirmed" />
+          <ScalarProperty Name="PhoneNumber" ColumnName="PhoneNumber" />
+          <ScalarProperty Name="SecurityStamp" ColumnName="SecurityStamp" />
+          <ScalarProperty Name="PasswordHash" ColumnName="PasswordHash" />
+          <ScalarProperty Name="EmailConfirmed" ColumnName="EmailConfirmed" />
+          <ScalarProperty Name="Email" ColumnName="Email" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <AssociationSetMapping Name="UserRole" TypeName="WorktripModel.UserRole" StoreEntitySet="UserRole">
+      <EndProperty Name="User">
+        <ScalarProperty Name="Id" ColumnName="UserId" />
+      </EndProperty>
+      <EndProperty Name="Role">
+        <ScalarProperty Name="Id" ColumnName="RoleId" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <EntitySetMapping Name="UserToPreparers">
+      <EntityTypeMapping TypeName="WorktripModel.UserToPreparer">
+        <MappingFragment StoreEntitySet="UserToPreparer">
+          <ScalarProperty Name="FirstModified" ColumnName="FirstModified" />
+          <ScalarProperty Name="ColorCode" ColumnName="ColorCode" />
+          <ScalarProperty Name="PaidAmount" ColumnName="PaidAmount" />
+          <ScalarProperty Name="Fee" ColumnName="Fee" />
+          <ScalarProperty Name="Year" ColumnName="Year" />
+          <ScalarProperty Name="StatusId" ColumnName="StatusId" />
+          <ScalarProperty Name="PreparerId" ColumnName="PreparerId" />
+          <ScalarProperty Name="UserId" ColumnName="UserId" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>

@@ -157,9 +157,11 @@ namespace Worktrip.Models
                     FirstModifiedString = links[u.Id].FirstModified.HasValue ? DateTime.SpecifyKind(links[u.Id].FirstModified.Value, DateTimeKind.Utc).ToString("s") + "Z" : ""
                 });
 
-                var customersSorted = customers.OrderByDescending(c => c.Color).ThenBy(b => b.FirstModified);
+                var customersSorted = customers.OrderByDescending(c => c.Color).ThenByDescending(b => b.FirstModified);
 
-                return customersSorted.ToList();
+                var finalCustomersSorted = SortUserColorCodes(customersSorted.ToList());
+
+                return finalCustomersSorted.ToList();
             }
         }
 
@@ -201,22 +203,22 @@ namespace Worktrip.Models
                     }
                 }
 
-                var resultsSorted = resultsList.OrderByDescending(c => c.Color).ThenByDescending(b => b.FirstModified.HasValue).ThenBy(a => a.FirstModified);
+                var resultsSorted = resultsList.OrderByDescending(c => c.Color).ThenByDescending(b => b.FirstModified.HasValue).ThenByDescending(a => a.FirstModified);
 
 
                 if (!String.IsNullOrEmpty(query))
                 {
                     resultsSorted = resultsSorted.Where(u => 
-                        ((      u.FirstName + " " + u.LastName).StartsWith(query) ||
-                                u.LastName.StartsWith(query) ||
-                                (u.FirstName + " " + u.MiddleName + " " + u.LastName).StartsWith(query) ||
-                                u.Email.StartsWith(query)
+                        ((      u.FirstName != null && u.LastName != null && (u.FirstName.ToLower() + " " + u.LastName.ToLower()).StartsWith(query.ToLower())) ||
+                                u.LastName != null && (u.LastName.ToLower().StartsWith(query.ToLower())) ||
+                                (u.FirstName != null && u.LastName != null && u.MiddleName != null && (u.FirstName.ToLower() + " " + u.MiddleName.ToLower() + " " + u.LastName.ToLower()).StartsWith(query.ToLower())) ||
+                                (u.Email != null && u.Email.ToLower().StartsWith(query.ToLower()))
                         )).OrderBy(l => l.LastName);
                 }
 
                 var preparers = Preparers.GetPreparers().ToDictionary(p => p.Id, p => p);
 
-                var retrieved = resultsSorted.ToList();
+                var retrieved = SortUserColorCodes(resultsSorted.ToList());
 
                 foreach (var r in retrieved)
                 {
@@ -228,6 +230,28 @@ namespace Worktrip.Models
 
                 return retrieved;
             }
+        }
+
+        private static List<UserSmallInfo> SortUserColorCodes(List<UserSmallInfo> customers)
+        {
+            List<UserSmallInfo> finalSortedCustomers = new List<UserSmallInfo>();
+
+            finalSortedCustomers.AddRange(customers.Where(c => c.Color == "#fc58a1"));//New Signup
+            finalSortedCustomers.AddRange(customers.Where(c => c.Color == "#58c4fc"));//Existing Signup
+            finalSortedCustomers.AddRange(customers.Where(c => c.Color == "#fc9816"));//Tax WIP Cristy
+            finalSortedCustomers.AddRange(customers.Where(c => c.Color == "#58fc60"));//Tax WIP Jonay
+            finalSortedCustomers.AddRange(customers.Where(c => c.Color == "#F6F792"));//Tax WIP Toriya
+            finalSortedCustomers.AddRange(customers.Where(c => c.Color == "#00A388"));//Review Cristy
+            finalSortedCustomers.AddRange(customers.Where(c => c.Color == "#FF8598"));//Review Toriya
+            finalSortedCustomers.AddRange(customers.Where(c => c.Color == "#f6fc58"));//Final Call Schd
+            finalSortedCustomers.AddRange(customers.Where(c => c.Color == "#fc302b"));//Its Complicated
+            finalSortedCustomers.AddRange(customers.Where(c => c.Color == "#0d9ebd"));//Final Call Time
+            finalSortedCustomers.AddRange(customers.Where(c => c.Color == "#2980B9"));//Finished
+            finalSortedCustomers.AddRange(customers.Where(c => c.Color == "#E74C3C"));//No Reply
+            finalSortedCustomers.AddRange(customers.Where(c => c.Color == "#FFFFFF"));//No No
+            finalSortedCustomers.AddRange(customers.Where(c => c.Color == "#EB7F00"));//Orange
+
+            return finalSortedCustomers;
         }
     }
 

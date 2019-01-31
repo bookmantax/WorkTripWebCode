@@ -207,7 +207,7 @@ namespace Worktrip.Controllers
 
         [HttpPost]
         [AllowAnonymous]
-        public JsonResult RegisterAndSendTextCode(string phoneNumber, string firstName, string lastName)
+        public JsonResult RegisterAndSendTextCode(string phoneNumber, string firstName, string lastName, string promoCode = null)
         {
             var user = new ApplicationUser
             {
@@ -266,7 +266,7 @@ namespace Worktrip.Controllers
                 using (var db = new WorktripEntities())
                 {
                     //create empty user->preparer link
-                    UserInfoViewModel.GetOrCreateUserInfo(db, user.Id, DateTime.Now.AddYears(-1).Year);
+                    UserInfoViewModel.GetOrCreateUserInfo(db, user.Id, DateTime.Now.AddYears(-1).Year, promoCode);
 
                     //text all preparers regarding new user sign up
                     var preparers = db.Users.Include(u => u.Roles).Where(u => u.Roles.Any(r => r.Name == "Preparer")).ToList();

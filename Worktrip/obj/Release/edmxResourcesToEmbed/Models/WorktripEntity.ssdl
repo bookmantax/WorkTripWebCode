@@ -1,0 +1,529 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="WorktripModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012.Azure" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="Airline">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="nvarchar" MaxLength="256" Nullable="false" />
+    <Property Name="IATA" Type="nchar" MaxLength="2" />
+    <Property Name="ICAO" Type="nchar" MaxLength="3" Nullable="false" />
+    <Property Name="Callsign" Type="nvarchar" MaxLength="100" />
+    <Property Name="HubAirport" Type="nvarchar" MaxLength="256" />
+  </EntityType>
+  <EntityType Name="Airport">
+    <Key>
+      <PropertyRef Name="Code" />
+    </Key>
+    <Property Name="Code" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="Name" Type="varchar" MaxLength="200" />
+    <Property Name="CityCode" Type="varchar" MaxLength="50" />
+    <Property Name="CityName" Type="varchar" MaxLength="200" />
+    <Property Name="CountryName" Type="varchar" MaxLength="200" />
+    <Property Name="CountryCode" Type="varchar" MaxLength="200" />
+    <Property Name="Timezone" Type="varchar" MaxLength="8" />
+    <Property Name="Lat" Type="varchar" MaxLength="32" />
+    <Property Name="Lon" Type="varchar" MaxLength="32" />
+    <Property Name="NumAirports" Type="int" />
+    <Property Name="City" Type="bit" />
+  </EntityType>
+  <EntityType Name="PerDiemRates">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="AirportCode" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="Rate" Type="float" Nullable="false" />
+  </EntityType>
+  <EntityType Name="PreparerNotes">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="PreparerId" Type="nvarchar" MaxLength="128" Nullable="false" />
+    <Property Name="UserId" Type="nvarchar" MaxLength="128" Nullable="false" />
+    <Property Name="Notes" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Date" Type="datetime" Nullable="false" />
+    <Property Name="TaxYear" Type="int" Nullable="false" />
+    <Property Name="NoteCreatorId" Type="nvarchar" MaxLength="128" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Role">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="nvarchar" MaxLength="128" Nullable="false" />
+    <Property Name="Name" Type="nvarchar" MaxLength="256" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Status">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+  </EntityType>
+  <EntityType Name="User">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="nvarchar" MaxLength="128" Nullable="false" />
+    <Property Name="Email" Type="nvarchar" MaxLength="256" />
+    <Property Name="EmailConfirmed" Type="bit" Nullable="false" />
+    <Property Name="PasswordHash" Type="nvarchar(max)" />
+    <Property Name="SecurityStamp" Type="nvarchar(max)" />
+    <Property Name="PhoneNumber" Type="nvarchar(max)" />
+    <Property Name="PhoneNumberConfirmed" Type="bit" Nullable="false" />
+    <Property Name="TwoFactorEnabled" Type="bit" Nullable="false" />
+    <Property Name="LockoutEndDateUtc" Type="datetime" />
+    <Property Name="LockoutEnabled" Type="bit" Nullable="false" />
+    <Property Name="AccessFailedCount" Type="int" Nullable="false" />
+    <Property Name="UserName" Type="nvarchar" MaxLength="256" Nullable="false" />
+    <Property Name="FirstName" Type="nvarchar" MaxLength="50" />
+    <Property Name="MiddleName" Type="nvarchar" MaxLength="50" />
+    <Property Name="LastName" Type="nvarchar" MaxLength="50" />
+    <Property Name="Address" Type="nvarchar" MaxLength="1024" />
+    <Property Name="DOB" Type="date" />
+    <Property Name="FirstTimeLogin" Type="bit" Nullable="false" />
+    <Property Name="SignUpTime" Type="datetime" />
+    <Property Name="BankName" Type="nvarchar" MaxLength="300" />
+    <Property Name="RoutingNumber" Type="nvarchar" MaxLength="12" />
+    <Property Name="BankAccountNumber" Type="nvarchar" MaxLength="20" />
+    <Property Name="City" Type="nvarchar" MaxLength="256" />
+    <Property Name="State" Type="nvarchar" MaxLength="256" />
+    <Property Name="Zip" Type="nvarchar" MaxLength="5" />
+  </EntityType>
+  <EntityType Name="UserActionsLog">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="UserId" Type="nvarchar" MaxLength="128" />
+    <Property Name="Action" Type="nvarchar" MaxLength="500" />
+    <Property Name="Timestamp" Type="datetime" />
+  </EntityType>
+  <EntityType Name="UserClaim">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="UserId" Type="nvarchar" MaxLength="128" Nullable="false" />
+    <Property Name="ClaimType" Type="nvarchar(max)" />
+    <Property Name="ClaimValue" Type="nvarchar(max)" />
+  </EntityType>
+  <EntityType Name="UserLogin">
+    <Key>
+      <PropertyRef Name="LoginProvider" />
+      <PropertyRef Name="ProviderKey" />
+      <PropertyRef Name="UserId" />
+    </Key>
+    <Property Name="LoginProvider" Type="nvarchar" MaxLength="128" Nullable="false" />
+    <Property Name="ProviderKey" Type="nvarchar" MaxLength="128" Nullable="false" />
+    <Property Name="UserId" Type="nvarchar" MaxLength="128" Nullable="false" />
+  </EntityType>
+  <EntityType Name="UserMiscDocs">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Path" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Date" Type="date" Nullable="false" />
+    <Property Name="UserId" Type="nvarchar" MaxLength="128" Nullable="false" />
+    <Property Name="Year" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="UserMiscTaxInfo">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="UserId" Type="nvarchar" MaxLength="128" />
+    <Property Name="TaxYear" Type="int" Nullable="false" />
+    <Property Name="BaseAirportCode" Type="varchar" MaxLength="50" />
+    <Property Name="DaysInTrainingOrAway" Type="int" />
+    <Property Name="DriverLayoverTips" Type="float" />
+    <Property Name="TotalSpentLayoverTransportation" Type="float" />
+    <Property Name="TransactionalFees" Type="float" />
+    <Property Name="ClothingFees" Type="float" />
+    <Property Name="LaundryFees" Type="float" />
+    <Property Name="FlightGearLuggageFees" Type="float" />
+    <Property Name="TechPurchasesFees" Type="float" />
+    <Property Name="CellphoneBill" Type="float" />
+    <Property Name="InternetBill" Type="float" />
+    <Property Name="IdentityFees" Type="float" />
+    <Property Name="UnreimbursedExpenses" Type="float" />
+    <Property Name="Airline" Type="nvarchar" MaxLength="256" />
+    <Property Name="PreparerNotes" Type="nvarchar(max)" />
+    <Property Name="TaxReturn" Type="money" />
+    <Property Name="TaxReturnDocument" Type="nvarchar(max)" />
+    <Property Name="LayoversPerDiem" Type="float" />
+    <Property Name="DLState" Type="varchar" MaxLength="50" />
+    <Property Name="InternationalLayovers" Type="bit" />
+  </EntityType>
+  <EntityType Name="UserPerDiem">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="UserId" Type="nvarchar" MaxLength="128" Nullable="false" />
+    <Property Name="Month" Type="nvarchar" MaxLength="24" />
+    <Property Name="Year" Type="int" Nullable="false" />
+    <Property Name="Allowance" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="UserQuestion">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Question" Type="nvarchar(max)" />
+    <Property Name="AskedBy" Type="nvarchar" MaxLength="128" />
+    <Property Name="Answer" Type="nvarchar(max)" />
+    <Property Name="AnsweredBy" Type="nvarchar" MaxLength="128" />
+    <Property Name="TaxYear" Type="int" Nullable="false" />
+    <Property Name="Date" Type="date" Nullable="false" />
+  </EntityType>
+  <EntityType Name="UserRole">
+    <Key>
+      <PropertyRef Name="UserId" />
+      <PropertyRef Name="RoleId" />
+    </Key>
+    <Property Name="UserId" Type="nvarchar" MaxLength="128" Nullable="false" />
+    <Property Name="RoleId" Type="nvarchar" MaxLength="128" Nullable="false" />
+  </EntityType>
+  <EntityType Name="UserTaxReturn">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Path" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Date" Type="date" Nullable="false" />
+    <Property Name="UserId" Type="nvarchar" MaxLength="128" Nullable="false" />
+    <Property Name="Year" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="UserToPreparer">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="UserId" Type="nvarchar" MaxLength="128" Nullable="false" />
+    <Property Name="PreparerId" Type="nvarchar" MaxLength="128" />
+    <Property Name="StatusId" Type="int" Nullable="false" />
+    <Property Name="Year" Type="int" Nullable="false" />
+    <Property Name="Fee" Type="money" />
+    <Property Name="PaidAmount" Type="money" />
+    <Property Name="ColorCode" Type="nvarchar" MaxLength="10" />
+    <Property Name="FirstModified" Type="datetime" />
+  </EntityType>
+  <Association Name="FK_ActionUser_User">
+    <End Role="User" Type="Self.User" Multiplicity="0..1" />
+    <End Role="UserActionsLog" Type="Self.UserActionsLog" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="UserActionsLog">
+        <PropertyRef Name="UserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_dbo_UserClaim_dbo_User_UserId">
+    <End Role="User" Type="Self.User" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="UserClaim" Type="Self.UserClaim" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="UserClaim">
+        <PropertyRef Name="UserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_dbo_UserLogin_dbo_User_UserId">
+    <End Role="User" Type="Self.User" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="UserLogin" Type="Self.UserLogin" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="UserLogin">
+        <PropertyRef Name="UserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_dbo_UserRole_dbo_Role_RoleId">
+    <End Role="Role" Type="Self.Role" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="UserRole" Type="Self.UserRole" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Role">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="UserRole">
+        <PropertyRef Name="RoleId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_dbo_UserRole_dbo_User_UserId">
+    <End Role="User" Type="Self.User" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="UserRole" Type="Self.UserRole" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="UserRole">
+        <PropertyRef Name="UserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_MiscTax_Airport">
+    <End Role="Airport" Type="Self.Airport" Multiplicity="0..1" />
+    <End Role="UserMiscTaxInfo" Type="Self.UserMiscTaxInfo" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Airport">
+        <PropertyRef Name="Code" />
+      </Principal>
+      <Dependent Role="UserMiscTaxInfo">
+        <PropertyRef Name="BaseAirportCode" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_MiscTax_User">
+    <End Role="User" Type="Self.User" Multiplicity="0..1" />
+    <End Role="UserMiscTaxInfo" Type="Self.UserMiscTaxInfo" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="UserMiscTaxInfo">
+        <PropertyRef Name="UserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_PreparerNotes_TaxPreparer">
+    <End Role="User" Type="Self.User" Multiplicity="1" />
+    <End Role="PreparerNotes" Type="Self.PreparerNotes" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="PreparerNotes">
+        <PropertyRef Name="PreparerId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_PreparerNotes_TaxPreparer_NoteCreator">
+    <End Role="User" Type="Self.User" Multiplicity="1" />
+    <End Role="PreparerNotes" Type="Self.PreparerNotes" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="PreparerNotes">
+        <PropertyRef Name="NoteCreatorId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_PreparerNotes_User">
+    <End Role="User" Type="Self.User" Multiplicity="1" />
+    <End Role="PreparerNotes" Type="Self.PreparerNotes" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="PreparerNotes">
+        <PropertyRef Name="UserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_UserMiscDocs_User">
+    <End Role="User" Type="Self.User" Multiplicity="1" />
+    <End Role="UserMiscDocs" Type="Self.UserMiscDocs" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="UserMiscDocs">
+        <PropertyRef Name="UserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_UserPerDiem_User">
+    <End Role="User" Type="Self.User" Multiplicity="1" />
+    <End Role="UserPerDiem" Type="Self.UserPerDiem" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="UserPerDiem">
+        <PropertyRef Name="UserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_UserQuestion_User">
+    <End Role="User" Type="Self.User" Multiplicity="0..1" />
+    <End Role="UserQuestion" Type="Self.UserQuestion" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="UserQuestion">
+        <PropertyRef Name="AskedBy" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_UserQuestion_UserAnswerer">
+    <End Role="User" Type="Self.User" Multiplicity="0..1" />
+    <End Role="UserQuestion" Type="Self.UserQuestion" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="UserQuestion">
+        <PropertyRef Name="AnsweredBy" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_UserTaxReturn">
+    <End Role="User" Type="Self.User" Multiplicity="1" />
+    <End Role="UserTaxReturn" Type="Self.UserTaxReturn" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="UserTaxReturn">
+        <PropertyRef Name="UserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_UserToPreparer_Status">
+    <End Role="Status" Type="Self.Status" Multiplicity="1" />
+    <End Role="UserToPreparer" Type="Self.UserToPreparer" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Status">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="UserToPreparer">
+        <PropertyRef Name="StatusId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_UserToPreparer_TaxPreparer">
+    <End Role="User" Type="Self.User" Multiplicity="0..1" />
+    <End Role="UserToPreparer" Type="Self.UserToPreparer" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="UserToPreparer">
+        <PropertyRef Name="PreparerId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_UserToPreparer_User">
+    <End Role="User" Type="Self.User" Multiplicity="1" />
+    <End Role="UserToPreparer" Type="Self.UserToPreparer" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="UserToPreparer">
+        <PropertyRef Name="UserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="WorktripModelStoreContainer">
+    <EntitySet Name="Airline" EntityType="Self.Airline" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Airport" EntityType="Self.Airport" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="PerDiemRates" EntityType="Self.PerDiemRates" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="PreparerNotes" EntityType="Self.PreparerNotes" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Role" EntityType="Self.Role" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Status" EntityType="Self.Status" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="User" EntityType="Self.User" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="UserActionsLog" EntityType="Self.UserActionsLog" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="UserClaim" EntityType="Self.UserClaim" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="UserLogin" EntityType="Self.UserLogin" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="UserMiscDocs" EntityType="Self.UserMiscDocs" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="UserMiscTaxInfo" EntityType="Self.UserMiscTaxInfo" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="UserPerDiem" EntityType="Self.UserPerDiem" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="UserQuestion" EntityType="Self.UserQuestion" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="UserRole" EntityType="Self.UserRole" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="UserTaxReturn" EntityType="Self.UserTaxReturn" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="UserToPreparer" EntityType="Self.UserToPreparer" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK_ActionUser_User" Association="Self.FK_ActionUser_User">
+      <End Role="User" EntitySet="User" />
+      <End Role="UserActionsLog" EntitySet="UserActionsLog" />
+    </AssociationSet>
+    <AssociationSet Name="FK_dbo_UserClaim_dbo_User_UserId" Association="Self.FK_dbo_UserClaim_dbo_User_UserId">
+      <End Role="User" EntitySet="User" />
+      <End Role="UserClaim" EntitySet="UserClaim" />
+    </AssociationSet>
+    <AssociationSet Name="FK_dbo_UserLogin_dbo_User_UserId" Association="Self.FK_dbo_UserLogin_dbo_User_UserId">
+      <End Role="User" EntitySet="User" />
+      <End Role="UserLogin" EntitySet="UserLogin" />
+    </AssociationSet>
+    <AssociationSet Name="FK_dbo_UserRole_dbo_Role_RoleId" Association="Self.FK_dbo_UserRole_dbo_Role_RoleId">
+      <End Role="Role" EntitySet="Role" />
+      <End Role="UserRole" EntitySet="UserRole" />
+    </AssociationSet>
+    <AssociationSet Name="FK_dbo_UserRole_dbo_User_UserId" Association="Self.FK_dbo_UserRole_dbo_User_UserId">
+      <End Role="User" EntitySet="User" />
+      <End Role="UserRole" EntitySet="UserRole" />
+    </AssociationSet>
+    <AssociationSet Name="FK_MiscTax_Airport" Association="Self.FK_MiscTax_Airport">
+      <End Role="Airport" EntitySet="Airport" />
+      <End Role="UserMiscTaxInfo" EntitySet="UserMiscTaxInfo" />
+    </AssociationSet>
+    <AssociationSet Name="FK_MiscTax_User" Association="Self.FK_MiscTax_User">
+      <End Role="User" EntitySet="User" />
+      <End Role="UserMiscTaxInfo" EntitySet="UserMiscTaxInfo" />
+    </AssociationSet>
+    <AssociationSet Name="FK_PreparerNotes_TaxPreparer" Association="Self.FK_PreparerNotes_TaxPreparer">
+      <End Role="User" EntitySet="User" />
+      <End Role="PreparerNotes" EntitySet="PreparerNotes" />
+    </AssociationSet>
+    <AssociationSet Name="FK_PreparerNotes_TaxPreparer_NoteCreator" Association="Self.FK_PreparerNotes_TaxPreparer_NoteCreator">
+      <End Role="User" EntitySet="User" />
+      <End Role="PreparerNotes" EntitySet="PreparerNotes" />
+    </AssociationSet>
+    <AssociationSet Name="FK_PreparerNotes_User" Association="Self.FK_PreparerNotes_User">
+      <End Role="User" EntitySet="User" />
+      <End Role="PreparerNotes" EntitySet="PreparerNotes" />
+    </AssociationSet>
+    <AssociationSet Name="FK_UserMiscDocs_User" Association="Self.FK_UserMiscDocs_User">
+      <End Role="User" EntitySet="User" />
+      <End Role="UserMiscDocs" EntitySet="UserMiscDocs" />
+    </AssociationSet>
+    <AssociationSet Name="FK_UserPerDiem_User" Association="Self.FK_UserPerDiem_User">
+      <End Role="User" EntitySet="User" />
+      <End Role="UserPerDiem" EntitySet="UserPerDiem" />
+    </AssociationSet>
+    <AssociationSet Name="FK_UserQuestion_User" Association="Self.FK_UserQuestion_User">
+      <End Role="User" EntitySet="User" />
+      <End Role="UserQuestion" EntitySet="UserQuestion" />
+    </AssociationSet>
+    <AssociationSet Name="FK_UserQuestion_UserAnswerer" Association="Self.FK_UserQuestion_UserAnswerer">
+      <End Role="User" EntitySet="User" />
+      <End Role="UserQuestion" EntitySet="UserQuestion" />
+    </AssociationSet>
+    <AssociationSet Name="FK_UserTaxReturn" Association="Self.FK_UserTaxReturn">
+      <End Role="User" EntitySet="User" />
+      <End Role="UserTaxReturn" EntitySet="UserTaxReturn" />
+    </AssociationSet>
+    <AssociationSet Name="FK_UserToPreparer_Status" Association="Self.FK_UserToPreparer_Status">
+      <End Role="Status" EntitySet="Status" />
+      <End Role="UserToPreparer" EntitySet="UserToPreparer" />
+    </AssociationSet>
+    <AssociationSet Name="FK_UserToPreparer_TaxPreparer" Association="Self.FK_UserToPreparer_TaxPreparer">
+      <End Role="User" EntitySet="User" />
+      <End Role="UserToPreparer" EntitySet="UserToPreparer" />
+    </AssociationSet>
+    <AssociationSet Name="FK_UserToPreparer_User" Association="Self.FK_UserToPreparer_User">
+      <End Role="User" EntitySet="User" />
+      <End Role="UserToPreparer" EntitySet="UserToPreparer" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

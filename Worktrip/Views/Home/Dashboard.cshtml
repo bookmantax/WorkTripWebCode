@@ -1304,19 +1304,27 @@
 
     <div id="welcome-popup" class="dashboard-popup hidden">
         <div class="popup">
-            <h2 class=ribbon>
+            <h2 class=ribbon style="font-family:sans-serif">
                 <i><u>Taxes the Easy Way</u></i>
             </h2>
             <div style="padding:25px;padding-top:10px;font-weight:bold;display:flex;flex-direction:column;align-items:center;">
                 <div>
-                    Welcome to our secure dashboard! One of our tax professionals will contact you shortly. If you'd like to get started:
+                    One of our tax professionals will contact you shortly to schedule a quick tax call. Please get started by:
                 </div>
                 <br />
-                <ul>
+                <ol type="1">
                     <li>Fill out your personal info</li>
-                    <li>Upload tax document images</li>
+                    <li>Upload tax document images
+                        <ul>
+                            <li>W2</li>
+                            <li>Health Savings Account 1099-SA</li>
+                            <li>Student Loan Tax Forms</li>
+                            <li>Etc</li>
+                        </ul>
+                    </li>
+
                     <li>Answer tax questions</li>
-                </ul>
+                </ol>
             </div>
 
             <div class="popup-close"><i class="fa fa-close"></i></div>
@@ -1820,6 +1828,9 @@
                         <div class="col-xs-12 col-xs-offset-0 col-md-4 col-md-offset-1">
                             @{
                                 var recentYear = DateTime.Now.AddYears(-1).ToString("yyyy");
+                                var code = (Model.FirstName == null ? "aa" : Model.FirstName.Substring(0, 2).ToUpper())
+                                    + (Model.LastName == null ? "aa" : Model.LastName.Substring(0, 2).ToUpper())
+                                    + (Model.DOB == null ? "00" : Model.DOB.Substring(Model.DOB.Length - 2, 2));
                                 var fee = (Model.Statuses.ContainsKey(recentYear) ? (Model.Statuses[recentYear].Fee.HasValue ? Model.Statuses[recentYear].Fee.Value : 0) : 0);
                                 var tax = Math.Round(fee * 0.07M, 2);
                             }
@@ -1843,12 +1854,12 @@
                         </div>
                     </div>
                     @*<div class="row border-document @(ViewBag.IsAdmin ? "" : "hidden")">
-                    <h2 class="lets-talk-header">Sign Documents</h2>
-                    <br />
-                    <div class="col-xs-12">
-                        <img src="~/Content/img/1040x.png" style="width: 250px;cursor:pointer;" id="pdfDemoBtn"/>
-                    </div>
-                </div>*@
+                <h2 class="lets-talk-header">Sign Documents</h2>
+                <br />
+                <div class="col-xs-12">
+                    <img src="~/Content/img/1040x.png" style="width: 250px;cursor:pointer;" id="pdfDemoBtn"/>
+                </div>
+            </div>*@
                 </div>
                 <div id="payment-not-ready" style="text-align:center;" class="border-document col-lg-offset-3 col-md-offset-3 col-lg-6 col-md-6 col-sm-12 col-xs-12">
                     <div style="font-size:20px">
@@ -1866,6 +1877,10 @@
                         </i>
                         <br /><br />
                         Your payment of <span class="payment-total">@(((fee + tax).ToString("C2")))</span> has been posted.
+                        <br /><br />
+                        Your unique identification code is: <span class="payment-total">@((code))</span>.
+                        <br />
+                        Please verify your identity by sending this code to our Instagram or Facebook using your personal Social Media account.
                         <br /><br />
                         We'll let you know when your taxes are filed!
                         <br />

@@ -215,6 +215,7 @@
           <Property Name="PaidAmount" Type="money" />
           <Property Name="ColorCode" Type="nvarchar" MaxLength="10" />
           <Property Name="FirstModified" Type="datetime" />
+          <Property Name="PromoCode" Type="nvarchar" MaxLength="128" />
         </EntityType>
         <Association Name="FK_ActionUser_User">
           <End Role="User" Type="Self.User" Multiplicity="0..1" />
@@ -852,7 +853,7 @@
           <NavigationProperty Name="Roles" Relationship="WorktripModel.UserRole" FromRole="User" ToRole="Role" />
           <NavigationProperty Name="UserToPreparers" Relationship="WorktripModel.FK_UserToPreparer_TaxPreparer" FromRole="User" ToRole="UserToPreparer" />
           <NavigationProperty Name="UserToPreparers1" Relationship="WorktripModel.FK_UserToPreparer_User" FromRole="User" ToRole="UserToPreparer" />
-        </EntityType>
+          </EntityType>
         <Association Name="FK_PreparerNotes_TaxPreparer">
           <End Type="WorktripModel.User" Role="User" Multiplicity="1" />
           <End Type="WorktripModel.PreparerNote" Role="PreparerNote" Multiplicity="*" />
@@ -1018,6 +1019,7 @@
           <Property Name="PaidAmount" Type="Decimal" Precision="19" Scale="4" />
           <Property Name="ColorCode" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
           <Property Name="FirstModified" Type="DateTime" Precision="3" />
+          <Property Name="PromoCode" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="Status" Relationship="WorktripModel.FK_UserToPreparer_Status" FromRole="UserToPreparer" ToRole="Status" />
           <NavigationProperty Name="User" Relationship="WorktripModel.FK_UserToPreparer_TaxPreparer" FromRole="UserToPreparer" ToRole="User" />
           <NavigationProperty Name="User1" Relationship="WorktripModel.FK_UserToPreparer_User" FromRole="UserToPreparer" ToRole="User" />
@@ -1277,6 +1279,7 @@
           <EntitySetMapping Name="UserToPreparers">
             <EntityTypeMapping TypeName="WorktripModel.UserToPreparer">
               <MappingFragment StoreEntitySet="UserToPreparer">
+                <ScalarProperty Name="PromoCode" ColumnName="PromoCode" />
                 <ScalarProperty Name="FirstModified" ColumnName="FirstModified" />
                 <ScalarProperty Name="ColorCode" ColumnName="ColorCode" />
                 <ScalarProperty Name="PaidAmount" ColumnName="PaidAmount" />

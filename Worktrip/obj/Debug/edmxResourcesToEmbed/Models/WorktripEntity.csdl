@@ -483,6 +483,7 @@
     <Property Name="PaidAmount" Type="Decimal" Precision="19" Scale="4" />
     <Property Name="ColorCode" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
     <Property Name="FirstModified" Type="DateTime" Precision="3" />
+    <Property Name="PromoCode" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
     <NavigationProperty Name="Status" Relationship="WorktripModel.FK_UserToPreparer_Status" FromRole="UserToPreparer" ToRole="Status" />
     <NavigationProperty Name="User" Relationship="WorktripModel.FK_UserToPreparer_TaxPreparer" FromRole="UserToPreparer" ToRole="User" />
     <NavigationProperty Name="User1" Relationship="WorktripModel.FK_UserToPreparer_User" FromRole="UserToPreparer" ToRole="User" />

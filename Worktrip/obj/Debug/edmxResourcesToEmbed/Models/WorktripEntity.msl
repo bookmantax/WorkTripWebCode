@@ -214,6 +214,7 @@
     <EntitySetMapping Name="UserToPreparers">
       <EntityTypeMapping TypeName="WorktripModel.UserToPreparer">
         <MappingFragment StoreEntitySet="UserToPreparer">
+          <ScalarProperty Name="PromoCode" ColumnName="PromoCode" />
           <ScalarProperty Name="FirstModified" ColumnName="FirstModified" />
           <ScalarProperty Name="ColorCode" ColumnName="ColorCode" />
           <ScalarProperty Name="PaidAmount" ColumnName="PaidAmount" />

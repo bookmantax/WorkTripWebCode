@@ -55,18 +55,18 @@
         var colorMapping = {
             '#fc58a1': 'New Sign Up',
             '#58c4fc': 'Existing Sign Up',
-            '#58fc60': 'Scheduled Call',
-            '#fc9816': 'Tax WIP',
+            '#fc9816': 'Tax WIP Cristy',
+            '#58fc60': 'Tax WIP Jonay',
+            '#F6F792': 'Tax WIP Toriya',
+            '#00A388': 'Review Christy',
+            '#FF8598': 'Review Toriya',
             '#f6fc58': 'Final Call Schd',
-            '#0d9ebd': 'Complete',
-            '#fc302b': 'State Unfinished',
-            '#FFFFFF': 'White',
-            '#F6F792': 'Yellow',
-            '#EB7F00': 'Orange',
-            '#2980B9': 'Blue',
-            '#00A388': 'Green',
-            '#E74C3C': 'Red',
-            '#FF8598': 'Pink'
+            '#fc302b': 'Its Complicated',
+            '#0d9ebd': 'Final Call Time',
+            '#2980B9': 'Finished',
+            '#E74C3C': 'No Reply',
+            '#FFFFFF': 'No No',
+            '#EB7F00': 'Orange'
         };
 
         var curTaxYear = parseInt("@DateTime.Now.AddYears(-1).ToString("yyyy")");
@@ -492,7 +492,8 @@
 
                                     $img.click(function(fileData){
                                         return function () {
-                                            downloadDataURI("data:application/pdf;base64," + fileData.Item3, fileData.Item1);
+                                            //downloadDataURI("data:application/pdf;base64," + fileData.Item3, fileData.Item1);
+                                            openDataURI("data:application/pdf;base64," + fileData.Item3);
                                         }
                                     }(file));
                                 } else {
@@ -538,7 +539,7 @@
                 type: "POST",
                 data: {
                     userId: userInfo.Id,
-                    year: curTaxYear
+                    year: taxYear
                 },
                 success: function () {
                 }
@@ -573,6 +574,7 @@
                 (userInfo.TaxInfos[taxYear].DriverLayoverTips || 0)));
 
             $(".modal-dl-state", $modal).text(userInfo.TaxInfos[taxYear].DLState || "");
+            $(".modal-promo-code", $modal).text(userInfo.Statuses[taxYear].PromoCode || "");
 
             if (userInfo.TaxInfos[taxYear].InternationalLayovers != null) {
                 $(".modal-internationalLayovers", $modal).prop('checked', userInfo.TaxInfos[taxYear].InternationalLayovers);
@@ -1118,8 +1120,9 @@
                     clearTimeout(searchTimeout);
                 }
 
-                searchTimeout = setTimeout(function(){
-                    refreshAllUsers(searchVal);
+                searchTimeout = setTimeout(function () {
+                    var year = $("#select-tax-year").val();
+                    refreshAllUsers(searchVal, year);
                     searchTimeout = null;
                 }, 300);
             });
@@ -1284,24 +1287,19 @@
                     <select class="form-control color-select" style="color: #FFF;width:150px">
                         <option value="#fc58a1" style="background: #fc58a1;color:white">New Sign Up</option>
                         <option value="#58c4fc" style="background: #58c4fc;color:white">Existing Sign Up</option>
-                        <option value="#58fc60" style="background: #58fc60;color:white">Scheduled Call</option>
-                        <option value="#fc9816" style="background: #fc9816;color:white">Tax WIP</option>
+                        <option value="#fc9816" style="background: #fc9816;color:white">Tax WIP Cristy</option>
+                        <option value="#58fc60" style="background: #58fc60;color:white">Tax WIP Jonay</option>
+                        <option value="#F6F792" style="background: #F6F792;color:white">Tax WIP Toriya</option>
+                        <option value="#00A388" style="background: #00A388;color:white">Review Cristy</option>
+                        <option value="#FF8598" style="background: #FF8598;color:white">Review Toriya</option>
                         <option value="#f6fc58" style="background: #f6fc58;color:white">Final Call Schd</option>
-                        <option value="#0d9ebd" style="background: #0d9ebd;color:white">Complete</option>
-                        <option value="#fc302b" style="background: #fc302b;color:white">State Unfinished</option>
+                        <option value="#fc302b" style="background: #fc302b;color:white">Its Complicated</option>
+                        <option value="#0d9ebd" style="background: #0d9ebd;color:white">Final Call Time</option>
+                        <option value="#2980B9" style="background: #2980B9;color:white">Finished</option>
+                        <option value="#E74C3C" style="background: #E74C3C;color:white">No Reply</option>
+                        <option value="#FFFFFF" style="background: #FFFFFF;color:black" selected="">No No</option>
+                        <option value="#EB7F00" style="background: #EB7F00;color:white;">Orange</option>
 
-
-                        <option value="#FFFFFF" style="background: #FFFFFF;color:black" selected="">White</option>
-                        <option value="#F6F792" style="background: #F6F792;color:#F6F792">Yellow</option>
-
-                        <option value="#EB7F00" style="background: #EB7F00;color:#EB7F00;">Orange</option>
-                        <option value="#2980B9" style="background: #2980B9;color:#2980B9">Blue</option>
-
-                        <option value="#00A388" style="background: #00A388;color:#00A388;">Green</option>
-
-                        <option value="#E74C3C" style="background: #E74C3C;color:#E74C3C">Red</option>
-
-                        <option value="#FF8598" style="background: #FF8598;color:#FF8598">Pink</option>
                     </select>
 
                     <span style="margin-left:5px; margin-right: 5px;">Status:</span>
@@ -1411,7 +1409,11 @@
                             <div class="modal-training-days panel-body"></div>
                         </div>
                         <div class="panel panel-warning">
-                            <div class="panel-heading">Open User Tabs <input id="internationalLayoverCheckbox" class="modal-internationalLayovers panel-body" type="checkbox"/></div>
+                            <div class="panel-heading">Open User Tabs <input id="internationalLayoverCheckbox" class="modal-internationalLayovers panel-body" type="checkbox" /></div>
+                        </div>
+                        <div class="panel panel-warning">
+                            <div class="panel-heading">Promo Code</div>
+                            <div class="modal-promo-code panel-body"></div>
                         </div>
                         <div class="panel panel-danger">
                             <div class="panel-heading detail-questions-heading" role="tab">

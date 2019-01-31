@@ -1,0 +1,291 @@
+﻿.table-striped > tbody > tr:nth-child(odd) > td, .table-striped > tbody > tr:nth-child(odd) > th {
+    background-color: #f1f1f1;
+}
+
+#main-tabs {
+    margin: 10px;
+    background-color: rgba(255,255,255,0.5);
+}
+
+#loading-cover {
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    width: 100vw;
+    height: 100vh;
+    z-index: 100001;
+    background-color: rgba(0,0,0,0.6);
+    display: none;
+}
+
+    #loading-cover .cp-spinner {
+        position: fixed;
+        left: calc(50vw - 24px);
+        top: calc(50vh - 24px);
+    }
+
+    #loading-cover .cp-boxes:before {
+        background-color: #1d3d74;
+    }
+
+    #loading-cover .cp-boxes:after {
+        background-color: #e74139;
+    }
+
+#my-users-tab h4 {
+    text-align: center;
+}
+
+.user-detail {
+    cursor: pointer;
+}
+
+#user-modal {
+
+}
+
+.ui-dialog {
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px 0px;
+}
+
+
+.ui-resizable-e, .ui-resizable-w {
+    width: 15px;
+}
+
+.ui-resizable-n, .ui-resizable-s {
+    height: 15px;
+}
+
+.ui-resizable-ne, .ui-resizable-se, .ui-resizable-nw{
+    width: 15px;
+    height: 15px;
+}
+
+.ui-dialog.ui-corner-all {
+    min-width: 250px !important;
+}
+
+.ui-dialog .ui-dialog-titlebar-minimize, 
+.ui-dialog .ui-dialog-titlebar-maximize,
+.ui-dialog .ui-dialog-titlebar-restore {
+    height: 20px !important;
+    margin-right: 2px;
+}
+
+.modal-wrapper>.panel-body {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    overflow: auto;
+}
+
+.modal-wrapper > .panel-heading {
+    /*text-align: center;*/
+    display: flex;
+    margin-bottom: 8px;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.tax-status-select {
+    width: 250px;
+}
+
+
+.modal-pi {
+    width: 30%;
+    min-width: 200px;
+    display: flex;
+    flex-direction: column;
+}
+
+.modal-pi {
+    text-align: center;
+}
+
+.user-modal .panel-heading, .user-modal .panel-body{
+    padding: 4px;
+}
+
+.user-modal .panel {
+    margin-bottom: 8px;
+}
+
+.dropdown-menu-tax-year {
+  left: 50%;
+  right: auto;
+  text-align: center;
+  transform: translate(-50%, 0);
+}
+
+.modal-tax-questions {
+    width: 30%;
+    min-width: 200px;
+    display: flex;
+    flex-direction: column;
+    margin-left: 10px;
+    margin-right: 10px;
+    text-align: center;
+}
+
+.modal-docs {
+    width: calc(40% - 22px);
+    min-width: 300px;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    text-align: center;
+}
+
+.modal-user-docs, .modal-user-csvs {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.modal-docs-loading {
+    position: absolute;
+    top: 75px;
+    left: 0px;
+    height: 100px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 999;
+}
+
+.tax-thumbnail {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    cursor: pointer;
+    margin: 5px;
+    font-size: 12px;
+    text-align: center;
+}
+
+.tax-thumbnail-image {
+    /*max-height: 150px;*/
+    border-radius: 5px;
+}
+
+.tax-thumbnail-name {
+    max-width: 150px;
+    overflow: hidden;
+}
+
+.no-preview {
+    height: 100px;
+    width: 100px;
+}
+
+#all-users-search {
+    margin-top: 15px;
+    margin-bottom: 15px;
+    width: 50%;
+    margin-left: 25%;
+}
+
+/*magnific animations*/
+.mfp-with-zoom .mfp-container,
+.mfp-with-zoom.mfp-bg {
+    opacity: 0;
+    -webkit-backface-visibility: hidden;
+    /* ideally, transition speed should match zoom duration */
+    -webkit-transition: all 0.3s ease-out;
+    -moz-transition: all 0.3s ease-out;
+    -o-transition: all 0.3s ease-out;
+    transition: all 0.3s ease-out;
+}
+
+.mfp-with-zoom.mfp-ready .mfp-container {
+    opacity: 1;
+}
+
+.mfp-with-zoom.mfp-ready.mfp-bg {
+    opacity: 0.8;
+}
+
+.mfp-with-zoom.mfp-removing .mfp-container,
+.mfp-with-zoom.mfp-removing.mfp-bg {
+    opacity: 0;
+}
+
+.mfp-rotate {
+    overflow: visible;
+    cursor: pointer;
+    background: transparent;
+    border: 0;
+    -webkit-appearance: none;
+    display: block;
+    outline: none;
+    padding: 0;
+    z-index: 1046;
+    box-shadow: none;
+    touch-action: manipulation;
+    position: absolute;
+    opacity: 0.65;
+    margin: 0;
+    top: 100px;
+    right: 100px;
+    width: 50px;
+    height: 50px;
+}
+
+.mfp-rotate .fa {
+    font-size: 30px;
+    color: rgba(255,255,255,0.8);
+
+}
+
+.laser-pointer {
+    cursor: url('../Content/cat/laser-mouse.png'), auto !important;
+}
+
+
+
+.color-select > option:hover{
+    background-color: inherit;
+    box-shadow: 0 0 10px 100px #FED20F inset;
+    transition: all .2s ease-in-out;
+}
+
+.link-color {
+    color: #337ab7;
+}
+
+.dropzoneArea {
+    padding: 10px;
+    text-align: center;
+    height: 150px;
+    border: 2px dashed #E74139;
+    border-radius: 5px;
+    background: white;
+    overflow-y: auto;
+    overflow-x: auto;
+    display: flex;
+    align-items: center;
+}
+
+.dropzone > .dz-default.dz-message {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.dropzone > .dz-preview {
+    margin-left: auto;
+}
+
+    .dropzone > .dz-preview:last-child {
+        margin-right: auto;
+    }
+
+
+.dropzone.dz-clickable .dz-message, .dropzone.dz-clickable .dz-message * {
+    font-size: 18px;
+    color: darkgray;
+}
