@@ -728,7 +728,7 @@ div.taxes-dropdown-container {
     background: #e74139 !important;
 }
 
-#Personal-info, #tax-question, .border-document {
+#Personal-info, #tax-question, #ynQuestions, .border-document {
     margin: 50px;
     padding-top: 20px;
     padding-bottom: 20px;
@@ -738,7 +738,7 @@ div.taxes-dropdown-container {
 }
 
 @media only screen and (max-width: 500px) {
-    #Personal-info, #tax-question, .border-document {
+    #Personal-info, #tax-question, #ynQuestions, .border-document {
         margin: 10px;
     }
 }

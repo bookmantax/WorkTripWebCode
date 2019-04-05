@@ -80,6 +80,14 @@ namespace Worktrip.Controllers
         }
 
         [Authorize]
+        public JsonResult UpdateYesNoQuestions(UserInfoViewModel userInfo)
+        {
+            userInfo.SaveYesNoQuestions(User.Identity.GetUserId());
+
+            return Json(UserInfoViewModel.GetUserInfo(User.Identity.GetUserId()));
+        }
+
+        [Authorize]
         public JsonResult UpdateTaxInfo(UserInfoViewModel userInfo)
         {
             userInfo.SaveTaxInfo(User.Identity.GetUserId());
@@ -653,6 +661,13 @@ namespace Worktrip.Controllers
         public ActionResult About()
         {
             ViewBag.Message = "Your application description page.";
+
+            return View();
+        }
+
+        public ActionResult Privacy()
+        {
+            ViewBag.Message = "Your Privacy policy page.";
 
             return View();
         }

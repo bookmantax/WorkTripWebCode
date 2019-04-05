@@ -64,6 +64,22 @@ public partial class UserMiscTaxInfo
 
     public Nullable<bool> InternationalLayovers { get; set; }
 
+    public Nullable<bool> Married { get; set; }
+
+    public Nullable<bool> Dependent { get; set; }
+
+    public Nullable<bool> StudentLoans { get; set; }
+
+    public Nullable<bool> Stocks { get; set; }
+
+    public Nullable<bool> House { get; set; }
+
+    public Nullable<bool> HSA { get; set; }
+
+    public Nullable<bool> C1098T { get; set; }
+
+    public Nullable<bool> C1099R { get; set; }
+
 
 
     public virtual Airport Airport { get; set; }

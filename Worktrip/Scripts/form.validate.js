@@ -290,7 +290,7 @@ $(document).ready(function () {
 
 
 	function loopForm(formId) {
-		// body...
+		// body...check
 		var t = 0;
 		var checker = true;
 		$("form#" + formId + " *").filter(':input').each(function () {
@@ -300,37 +300,39 @@ $(document).ready(function () {
 				
 				console.log('in');
 
-				if (!validateEmpty(elem)) {
-					if (elem.is(':visible')) {
+                if (elem.attr('name') != "promoCode") {
+                    if (!validateEmpty(elem)) {
+                        if (elem.is(':visible')) {
 
-						var name = "";
-						var attname = elem.attr('name');
-						console.log(elem);
-						console.log(attname);
-						if (attname.indexOf("first") >= 0) {
-							name = "First Name";
-						} else if (attname.indexOf("last") >= 0) {
-							name = "Last Name";
-						} else if (attname.indexOf("email") >= 0) {
-							name = "Email "
-						} else if (attname.indexOf("password") >= 0) {
-							name = "Password";
-						} else if (attname.indexOf("confirm") >= 0) {
-							name = "Confirm Password";
-						} else if (attname.indexOf("phone") >= 0) {
-							name = "Phone";
+                            var name = "";
+                            var attname = elem.attr('name');
+                            console.log(elem);
+                            console.log(attname);
+                            if (attname.indexOf("first") >= 0) {
+                                name = "First Name";
+                            } else if (attname.indexOf("last") >= 0) {
+                                name = "Last Name";
+                            } else if (attname.indexOf("email") >= 0) {
+                                name = "Email "
+                            } else if (attname.indexOf("password") >= 0) {
+                                name = "Password";
+                            } else if (attname.indexOf("confirm") >= 0) {
+                                name = "Confirm Password";
+                            } else if (attname.indexOf("phone") >= 0) {
+                                name = "Phone";
 
-						}
-			
-						showError(name + " must not be empty");
-						console.log('empty');
-						checker = false;
-						return false;
-					}
+                            }
+
+                            showError(name + " must not be empty");
+                            console.log('empty');
+                            checker = false;
+                            return false;
+                        }
 
 
-					return false;
-				}
+                        return false;
+                    }
+                }
 
 				if (elem.attr('name') == "email") {
 				    if (!validateEmail(elem.val())) {

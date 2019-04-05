@@ -55,18 +55,21 @@
         var colorMapping = {
             '#fc58a1': 'New Sign Up',
             '#58c4fc': 'Existing Sign Up',
-            '#58fc60': 'Scheduled Call',
-            '#fc9816': 'Tax WIP',
+            '#fc9816': 'Tax WIP Cristy',
+            '#58fc60': 'Tax WIP Jonay',
+            '#8A2BE2': 'Scheduled Call',
+            '#00A388': 'Review Cristy',
+            '#FF8598': 'Review Jonay',
+            '#fc302b': 'Its Complicated',
+            '#0d9ebd': 'Final Call Time',
             '#f6fc58': 'Final Call Schd',
-            '#0d9ebd': 'Complete',
-            '#fc302b': 'State Unfinished',
-            '#FFFFFF': 'White',
-            '#F6F792': 'Yellow',
-            '#EB7F00': 'Orange',
-            '#2980B9': 'Blue',
-            '#00A388': 'Green',
-            '#E74C3C': 'Red',
-            '#FF8598': 'Pink'
+            '#2980B9': 'Finished',
+            '#E74C3C': 'No Reply',
+            '#FFFFFF': 'No No',
+            '#EB7F00': 'Randy Stuff',
+            '#F6F792': 'Nay Nay Stuff',
+            '#008000': 'Complete'
+
         };
 
         var curTaxYear = parseInt("@DateTime.Now.AddYears(-1).ToString("yyyy")");
@@ -539,7 +542,7 @@
                 type: "POST",
                 data: {
                     userId: userInfo.Id,
-                    year: curTaxYear
+                    year: taxYear
                 },
                 success: function () {
                 }
@@ -574,11 +577,55 @@
                 (userInfo.TaxInfos[taxYear].DriverLayoverTips || 0)));
 
             $(".modal-dl-state", $modal).text(userInfo.TaxInfos[taxYear].DLState || "");
+            if (userInfo.Statuses[taxYear] != null) {
+                $(".modal-promo-code", $modal).text(userInfo.Statuses[taxYear].PromoCode || "");
+            }
 
             if (userInfo.TaxInfos[taxYear].InternationalLayovers != null) {
                 $(".modal-internationalLayovers", $modal).prop('checked', userInfo.TaxInfos[taxYear].InternationalLayovers);
             } else {
                 $(".modal-internationalLayovers", $modal).prop('checked', false);
+            }
+
+            if (userInfo.TaxInfos[taxYear].Married != null && userInfo.TaxInfos[taxYear].Married == true) {
+                $(".marriedpanel", $modal).prop('style').visibility = 'visible';
+            } else {
+                $(".marriedpanel", $modal).prop('style').visibility = 'hidden';
+            }
+            if (userInfo.TaxInfos[taxYear].Dependent != null && userInfo.TaxInfos[taxYear].Dependent == true) {
+                $(".dependentpanel", $modal).prop('style').visibility = 'visible';
+            } else {
+                $(".dependentpanel", $modal).prop('style').visibility = 'hidden';
+            }
+            if (userInfo.TaxInfos[taxYear].StudentLoans != null && userInfo.TaxInfos[taxYear].StudentLoans == true) {
+                $(".loanspanel", $modal).prop('style').visibility = 'visible';
+            } else {
+                $(".loanspanel", $modal).prop('style').visibility = 'hidden';
+            }
+            if (userInfo.TaxInfos[taxYear].Stocks != null && userInfo.TaxInfos[taxYear].Stocks == true) {
+                $(".stockspanel", $modal).prop('style').visibility = 'visible';
+            } else {
+                $(".stockspanel", $modal).prop('style').visibility = 'hidden';
+            }
+            if (userInfo.TaxInfos[taxYear].House != null && userInfo.TaxInfos[taxYear].House == true) {
+                $(".housepanel", $modal).prop('style').visibility = 'visible';
+            } else {
+                $(".housepanel", $modal).prop('style').visibility = 'hidden';
+            }
+            if (userInfo.TaxInfos[taxYear].HSA != null && userInfo.TaxInfos[taxYear].HSA == true) {
+                $(".hsapanel", $modal).prop('style').visibility = 'visible';
+            } else {
+                $(".hsapanel", $modal).prop('style').visibility = 'hidden';
+            }
+            if (userInfo.TaxInfos[taxYear].C1098T != null && userInfo.TaxInfos[taxYear].C1098T == true) {
+                $(".1098tpanel", $modal).prop('style').visibility = 'visible';
+            } else {
+                $(".1098tpanel", $modal).prop('style').visibility = 'hidden';
+            }
+            if (userInfo.TaxInfos[taxYear].C1099R != null && userInfo.TaxInfos[taxYear].C1099R == true) {
+                $(".1099rpanel", $modal).prop('style').visibility = 'visible';
+            } else {
+                $(".1099rpanel", $modal).prop('style').visibility = 'hidden';
             }
 
             $(".modal-travel-expenses", $modal).text(formatExpense(
@@ -1286,24 +1333,21 @@
                     <select class="form-control color-select" style="color: #FFF;width:150px">
                         <option value="#fc58a1" style="background: #fc58a1;color:white">New Sign Up</option>
                         <option value="#58c4fc" style="background: #58c4fc;color:white">Existing Sign Up</option>
-                        <option value="#58fc60" style="background: #58fc60;color:white">Scheduled Call</option>
-                        <option value="#fc9816" style="background: #fc9816;color:white">Tax WIP</option>
+                        <option value="#fc9816" style="background: #fc9816;color:white">Tax WIP Cristy</option>
+                        <option value="#58fc60" style="background: #58fc60;color:white">Tax WIP Jonay</option>
+                        <option value="#8A2BE2" style="background: #8A2BE2;color:white">Scheduled Call</option>
+                        <option value="#00A388" style="background: #00A388;color:white">Review Cristy</option>
+                        <option value="#FF8598" style="background: #FF8598;color:white">Review Jonay</option>
+                        <option value="#fc302b" style="background: #fc302b;color:white">Its Complicated</option>
+                        <option value="#0d9ebd" style="background: #0d9ebd;color:white">Final Call Time</option>
                         <option value="#f6fc58" style="background: #f6fc58;color:white">Final Call Schd</option>
-                        <option value="#0d9ebd" style="background: #0d9ebd;color:white">Complete</option>
-                        <option value="#fc302b" style="background: #fc302b;color:white">State Unfinished</option>
+                        <option value="#2980B9" style="background: #2980B9;color:white">Finished</option>
+                        <option value="#E74C3C" style="background: #E74C3C;color:white">No Reply</option>
+                        <option value="#FFFFFF" style="background: #FFFFFF;color:black" selected="">No No</option>
+                        <option value="#EB7F00" style="background: #EB7F00;color:white;">Randy Stuff</option>
+                        <option value="#F6F792" style="background: #F6F792;color:white">Nay Nay Stuff</option>
+                        <option value="#008000" style="background: #008000;color:white">Complete</option>
 
-
-                        <option value="#FFFFFF" style="background: #FFFFFF;color:black" selected="">White</option>
-                        <option value="#F6F792" style="background: #F6F792;color:#F6F792">Yellow</option>
-
-                        <option value="#EB7F00" style="background: #EB7F00;color:#EB7F00;">Orange</option>
-                        <option value="#2980B9" style="background: #2980B9;color:#2980B9">Blue</option>
-
-                        <option value="#00A388" style="background: #00A388;color:#00A388;">Green</option>
-
-                        <option value="#E74C3C" style="background: #E74C3C;color:#E74C3C">Red</option>
-
-                        <option value="#FF8598" style="background: #FF8598;color:#FF8598">Pink</option>
                     </select>
 
                     <span style="margin-left:5px; margin-right: 5px;">Status:</span>
@@ -1413,7 +1457,11 @@
                             <div class="modal-training-days panel-body"></div>
                         </div>
                         <div class="panel panel-warning">
-                            <div class="panel-heading">Open User Tabs <input id="internationalLayoverCheckbox" class="modal-internationalLayovers panel-body" type="checkbox"/></div>
+                            <div class="panel-heading">Open User Tabs <input id="internationalLayoverCheckbox" class="modal-internationalLayovers panel-body" type="checkbox" /></div>
+                        </div>
+                        <div class="panel panel-warning">
+                            <div class="panel-heading">Promo Code</div>
+                            <div class="modal-promo-code panel-body"></div>
                         </div>
                         <div class="panel panel-danger">
                             <div class="panel-heading detail-questions-heading" role="tab">
@@ -1468,6 +1516,30 @@
                             <div class="panel-heading">User Questions</div>
                             <div class="modal-user-questions panel-body">
                             </div>
+                        </div>
+                        <div class="marriedpanel panel-success" style="visibility:hidden" >
+                            <div class="panel-heading">Married</div>
+                        </div>
+                        <div class="dependentpanel panel-success" style="visibility:hidden" >
+                            <div class="panel-heading">Dependent</div>
+                        </div>
+                        <div class="loanspanel panel-success" style="visibility:hidden" >
+                            <div class="panel-heading">Loans</div>
+                        </div>
+                        <div class="stockspanel panel-success" style="visibility:hidden" >
+                            <div class="panel-heading">Stocks</div>
+                        </div>
+                        <div class="housepanel panel-success" style="visibility:hidden" >
+                            <div class="panel-heading">House</div>
+                        </div>
+                        <div class="hsapanel panel-success" style="visibility:hidden" >
+                            <div class="panel-heading">HSA</div>
+                        </div>
+                        <div class="1098tpanel panel-success" style="visibility:hidden" >
+                            <div class="panel-heading">1098T</div>
+                        </div>
+                        <div class="1099rpanel panel-success" style="visibility:hidden" >
+                            <div class="panel-heading">1099R</div>
                         </div>
                     </div>
                     <div class="modal-docs">

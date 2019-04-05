@@ -184,22 +184,63 @@
             });
 
             if (userInfo.TaxInfos[taxYear]) {
-
+                if (userInfo.TaxInfos[taxYear].Married) {
+                    $("input[name='married']")[0].checked = true;
+                    document.getElementById("marriedLabel").style.visibility = "visible";
+                } else {
+                    $("input[name='married']")[1].checked = true;
+                }
+                if (userInfo.TaxInfos[taxYear].Dependent) {
+                    $("input[name='dependent']")[0].checked = true;
+                    document.getElementById("dependentLabel").style.visibility = "visible";
+                } else {
+                    $("input[name='dependent']")[1].checked = true;
+                }
+                if (userInfo.TaxInfos[taxYear].StudentLoans) {
+                    $("input[name='loans']")[0].checked = true;
+                    document.getElementById("loansLabel").style.visibility = "visible";
+                } else {
+                    $("input[name='loans']")[1].checked = true;
+                }
+                if (userInfo.TaxInfos[taxYear].Stocks) {
+                    $("input[name='stocks']")[0].checked = true;
+                    document.getElementById("stocksLabel").style.visibility = "visible";
+                } else {
+                    $("input[name='stocks']")[1].checked = true;
+                }
+                if (userInfo.TaxInfos[taxYear].House) {
+                    $("input[name='house']")[0].checked = true;
+                    document.getElementById("houseLabel").style.visibility = "visible";
+                } else {
+                    $("input[name='house']")[1].checked = true;
+                }
+                if (userInfo.TaxInfos[taxYear].HSA) {
+                    $("input[name='hsa']")[0].checked = true;
+                    document.getElementById("hsaLabel").style.visibility = "visible";
+                } else {
+                    $("input[name='hsa']")[1].checked = true;
+                }
+                if (userInfo.TaxInfos[taxYear].C1098T) {
+                    $("input[name='1098T']")[0].checked = true;
+                    document.getElementById("1098TLabel").style.visibility = "visible";
+                } else {
+                    $("input[name='1098T']")[1].checked = true;
+                }
+                if (userInfo.TaxInfos[taxYear].C1099R) {
+                    $("input[name='1099R']")[0].checked = true;
+                    document.getElementById("1099RLabel").style.visibility = "visible";
+                } else {
+                    $("input[name='1099R']")[1].checked = true;
+                }
                 $("#international-layover-checkbox").prop('checked', userInfo.TaxInfos[taxYear].InternationalLayovers);
                 //show or hide navigation Items based on InternationalLayovers boolean
                 if (userInfo.TaxInfos[taxYear].InternationalLayovers) {
-                    $("#wSch-status-item").prop("style").display = "inherit";
-                    $("#wSch-arrow").prop("style").display = "inherit";
                     $("#tQuest-status-item").prop("style").display = "inherit";
                     $("#tQuest-arrow").prop("style").display = "inherit";
-                    $("#wSch-side-item").prop("style").display = "inherit";
                     $("#tQuest-side-item").prop("style").display = "inherit";
                 } else {
-                    $("#wSch-status-item").prop("style").display = "none";
-                    $("#wSch-arrow").prop("style").display = "none";
                     $("#tQuest-status-item").prop("style").display = "none";
                     $("#tQuest-arrow").prop("style").display = "none";
-                    $("#wSch-side-item").prop("style").display = "none";
                     $("#tQuest-side-item").prop("style").display = "none";
                 }
 
@@ -441,7 +482,7 @@
                             $('div#tax-documents-container').hide();
                             $('div#tax-return-container').fadeIn(500);
                             $('div#no-tax-return-container').hide();
-                            $('div#work-schedule-container').hide();
+                            $('div#ynQuestions').hide();
                             $('div.btn-container').css('background', '#999');
                             elem.closest('div.btn-container').css('background', '#E74139');
 
@@ -459,7 +500,7 @@
                             $('div#tax-documents-container').hide();
                             $('div#tax-return-container').hide();
                             $('div#no-tax-return-container').fadeIn(500);
-                            $('div#work-schedule-container').hide();
+                            $('div#ynQuestions').hide();
                             $('div.btn-container').css('background', '#999');
                             elem.closest('div.btn-container').css('background', '#E74139');
 
@@ -501,6 +542,93 @@
             $("#tax-question input").change(function(){
                 $("#save-tax-info-btn").trigger("click", {"passive":true});
             })
+
+            $("#save-ynQuestions-btn").click(function (e, obj) {
+
+                if (!obj || !obj.passive) {
+                    $("#loading-cover").show();
+                }
+                var updateInfo = {TaxInfos: {}};
+                var taxYear = $("#taxYear").text();
+
+                updateInfo.TaxInfos[taxYear] = {
+                    Year: taxYear
+                };
+
+                if ($("input[name='married']:checked").val() == 'yes') {
+                    updateInfo.TaxInfos[taxYear]['Married'] = true;
+                } else {
+                    updateInfo.TaxInfos[taxYear]['Married'] = false;
+                }
+                if ($("input[name='dependent']:checked").val() == 'yes') {
+                    updateInfo.TaxInfos[taxYear]['Dependent'] = true;
+                } else {
+                    updateInfo.TaxInfos[taxYear]['Dependent'] = false;
+                }
+                if ($("input[name='loans']:checked").val() == 'yes') {
+                    updateInfo.TaxInfos[taxYear]['StudentLoans'] = true;
+                } else {
+                    updateInfo.TaxInfos[taxYear]['StudentLoans'] = false;
+                }
+                if ($("input[name='stocks']:checked").val() == 'yes') {
+                    updateInfo.TaxInfos[taxYear]['Stocks'] = true;
+                } else {
+                    updateInfo.TaxInfos[taxYear]['Stocks'] = false;
+                }
+                if ($("input[name='house']:checked").val() == 'yes') {
+                    updateInfo.TaxInfos[taxYear]['House'] = true;
+                } else {
+                    updateInfo.TaxInfos[taxYear]['House'] = false;
+                }
+                if ($("input[name='hsa']:checked").val() == 'yes') {
+                    updateInfo.TaxInfos[taxYear]['HSA'] = true;
+                } else {
+                    updateInfo.TaxInfos[taxYear]['HSA'] = false;
+                }
+                if ($("input[name='1098T']:checked").val() == 'yes') {
+                    updateInfo.TaxInfos[taxYear]['C1098T'] = true;
+                } else {
+                    updateInfo.TaxInfos[taxYear]['C1098T'] = false;
+                }
+                if ($("input[name='1099R']:checked").val() == 'yes') {
+                    updateInfo.TaxInfos[taxYear]['C1099R'] = true;
+                } else {
+                    updateInfo.TaxInfos[taxYear]['C1099R'] = false;
+                }
+
+                $.ajax({
+                    url: "/Home/UpdateYesNoQuestions",
+                    type: "POST",
+                    data: updateInfo,
+                    success: function (userInfo) {
+                        refreshTaxInfo(userInfo, $("#taxYear").text());
+                    },
+                    complete: function () {
+                        $("#loading-cover").fadeOut(500);
+
+                        if (!obj || !obj.passive) {
+                            $(window).scrollTop(0);
+                            $('div.left-menu-collapse').slideDown(500);
+                            if (!$('div#tax-return-container').is(":visible")) {
+                            console.log('in' + elemId);
+                            $('div.box-dashboard-container').hide();
+                            $('div#Personal-info').hide();
+                            $('div#tax-question').hide();
+                            $('div#make-payment').hide();
+                            $('div#tax-documents-container').fadeIn(500);
+                            $('div#tax-return-container').hide();
+                            $('div#no-tax-return-container').hide();
+                            $('div#ynQuestions').hide();
+                                $('div.btn-container').css('background', '#999');
+                                $("#tax-docs-side-item").css('background', '#E74139');
+
+                            if (!$('div#options .menu-dashboard').is(":visible"))
+                                $('div.left-menu-collapse').slideUp(500);
+                        }
+                        }
+                    }
+                });
+            });
 
             $("#save-personal-info-btn").click(function(e, obj){
 
@@ -679,6 +807,63 @@
                 });
             });
 
+            $("input[name='married']").change(function (e, obj) {
+                if ($(this).val() == 'yes') {
+                    document.getElementById("marriedLabel").style.visibility = "visible";
+                } else {
+                    document.getElementById("marriedLabel").style.visibility = "hidden";
+                }
+            });
+            $("input[name='dependent']").change(function (e, obj) {
+                if ($(this).val() == 'yes') {
+                    document.getElementById("dependentLabel").style.visibility = "visible";
+                } else {
+                    document.getElementById("dependentLabel").style.visibility = "hidden";
+                }
+            });
+            $("input[name='loans']").change(function (e, obj) {
+                if ($(this).val() == 'yes') {
+                    document.getElementById("loansLabel").style.visibility = "visible";
+                } else {
+                    document.getElementById("loansLabel").style.visibility = "hidden";
+                }
+            });
+            $("input[name='stocks']").change(function (e, obj) {
+                if ($(this).val() == 'yes') {
+                    document.getElementById("stocksLabel").style.visibility = "visible";
+                } else {
+                    document.getElementById("stocksLabel").style.visibility = "hidden";
+                }
+            });
+            $("input[name='house']").change(function (e, obj) {
+                if ($(this).val() == 'yes') {
+                    document.getElementById("houseLabel").style.visibility = "visible";
+                } else {
+                    document.getElementById("houseLabel").style.visibility = "hidden";
+                }
+            });
+            $("input[name='hsa']").change(function (e, obj) {
+                if ($(this).val() == 'yes') {
+                    document.getElementById("hsaLabel").style.visibility = "visible";
+                } else {
+                    document.getElementById("hsaLabel").style.visibility = "hidden";
+                }
+            });
+            $("input[name='1098T']").change(function (e, obj) {
+                if ($(this).val() == 'yes') {
+                    document.getElementById("1098TLabel").style.visibility = "visible";
+                } else {
+                    document.getElementById("1098TLabel").style.visibility = "hidden";
+                }
+            });
+            $("input[name='1099R']").change(function (e, obj) {
+                if ($(this).val() == 'yes') {
+                    document.getElementById("1099RLabel").style.visibility = "visible";
+                } else {
+                    document.getElementById("1099RLabel").style.visibility = "hidden";
+                }
+            });
+
             $("#airline-select").select2({
                 theme: "bootstrap",
                 placeholder: "Select your airline",
@@ -774,7 +959,7 @@
                             $('div#tax-documents-container').hide();
                             $('div#tax-return-container').hide();
                             $('div#no-tax-return-container').hide();
-                            $('div#work-schedule-container').hide();
+                            $('div#ynQuestions').hide();
                             $('div.btn-container').css('background', '#999');
                             elem.closest('div.btn-container').css('background', '#E74139');
 
@@ -1304,19 +1489,25 @@
 
     <div id="welcome-popup" class="dashboard-popup hidden">
         <div class="popup">
-            <h2 class=ribbon>
+            <h2 class=ribbon style="font-family:sans-serif !important">
                 <i><u>Taxes the Easy Way</u></i>
             </h2>
             <div style="padding:25px;padding-top:10px;font-weight:bold;display:flex;flex-direction:column;align-items:center;">
                 <div>
-                    Welcome to our secure dashboard! One of our tax professionals will contact you shortly. If you'd like to get started:
+                    One of our tax professionals will contact you shortly to schedule a quick tax call. Please get started by:
                 </div>
                 <br />
-                <ul>
+                <ol type="1">
                     <li>Fill out your personal info</li>
-                    <li>Upload tax document images</li>
-                    <li>Answer tax questions</li>
-                </ul>
+                    <li>Upload tax document images
+                        <ul>
+                            <li>W2</li>
+                            <li>Health Savings Account 1099-SA</li>
+                            <li>Student Loan Tax Forms</li>
+                            <li>Etc</li>
+                        </ul>
+                    </li>
+                </ol>
             </div>
 
             <div class="popup-close"><i class="fa fa-close"></i></div>
@@ -1394,8 +1585,19 @@
                         </div>
                     </li>
 
-                    <li class="dashboard-button-container">
+                    <li id="wSch-side-item" class="dashboard-button-container">
                         <div class="btn-container">
+                            <div class="dashboard-icon-cotainer">
+                                <img src="~/Content/img/Layover.png" />
+                            </div>
+                            <div class="dashboard-button-name">
+                                <a id="wSch">Yes/No Questions</a>
+                            </div>
+                        </div>
+                    </li>
+
+                    <li class="dashboard-button-container">
+                        <div id="tax-docs-side-item" class="btn-container">
                             <div class="dashboard-icon-cotainer">
                                 <img src="~/Content/img/file.png" />
                             </div>
@@ -1405,16 +1607,6 @@
                         </div>
                     </li>
 
-                    <li id="wSch-side-item" class="dashboard-button-container">
-                        <div class="btn-container">
-                            <div class="dashboard-icon-cotainer">
-                                <img src="~/Content/img/Layover.png" />
-                            </div>
-                            <div class="dashboard-button-name">
-                                <a id="wSch">Layovers</a>
-                            </div>
-                        </div>
-                    </li>
                     <li id="tQuest-side-item" class="dashboard-button-container">
                         <div class="btn-container">
                             <div class="dashboard-icon-cotainer">
@@ -1498,9 +1690,23 @@
                             </div>
 
                         </li>
+
                         <li class="top-menu-steps-items">
                             <div class="arrow-right"></div>
                         </li>
+
+                        <li id="wSch-status-item" class="top-menu-steps-items">
+                            <div id="wSch-status" class="guide-container">
+                                <div class="guide-message">
+                                    <i class="fa" aria-hidden="true"></i>
+                                    <p>Yes/No Questions</p>
+                                </div>
+                            </div>
+
+                        </li>
+                        <li id="wSch-arrow" class="top-menu-steps-items"><div class="arrow-right"></div></li>
+
+                        
                         <li class="top-menu-steps-items">
                             <div id="tDoc-status" class="guide-container">
                                 <div class="guide-message">
@@ -1510,19 +1716,8 @@
                             </div>
 
                         </li>
-
                         <li class="top-menu-steps-items"><div class="arrow-right"></div></li>
 
-                        <li id="wSch-status-item" class="top-menu-steps-items">
-                            <div id="wSch-status" class="guide-container">
-                                <div class="guide-message">
-                                    <i class="fa" aria-hidden="true"></i>
-                                    <p>Upload Layovers</p>
-                                </div>
-                            </div>
-
-                        </li>
-                        <li id="wSch-arrow" class="top-menu-steps-items"><div class="arrow-right"></div></li>
 
                         <li id="tQuest-status-item" class="top-menu-steps-items">
                             <div id="tQuest-status" class="guide-container">
@@ -1533,6 +1728,7 @@
                             </div>
                         </li>
                         <li id="tQuest-arrow" class="top-menu-steps-items"><div class="arrow-right"></div></li>
+
                         <li class="top-menu-steps-items">
                             <div id="mPay-status" class="guide-container">
                                 <div class="guide-message">
@@ -1820,6 +2016,9 @@
                         <div class="col-xs-12 col-xs-offset-0 col-md-4 col-md-offset-1">
                             @{
                                 var recentYear = DateTime.Now.AddYears(-1).ToString("yyyy");
+                                var code = (Model.FirstName == null ? "aa" : Model.FirstName.Substring(0, 2).ToUpper())
+                                    + (Model.LastName == null ? "aa" : Model.LastName.Substring(0, 2).ToUpper())
+                                    + (Model.DOB == null ? "00" : Model.DOB.Substring(Model.DOB.Length - 2, 2));
                                 var fee = (Model.Statuses.ContainsKey(recentYear) ? (Model.Statuses[recentYear].Fee.HasValue ? Model.Statuses[recentYear].Fee.Value : 0) : 0);
                                 var tax = Math.Round(fee * 0.07M, 2);
                             }
@@ -1843,12 +2042,12 @@
                         </div>
                     </div>
                     @*<div class="row border-document @(ViewBag.IsAdmin ? "" : "hidden")">
-                    <h2 class="lets-talk-header">Sign Documents</h2>
-                    <br />
-                    <div class="col-xs-12">
-                        <img src="~/Content/img/1040x.png" style="width: 250px;cursor:pointer;" id="pdfDemoBtn"/>
-                    </div>
-                </div>*@
+                <h2 class="lets-talk-header">Sign Documents</h2>
+                <br />
+                <div class="col-xs-12">
+                    <img src="~/Content/img/1040x.png" style="width: 250px;cursor:pointer;" id="pdfDemoBtn"/>
+                </div>
+            </div>*@
                 </div>
                 <div id="payment-not-ready" style="text-align:center;" class="border-document col-lg-offset-3 col-md-offset-3 col-lg-6 col-md-6 col-sm-12 col-xs-12">
                     <div style="font-size:20px">
@@ -1867,9 +2066,11 @@
                         <br /><br />
                         Your payment of <span class="payment-total">@(((fee + tax).ToString("C2")))</span> has been posted.
                         <br /><br />
-                        We'll let you know when your taxes are filed!
+                        Your unique identification code is: <span class="payment-total">@((code))</span>.
                         <br />
-                        Feel free to contact us for any further questions.
+                        New customers can now sign up on WorkTrip with this promo code and receive $10 off.  Three referrals earns you a free tax return for next year!
+                        <br /><br />
+                        A PDF copy of your tax return will be available to download in this portal once the electronic submission is accepted.
                     </div>
                 </div>
             </div>
@@ -1938,7 +2139,7 @@
                         </span>
                     </div>
                     <div class="field input-group" style="display:flex; justify-content: flex-start">
-                        <span style="font-weight:bold;">Were Over 50% Of Your Layovers International?&emsp;&emsp;&emsp;Yes&emsp;</span>
+                        <span style="font-weight:bold;">Is your tax residence in NY, CA, PA, MN, MD, HI or AL?&emsp;&emsp;&emsp;Yes&emsp;</span>
                         <span><input id="international-layover-checkbox" style="display:inline-block; vertical-align:middle" type="checkbox" /></span>
                     </div>
                     <span class="input-title">Email</span><br>
@@ -2116,10 +2317,82 @@
 
             </div>
 
+            <div class="row formContainer" style="display: none;" id="ynQuestions">
+
+                <h2 class="lets-talk-header">Yes/No Questions</h2>
+                <br />
+                <div style="z-index:100" class="col-lg-offset-3 col-md-offset-3 col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                    <div class="field input-group" >
+                        <form action="">
+                            1. Are you married?<br />
+                            <label class="radio-inline">Yes&emsp;<input type="radio" name="married" value="yes" /></label>
+                            <label class="radio-inline">No&emsp;<input type="radio" name="married" value="no" /></label><br />
+                            <label style="color:red; visibility:hidden; padding-left:20px" id="marriedLabel">Click Yes for anything that pertains to your spouse</label>
+                        </form>
+                        <br />
+                        <form action="">
+                            2. Do you financially support grandparents, parents, or children?<br />
+                            <label class="radio-inline">Yes&emsp;<input type="radio" name="dependent" value="yes" /></label>
+                            <label class="radio-inline">No&emsp;<input type="radio" name="dependent" value="no" /></label><br />
+                            <label style="color:red; visibility:hidden; padding-left:20px" id="dependentLabel">You probably have a dependent</label>
+                        </form>
+                        <br />
+                        <form action="">
+                            3. Do you have any student loans?<br />
+                            <label class="radio-inline">Yes&emsp;<input type="radio" name="loans" value="yes" /></label>
+                            <label class="radio-inline">No&emsp;<input type="radio" name="loans" value="no" /></label><br />
+                            <label style="color:red; visibility:hidden; padding-left:20px" id="loansLabel">Look for a 1098-E or Student Loan Tax Document</label>
+                        </form>
+                        <br />
+                        <form action="">
+                            4. Do you have any stocks or bonds that are not in a retirement account?<br />
+                            <label class="radio-inline">Yes&emsp;<input type="radio" name="stocks" value="yes" /></label>
+                            <label class="radio-inline">No&emsp;<input type="radio" name="stocks" value="no" /></label><br />
+                            <label style="color:red; visibility:hidden; padding-left:20px" id="stocksLabel">Download a .pdf of your tax documents from your brokerage website (Etrade, Fidelity, etc)</label>
+                        </form>
+                        <br />
+                        <form action="">
+                            5. Do you have a house/real estate/property in your name?<br />
+                            <label class="radio-inline">Yes&emsp;<input type="radio" name="house" value="yes" /></label>
+                            <label class="radio-inline">No&emsp;<input type="radio" name="house" value="no" /></label><br />
+                            <label style="color:red; visibility:hidden; padding-left:20px" id="houseLabel">Look for a 1098-Mortgage Tax Document</label>
+                        </form>
+                        <br />
+                        <form action="">
+                            6. Do you have an HSA account that you USED last year?<br />
+                            <label class="radio-inline">Yes&emsp;<input type="radio" name="hsa" value="yes" /></label>
+                            <label class="radio-inline">No&emsp;<input type="radio" name="hsa" value="no" /></label><br />
+                            <label style="color:red; visibility:hidden; padding-left:20px" id="hsaLabel">Look for a 1099-SA Tax Document</label>
+                        </form>
+                        <br />
+                        <form action="">
+                            7. Did you (or a dependent) take college/university courses last year?<br />
+                            <label class="radio-inline">Yes&emsp;<input type="radio" name="1098T" value="yes" /></label>
+                            <label class="radio-inline">No&emsp;<input type="radio" name="1098T" value="no" /></label><br />
+                            <label style="color:red; visibility:hidden; padding-left:20px" id="1098TLabel">Look for a 1098-T Tax Document</label>
+                        </form>
+                        <br />
+                        <form action="">
+                            8. Did you take any $ out of a 401k or retirement account last year (if you took a LOAN click No)<br />
+                            <label class="radio-inline">Yes&emsp;<input type="radio" name="1099R" value="yes" /></label>
+                            <label class="radio-inline">No&emsp;<input type="radio" name="1099R" value="no" /></label><br />
+                            <label style="color:red; visibility:hidden; padding-left:20px" id="1099RLabel">Look for a 1099-R Tax Document</label>
+                        </form>
+                    </div>
+                    <br>
+                    <div style="z-index:99" class="col-md-4 col-md-offset-4 col-sm-4 col-sm-offset-4">
+                        <br />
+                        <button id="save-ynQuestions-btn" style="width:100%;" type="submit" class="btn btn-primary submit-button">
+                            Save Changes
+                        </button>
+                    </div>
+                </div>
+            </div>
+
             <div class=" jumbotron file-upload-container" style="display: none;" id="work-schedule-container">
 
                 <div class="row header">
-                    <h4 class="text-center">Please Upload .CSV Files Downloaded from Your Crew Portal for All of the Months</h4>
+                    <h4 class="text-center">Please Upload 2018_Schedule_Data.csv File from Your Crew Portal if you are a Delta FA</h4>
                     <h4 class="text-center">
                         You Worked as a Flight Attendant
                     </h4>
@@ -2185,7 +2458,7 @@
                     <div style="font-size:20px">
                         <i class="fa fa-id-card-o" style="text-align: center; font-size: 50px; color: #e74139;"></i>
                         <br /><br />
-                        Your Tax Return has not been completed yet. 
+                        A PDF copy of your tax return will be available to download in this portal once the electronic submission is accepted.
                     </div>
                 </div>
             </div>
@@ -2242,12 +2515,12 @@
                 elemId = elem.attr('id');
 
                 if (elemId == "wSch") {
-                    if (!$('div#work-schedule-container').is(":visible")) {
+                    if (!$('div#ynQuestions').is(":visible")) {
                         console.log('in' + elemId);
                         $('div.box-dashboard-container').hide();
                         $('div#Personal-info').hide();
                         $('div#tax-documents-container').hide();
-                        $('div#work-schedule-container').fadeIn(500);
+                        $('div#ynQuestions').fadeIn(500);
                         $('div#tax-question').hide();
                         $('div#make-payment').hide();
                         $('div#tax-return-container').hide();
@@ -2265,7 +2538,7 @@
                         $('div.box-dashboard-container').hide();
                         $('div#Personal-info').hide();
                         $('div#tax-documents-container').hide();
-                        $('div#work-schedule-container').hide();
+                        $('div#ynQuestions').hide();
                         $('div#make-payment').hide();
                         $('div#tax-return-container').hide();
                         $('div#no-tax-return-container').hide();
@@ -2283,7 +2556,7 @@
                         $('div.box-dashboard-container').hide();
                         $('div#Personal-info').hide();
                         $('div#tax-documents-container').hide();
-                        $('div#work-schedule-container').hide();
+                        $('div#ynQuestions').hide();
                         $('div#tax-return-container').hide();
                         $('div#no-tax-return-container').hide();
                         $('div#make-payment').fadeIn(500, function(){
@@ -2308,7 +2581,7 @@
                         $('div#tax-return-container').hide();
                         $('div#no-tax-return-container').hide();
                         $('div#tax-documents-container').fadeIn(500);
-                        $('div#work-schedule-container').hide();
+                        $('div#ynQuestions').hide();
                         $('div.btn-container').css('background', '#999');
                         elem.closest('div.btn-container').css('background', '#E74139');
 
@@ -2325,7 +2598,7 @@
                         $('div#no-tax-return-container').hide();
                         $('div#Personal-info').fadeIn(500);
                         $('div#tax-documents-container').hide();
-                        $('div#work-schedule-container').hide();
+                        $('div#ynQuestions').hide();
                         $('div#tax-question').hide();
                         $('div#make-payment').hide();
                         $('div.btn-container').css('background', '#999');
@@ -2348,7 +2621,7 @@
                         $('div#make-payment').hide();
                         $('div#tax-return-container').hide();
                         $('div#no-tax-return-container').hide();
-                        $('div#work-schedule-container').hide();
+                        $('div#ynQuestions').hide();
                         $('div.btn-container').css('background', '#999');
                         if (!$('div#options .menu-dashboard').is(":visible"))
                             $('div.left-menu-collapse').slideUp(500);
@@ -2370,7 +2643,7 @@
                     $('div.box-dashboard-container').hide();
                     $('div#Personal-info').hide();
                     $('div#tax-documents-container').hide();
-                    $('div#work-schedule-container').hide();
+                    $('div#ynQuestions').hide();
                     $('div#make-payment').hide();
                     $('div#tax-return-container').hide();
                     $('div#no-tax-return-container').hide();
@@ -2391,7 +2664,7 @@
                     $('div.box-dashboard-container').hide();
                     $('div#Personal-info').hide();
                     $('div#tax-documents-container').hide();
-                    $('div#work-schedule-container').hide();
+                    $('div#ynQuestions').hide();
                     $('div#tax-return-container').hide();
                     $('div#no-tax-return-container').hide();
                     $('div#make-payment').fadeIn(500);
@@ -2421,7 +2694,7 @@
                     $('div#tax-return-container').hide();
                     $('div#no-tax-return-container').hide();
                     $('div#tax-documents-container').fadeIn(500);
-                    $('div#work-schedule-container').hide();
+                    $('div#ynQuestions').hide();
                     $('div.btn-container').css('background', '#999');
                     $(this).closest('div.btn-container').css('background', '#E74139');
 
@@ -2442,7 +2715,7 @@
                     $('div#no-tax-return-container').hide();
                     $('div#Personal-info').fadeIn(500);
                     $('div#tax-documents-container').hide();
-                    $('div#work-schedule-container').hide();
+                    $('div#ynQuestions').hide();
                     $('div#tax-question').hide();
                     $('div#make-payment').hide();
                     $('div.btn-container').css('background', '#999');
@@ -2467,7 +2740,7 @@
                     $('div#tax-documents-container').hide();
                     $('div#tax-question').hide();
                     $('div#make-payment').hide();
-                    $('div#work-schedule-container').hide();
+                    $('div#ynQuestions').hide();
                     $('div.btn-container').css('background', '#999');
 
                     if (!$('div#options .menu-dashboard').is(":visible"))

@@ -240,16 +240,18 @@ namespace Worktrip.Models
             finalSortedCustomers.AddRange(customers.Where(c => c.Color == "#58c4fc"));//Existing Signup
             finalSortedCustomers.AddRange(customers.Where(c => c.Color == "#fc9816"));//Tax WIP Cristy
             finalSortedCustomers.AddRange(customers.Where(c => c.Color == "#58fc60"));//Tax WIP Jonay
-            finalSortedCustomers.AddRange(customers.Where(c => c.Color == "#F6F792"));//Tax WIP Toriya
+            finalSortedCustomers.AddRange(customers.Where(c => c.Color == "#8A2BE2"));//Scheduled Call
             finalSortedCustomers.AddRange(customers.Where(c => c.Color == "#00A388"));//Review Cristy
-            finalSortedCustomers.AddRange(customers.Where(c => c.Color == "#FF8598"));//Review Toriya
-            finalSortedCustomers.AddRange(customers.Where(c => c.Color == "#f6fc58"));//Final Call Schd
+            finalSortedCustomers.AddRange(customers.Where(c => c.Color == "#FF8598"));//Review Jonay
             finalSortedCustomers.AddRange(customers.Where(c => c.Color == "#fc302b"));//Its Complicated
             finalSortedCustomers.AddRange(customers.Where(c => c.Color == "#0d9ebd"));//Final Call Time
+            finalSortedCustomers.AddRange(customers.Where(c => c.Color == "#f6fc58"));//Final Call Schd
             finalSortedCustomers.AddRange(customers.Where(c => c.Color == "#2980B9"));//Finished
             finalSortedCustomers.AddRange(customers.Where(c => c.Color == "#E74C3C"));//No Reply
             finalSortedCustomers.AddRange(customers.Where(c => c.Color == "#FFFFFF"));//No No
-            finalSortedCustomers.AddRange(customers.Where(c => c.Color == "#EB7F00"));//Orange
+            finalSortedCustomers.AddRange(customers.Where(c => c.Color == "#EB7F00"));//Randy Stuff
+            finalSortedCustomers.AddRange(customers.Where(c => c.Color == "#F6F792"));//Nay Nay Stuff
+            finalSortedCustomers.AddRange(customers.Where(c => c.Color == "#008000"));//Complete
 
             return finalSortedCustomers;
         }

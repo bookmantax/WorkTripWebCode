@@ -156,6 +156,14 @@
     <Property Name="LayoversPerDiem" Type="float" />
     <Property Name="DLState" Type="varchar" MaxLength="50" />
     <Property Name="InternationalLayovers" Type="bit" />
+    <Property Name="Married" Type="bit" />
+    <Property Name="Dependent" Type="bit" />
+    <Property Name="StudentLoans" Type="bit" />
+    <Property Name="Stocks" Type="bit" />
+    <Property Name="House" Type="bit" />
+    <Property Name="HSA" Type="bit" />
+    <Property Name="1098T" Type="bit" />
+    <Property Name="1099R" Type="bit" />
   </EntityType>
   <EntityType Name="UserPerDiem">
     <Key>

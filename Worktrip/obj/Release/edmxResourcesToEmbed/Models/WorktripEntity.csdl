@@ -72,11 +72,6 @@
     <EntitySet Name="UserActionsLogs" EntityType="WorktripModel.UserActionsLog" />
     <EntitySet Name="PerDiemRates" EntityType="WorktripModel.PerDiemRate" />
     <EntitySet Name="UserTaxReturns" EntityType="WorktripModel.UserTaxReturn" />
-    <EntitySet Name="UserMiscTaxInfoes" EntityType="WorktripModel.UserMiscTaxInfo" />
-    <AssociationSet Name="FK_MiscTax_Airport" Association="WorktripModel.FK_MiscTax_Airport">
-      <End Role="Airport" EntitySet="Airports" />
-      <End Role="UserMiscTaxInfo" EntitySet="UserMiscTaxInfoes" />
-    </AssociationSet>
     <EntitySet Name="PreparerNotes" EntityType="WorktripModel.PreparerNote" />
     <EntitySet Name="Users" EntityType="WorktripModel.User" />
     <AssociationSet Name="FK_PreparerNotes_TaxPreparer" Association="WorktripModel.FK_PreparerNotes_TaxPreparer">
@@ -102,10 +97,6 @@
     <AssociationSet Name="FK_dbo_UserLogin_dbo_User_UserId" Association="WorktripModel.FK_dbo_UserLogin_dbo_User_UserId">
       <End Role="User" EntitySet="Users" />
       <End Role="UserLogin" EntitySet="UserLogins" />
-    </AssociationSet>
-    <AssociationSet Name="FK_MiscTax_User" Association="WorktripModel.FK_MiscTax_User">
-      <End Role="User" EntitySet="Users" />
-      <End Role="UserMiscTaxInfo" EntitySet="UserMiscTaxInfoes" />
     </AssociationSet>
     <AssociationSet Name="FK_UserMiscDocs_User" Association="WorktripModel.FK_UserMiscDocs_User">
       <End Role="User" EntitySet="Users" />
@@ -143,6 +134,15 @@
     <AssociationSet Name="FK_UserToPreparer_User" Association="WorktripModel.FK_UserToPreparer_User">
       <End Role="User" EntitySet="Users" />
       <End Role="UserToPreparer" EntitySet="UserToPreparers" />
+    </AssociationSet>
+    <EntitySet Name="UserMiscTaxInfoes" EntityType="WorktripModel.UserMiscTaxInfo" />
+    <AssociationSet Name="FK_MiscTax_Airport" Association="WorktripModel.FK_MiscTax_Airport">
+      <End Role="Airport" EntitySet="Airports" />
+      <End Role="UserMiscTaxInfo" EntitySet="UserMiscTaxInfoes" />
+    </AssociationSet>
+    <AssociationSet Name="FK_MiscTax_User" Association="WorktripModel.FK_MiscTax_User">
+      <End Role="User" EntitySet="Users" />
+      <End Role="UserMiscTaxInfo" EntitySet="UserMiscTaxInfoes" />
     </AssociationSet>
   </EntityContainer>
   <EntityType Name="Airport">
@@ -216,48 +216,6 @@
     <Property Name="Year" Type="Int32" Nullable="false" />
     <NavigationProperty Name="User" Relationship="WorktripModel.FK_UserTaxReturn" FromRole="UserTaxReturn" ToRole="User" />
   </EntityType>
-  <EntityType Name="UserMiscTaxInfo">
-    <Key>
-      <PropertyRef Name="Id" />
-    </Key>
-    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="UserId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
-    <Property Name="TaxYear" Type="Int32" Nullable="false" />
-    <Property Name="BaseAirportCode" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-    <Property Name="DaysInTrainingOrAway" Type="Int32" />
-    <Property Name="DriverLayoverTips" Type="Double" />
-    <Property Name="TotalSpentLayoverTransportation" Type="Double" />
-    <Property Name="TransactionalFees" Type="Double" />
-    <Property Name="ClothingFees" Type="Double" />
-    <Property Name="LaundryFees" Type="Double" />
-    <Property Name="FlightGearLuggageFees" Type="Double" />
-    <Property Name="TechPurchasesFees" Type="Double" />
-    <Property Name="CellphoneBill" Type="Double" />
-    <Property Name="InternetBill" Type="Double" />
-    <Property Name="IdentityFees" Type="Double" />
-    <Property Name="UnreimbursedExpenses" Type="Double" />
-    <Property Name="Airline" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
-    <Property Name="PreparerNotes" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-    <Property Name="TaxReturn" Type="Decimal" Precision="19" Scale="4" />
-    <Property Name="TaxReturnDocument" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-    <Property Name="LayoversPerDiem" Type="Double" />
-    <Property Name="DLState" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-    <Property Name="InternationalLayovers" Type="Boolean" />
-    <NavigationProperty Name="Airport" Relationship="WorktripModel.FK_MiscTax_Airport" FromRole="UserMiscTaxInfo" ToRole="Airport" />
-    <NavigationProperty Name="User" Relationship="WorktripModel.FK_MiscTax_User" FromRole="UserMiscTaxInfo" ToRole="User" />
-  </EntityType>
-  <Association Name="FK_MiscTax_Airport">
-    <End Type="WorktripModel.Airport" Role="Airport" Multiplicity="0..1" />
-    <End Type="WorktripModel.UserMiscTaxInfo" Role="UserMiscTaxInfo" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="Airport">
-        <PropertyRef Name="Code" />
-      </Principal>
-      <Dependent Role="UserMiscTaxInfo">
-        <PropertyRef Name="BaseAirportCode" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
   <EntityType Name="PreparerNote">
     <Key>
       <PropertyRef Name="Id" />
@@ -308,7 +266,6 @@
     <NavigationProperty Name="UserActionsLogs" Relationship="WorktripModel.FK_ActionUser_User" FromRole="User" ToRole="UserActionsLog" />
     <NavigationProperty Name="UserClaims" Relationship="WorktripModel.FK_dbo_UserClaim_dbo_User_UserId" FromRole="User" ToRole="UserClaim" />
     <NavigationProperty Name="UserLogins" Relationship="WorktripModel.FK_dbo_UserLogin_dbo_User_UserId" FromRole="User" ToRole="UserLogin" />
-    <NavigationProperty Name="UserMiscTaxInfoes" Relationship="WorktripModel.FK_MiscTax_User" FromRole="User" ToRole="UserMiscTaxInfo" />
     <NavigationProperty Name="UserMiscDocs" Relationship="WorktripModel.FK_UserMiscDocs_User" FromRole="User" ToRole="UserMiscDoc" />
     <NavigationProperty Name="UserPerDiems" Relationship="WorktripModel.FK_UserPerDiem_User" FromRole="User" ToRole="UserPerDiem" />
     <NavigationProperty Name="UserQuestions" Relationship="WorktripModel.FK_UserQuestion_User" FromRole="User" ToRole="UserQuestion" />
@@ -317,6 +274,7 @@
     <NavigationProperty Name="Roles" Relationship="WorktripModel.UserRole" FromRole="User" ToRole="Role" />
     <NavigationProperty Name="UserToPreparers" Relationship="WorktripModel.FK_UserToPreparer_TaxPreparer" FromRole="User" ToRole="UserToPreparer" />
     <NavigationProperty Name="UserToPreparers1" Relationship="WorktripModel.FK_UserToPreparer_User" FromRole="User" ToRole="UserToPreparer" />
+    <NavigationProperty Name="UserMiscTaxInfoes" Relationship="WorktripModel.FK_MiscTax_User" FromRole="User" ToRole="UserMiscTaxInfo" />
   </EntityType>
   <Association Name="FK_PreparerNotes_TaxPreparer">
     <End Type="WorktripModel.User" Role="User" Multiplicity="1" />
@@ -390,18 +348,6 @@
         <PropertyRef Name="Id" />
       </Principal>
       <Dependent Role="UserLogin">
-        <PropertyRef Name="UserId" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK_MiscTax_User">
-    <End Type="WorktripModel.User" Role="User" Multiplicity="0..1" />
-    <End Type="WorktripModel.UserMiscTaxInfo" Role="UserMiscTaxInfo" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="User">
-        <PropertyRef Name="Id" />
-      </Principal>
-      <Dependent Role="UserMiscTaxInfo">
         <PropertyRef Name="UserId" />
       </Dependent>
     </ReferentialConstraint>
@@ -483,6 +429,7 @@
     <Property Name="PaidAmount" Type="Decimal" Precision="19" Scale="4" />
     <Property Name="ColorCode" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
     <Property Name="FirstModified" Type="DateTime" Precision="3" />
+    <Property Name="PromoCode" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
     <NavigationProperty Name="Status" Relationship="WorktripModel.FK_UserToPreparer_Status" FromRole="UserToPreparer" ToRole="Status" />
     <NavigationProperty Name="User" Relationship="WorktripModel.FK_UserToPreparer_TaxPreparer" FromRole="UserToPreparer" ToRole="User" />
     <NavigationProperty Name="User1" Relationship="WorktripModel.FK_UserToPreparer_User" FromRole="UserToPreparer" ToRole="User" />
@@ -519,6 +466,68 @@
         <PropertyRef Name="Id" />
       </Principal>
       <Dependent Role="UserToPreparer">
+        <PropertyRef Name="UserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="UserMiscTaxInfo">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="UserId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+    <Property Name="TaxYear" Type="Int32" Nullable="false" />
+    <Property Name="BaseAirportCode" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="DaysInTrainingOrAway" Type="Int32" />
+    <Property Name="DriverLayoverTips" Type="Double" />
+    <Property Name="TotalSpentLayoverTransportation" Type="Double" />
+    <Property Name="TransactionalFees" Type="Double" />
+    <Property Name="ClothingFees" Type="Double" />
+    <Property Name="LaundryFees" Type="Double" />
+    <Property Name="FlightGearLuggageFees" Type="Double" />
+    <Property Name="TechPurchasesFees" Type="Double" />
+    <Property Name="CellphoneBill" Type="Double" />
+    <Property Name="InternetBill" Type="Double" />
+    <Property Name="IdentityFees" Type="Double" />
+    <Property Name="UnreimbursedExpenses" Type="Double" />
+    <Property Name="Airline" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+    <Property Name="PreparerNotes" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="TaxReturn" Type="Decimal" Precision="19" Scale="4" />
+    <Property Name="TaxReturnDocument" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="LayoversPerDiem" Type="Double" />
+    <Property Name="DLState" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="InternationalLayovers" Type="Boolean" />
+    <Property Name="Married" Type="Boolean" />
+    <Property Name="Dependent" Type="Boolean" />
+    <Property Name="StudentLoans" Type="Boolean" />
+    <Property Name="Stocks" Type="Boolean" />
+    <Property Name="House" Type="Boolean" />
+    <Property Name="HSA" Type="Boolean" />
+    <Property Name="C1098T" Type="Boolean" />
+    <Property Name="C1099R" Type="Boolean" />
+    <NavigationProperty Name="Airport" Relationship="WorktripModel.FK_MiscTax_Airport" FromRole="UserMiscTaxInfo" ToRole="Airport" />
+    <NavigationProperty Name="User" Relationship="WorktripModel.FK_MiscTax_User" FromRole="UserMiscTaxInfo" ToRole="User" />
+  </EntityType>
+  <Association Name="FK_MiscTax_Airport">
+    <End Type="WorktripModel.Airport" Role="Airport" Multiplicity="0..1" />
+    <End Type="WorktripModel.UserMiscTaxInfo" Role="UserMiscTaxInfo" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Airport">
+        <PropertyRef Name="Code" />
+      </Principal>
+      <Dependent Role="UserMiscTaxInfo">
+        <PropertyRef Name="BaseAirportCode" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_MiscTax_User">
+    <End Type="WorktripModel.User" Role="User" Multiplicity="0..1" />
+    <End Type="WorktripModel.UserMiscTaxInfo" Role="UserMiscTaxInfo" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="UserMiscTaxInfo">
         <PropertyRef Name="UserId" />
       </Dependent>
     </ReferentialConstraint>

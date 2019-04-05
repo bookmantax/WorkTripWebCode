@@ -17,8 +17,6 @@
         <EntityTypeShape EntityType="WorktripModel.UserActionsLog" Width="1.5" PointX="8" PointY="9.375" />
         <EntityTypeShape EntityType="WorktripModel.PerDiemRate" Width="1.5" PointX="7.625" PointY="14.875" />
         <EntityTypeShape EntityType="WorktripModel.UserTaxReturn" Width="1.5" PointX="14.375" PointY="16.75" />
-        <EntityTypeShape EntityType="WorktripModel.UserMiscTaxInfo" Width="1.5" PointX="20" PointY="9.5" />
-        <AssociationConnector Association="WorktripModel.FK_MiscTax_Airport" />
         <EntityTypeShape EntityType="WorktripModel.PreparerNote" Width="1.5" PointX="14.375" PointY="6" />
         <EntityTypeShape EntityType="WorktripModel.User" Width="1.5" PointX="12.125" PointY="6.375" />
         <AssociationConnector Association="WorktripModel.FK_PreparerNotes_TaxPreparer" />
@@ -27,7 +25,6 @@
         <AssociationConnector Association="WorktripModel.FK_ActionUser_User" />
         <AssociationConnector Association="WorktripModel.FK_dbo_UserClaim_dbo_User_UserId" />
         <AssociationConnector Association="WorktripModel.FK_dbo_UserLogin_dbo_User_UserId" />
-        <AssociationConnector Association="WorktripModel.FK_MiscTax_User" />
         <AssociationConnector Association="WorktripModel.FK_UserMiscDocs_User" />
         <AssociationConnector Association="WorktripModel.FK_UserPerDiem_User" />
         <AssociationConnector Association="WorktripModel.FK_UserQuestion_User" />
@@ -38,6 +35,9 @@
         <AssociationConnector Association="WorktripModel.FK_UserToPreparer_Status" />
         <AssociationConnector Association="WorktripModel.FK_UserToPreparer_TaxPreparer" />
         <AssociationConnector Association="WorktripModel.FK_UserToPreparer_User" />
+        <EntityTypeShape EntityType="WorktripModel.UserMiscTaxInfo" Width="1.5" PointX="20" PointY="7" />
+        <AssociationConnector Association="WorktripModel.FK_MiscTax_Airport" />
+        <AssociationConnector Association="WorktripModel.FK_MiscTax_User" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

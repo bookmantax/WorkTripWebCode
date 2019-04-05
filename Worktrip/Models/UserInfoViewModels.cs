@@ -73,6 +73,43 @@ namespace Worktrip.Models
             return true;
         }
 
+        public bool SaveYesNoQuestions(string userId)
+        {
+            using (var db = new WorktripEntities())
+            {
+                var userInfo = db.Users.FirstOrDefault(u => u.Id == userId);
+
+                if (userInfo == null)
+                {
+                    return false;
+                }
+
+                if (this.TaxInfos != null)
+                {
+                    foreach (var kvPair in this.TaxInfos)
+                    {
+                        var taxInfo = UserInfoViewModel.GetOrCreateUserInfo(db, userId, kvPair.Value.Year);
+
+                        var u = kvPair.Value;
+
+                        taxInfo.Married = u.Married;
+                        taxInfo.Dependent = u.Dependent;
+                        taxInfo.StudentLoans = u.StudentLoans;
+                        taxInfo.Stocks = u.Stocks;
+                        taxInfo.House = u.House;
+                        taxInfo.HSA = u.HSA;
+                        taxInfo.C1098T = u.C1098T;
+                        taxInfo.C1099R = u.C1099R;
+                    }
+                }
+
+                db.SaveChanges();
+
+                UpdateUserActionsLog(userId, "updated yes/no questions");
+            }
+            return true;
+        }
+
         public bool SaveTaxInfo(string userId)
         {
             using (var db = new WorktripEntities())
@@ -302,7 +339,15 @@ namespace Worktrip.Models
                         TaxReturn = d.TaxReturn,
                         PerDiemsTotal = d.LayoversPerDiem,
                         DLState = d.DLState,
-                        InternationalLayovers = d.InternationalLayovers
+                        InternationalLayovers = d.InternationalLayovers,
+                        Married = d.Married,
+                        Dependent = d.Dependent,
+                        StudentLoans = d.StudentLoans,
+                        Stocks = d.Stocks,
+                        House = d.House,
+                        HSA = d.HSA,
+                        C1098T = d.C1098T,
+                        C1099R = d.C1099R
                     }).ToDictionary(t => t.Year.ToString(), t => t),
                     Questions = db.UserQuestions.Include(q => q.User1).Where(q => q.AskedBy == userId).Select(q => new Question
                     {
@@ -421,6 +466,14 @@ namespace Worktrip.Models
         public double? PerDiemsTotal { get; set; }
         public string DLState { get; set; }
         public Boolean? InternationalLayovers { get; set; }
+        public bool? Married { get; set; }
+        public bool? Dependent { get; set; }
+        public bool? StudentLoans { get; set; }
+        public bool? Stocks { get; set; }
+        public bool? House { get; set; }
+        public bool? HSA { get; set; }
+        public bool? C1098T { get; set; }
+        public bool? C1099R { get; set; }
 }
 
     public class Question

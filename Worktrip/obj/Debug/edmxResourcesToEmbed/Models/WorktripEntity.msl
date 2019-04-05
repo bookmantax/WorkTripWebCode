@@ -130,35 +130,6 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <EntitySetMapping Name="UserMiscTaxInfoes">
-      <EntityTypeMapping TypeName="WorktripModel.UserMiscTaxInfo">
-        <MappingFragment StoreEntitySet="UserMiscTaxInfo">
-          <ScalarProperty Name="InternationalLayovers" ColumnName="InternationalLayovers" />
-          <ScalarProperty Name="DLState" ColumnName="DLState" />
-          <ScalarProperty Name="LayoversPerDiem" ColumnName="LayoversPerDiem" />
-          <ScalarProperty Name="TaxReturnDocument" ColumnName="TaxReturnDocument" />
-          <ScalarProperty Name="TaxReturn" ColumnName="TaxReturn" />
-          <ScalarProperty Name="PreparerNotes" ColumnName="PreparerNotes" />
-          <ScalarProperty Name="Airline" ColumnName="Airline" />
-          <ScalarProperty Name="UnreimbursedExpenses" ColumnName="UnreimbursedExpenses" />
-          <ScalarProperty Name="IdentityFees" ColumnName="IdentityFees" />
-          <ScalarProperty Name="InternetBill" ColumnName="InternetBill" />
-          <ScalarProperty Name="CellphoneBill" ColumnName="CellphoneBill" />
-          <ScalarProperty Name="TechPurchasesFees" ColumnName="TechPurchasesFees" />
-          <ScalarProperty Name="FlightGearLuggageFees" ColumnName="FlightGearLuggageFees" />
-          <ScalarProperty Name="LaundryFees" ColumnName="LaundryFees" />
-          <ScalarProperty Name="ClothingFees" ColumnName="ClothingFees" />
-          <ScalarProperty Name="TransactionalFees" ColumnName="TransactionalFees" />
-          <ScalarProperty Name="TotalSpentLayoverTransportation" ColumnName="TotalSpentLayoverTransportation" />
-          <ScalarProperty Name="DriverLayoverTips" ColumnName="DriverLayoverTips" />
-          <ScalarProperty Name="DaysInTrainingOrAway" ColumnName="DaysInTrainingOrAway" />
-          <ScalarProperty Name="BaseAirportCode" ColumnName="BaseAirportCode" />
-          <ScalarProperty Name="TaxYear" ColumnName="TaxYear" />
-          <ScalarProperty Name="UserId" ColumnName="UserId" />
-          <ScalarProperty Name="Id" ColumnName="Id" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
     <EntitySetMapping Name="PreparerNotes">
       <EntityTypeMapping TypeName="WorktripModel.PreparerNote">
         <MappingFragment StoreEntitySet="PreparerNotes">
@@ -222,6 +193,43 @@
           <ScalarProperty Name="Year" ColumnName="Year" />
           <ScalarProperty Name="StatusId" ColumnName="StatusId" />
           <ScalarProperty Name="PreparerId" ColumnName="PreparerId" />
+          <ScalarProperty Name="UserId" ColumnName="UserId" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="UserMiscTaxInfoes">
+      <EntityTypeMapping TypeName="WorktripModel.UserMiscTaxInfo">
+        <MappingFragment StoreEntitySet="UserMiscTaxInfo">
+          <ScalarProperty Name="C1099R" ColumnName="1099R" />
+          <ScalarProperty Name="C1098T" ColumnName="1098T" />
+          <ScalarProperty Name="HSA" ColumnName="HSA" />
+          <ScalarProperty Name="House" ColumnName="House" />
+          <ScalarProperty Name="Stocks" ColumnName="Stocks" />
+          <ScalarProperty Name="StudentLoans" ColumnName="StudentLoans" />
+          <ScalarProperty Name="Dependent" ColumnName="Dependent" />
+          <ScalarProperty Name="Married" ColumnName="Married" />
+          <ScalarProperty Name="InternationalLayovers" ColumnName="InternationalLayovers" />
+          <ScalarProperty Name="DLState" ColumnName="DLState" />
+          <ScalarProperty Name="LayoversPerDiem" ColumnName="LayoversPerDiem" />
+          <ScalarProperty Name="TaxReturnDocument" ColumnName="TaxReturnDocument" />
+          <ScalarProperty Name="TaxReturn" ColumnName="TaxReturn" />
+          <ScalarProperty Name="PreparerNotes" ColumnName="PreparerNotes" />
+          <ScalarProperty Name="Airline" ColumnName="Airline" />
+          <ScalarProperty Name="UnreimbursedExpenses" ColumnName="UnreimbursedExpenses" />
+          <ScalarProperty Name="IdentityFees" ColumnName="IdentityFees" />
+          <ScalarProperty Name="InternetBill" ColumnName="InternetBill" />
+          <ScalarProperty Name="CellphoneBill" ColumnName="CellphoneBill" />
+          <ScalarProperty Name="TechPurchasesFees" ColumnName="TechPurchasesFees" />
+          <ScalarProperty Name="FlightGearLuggageFees" ColumnName="FlightGearLuggageFees" />
+          <ScalarProperty Name="LaundryFees" ColumnName="LaundryFees" />
+          <ScalarProperty Name="ClothingFees" ColumnName="ClothingFees" />
+          <ScalarProperty Name="TransactionalFees" ColumnName="TransactionalFees" />
+          <ScalarProperty Name="TotalSpentLayoverTransportation" ColumnName="TotalSpentLayoverTransportation" />
+          <ScalarProperty Name="DriverLayoverTips" ColumnName="DriverLayoverTips" />
+          <ScalarProperty Name="DaysInTrainingOrAway" ColumnName="DaysInTrainingOrAway" />
+          <ScalarProperty Name="BaseAirportCode" ColumnName="BaseAirportCode" />
+          <ScalarProperty Name="TaxYear" ColumnName="TaxYear" />
           <ScalarProperty Name="UserId" ColumnName="UserId" />
           <ScalarProperty Name="Id" ColumnName="Id" />
         </MappingFragment>

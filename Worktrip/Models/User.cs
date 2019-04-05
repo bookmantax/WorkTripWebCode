@@ -34,8 +34,6 @@ public partial class User
 
         this.UserLogins = new HashSet<UserLogin>();
 
-        this.UserMiscTaxInfoes = new HashSet<UserMiscTaxInfo>();
-
         this.UserMiscDocs = new HashSet<UserMiscDoc>();
 
         this.UserPerDiems = new HashSet<UserPerDiem>();
@@ -51,6 +49,8 @@ public partial class User
         this.UserToPreparers = new HashSet<UserToPreparer>();
 
         this.UserToPreparers1 = new HashSet<UserToPreparer>();
+
+        this.UserMiscTaxInfoes = new HashSet<UserMiscTaxInfo>();
 
     }
 
@@ -133,10 +133,6 @@ public partial class User
 
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
 
-    public virtual ICollection<UserMiscTaxInfo> UserMiscTaxInfoes { get; set; }
-
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-
     public virtual ICollection<UserMiscDoc> UserMiscDocs { get; set; }
 
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
@@ -166,6 +162,10 @@ public partial class User
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
 
     public virtual ICollection<UserToPreparer> UserToPreparers1 { get; set; }
+
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+
+    public virtual ICollection<UserMiscTaxInfo> UserMiscTaxInfoes { get; set; }
 
 }
 
