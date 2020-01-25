@@ -488,6 +488,7 @@
     <None Include="Scripts\jquery-1.11.1.intellisense.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Scripts\dashboard.js" />
     <Content Include="Scripts\dropzone\basic.css" />
     <Content Include="Scripts\dropzone\basic.min.css" />
     <Content Include="Scripts\dropzone\dropzone-amd-module.js" />
@@ -548,6 +549,7 @@
     <Content Include="Scripts\jquery-1.11.1.min.js" />
     <Content Include="Scripts\jquery-1.11.1.min.map" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
+    <Content Include="Scripts\jquery-migrate-1.4.1.js" />
     <Content Include="Scripts\jquery-ui-1.11.0.js" />
     <Content Include="Scripts\jquery-ui-1.11.0.min.js" />
     <Content Include="Scripts\jquery.dialogextend.min.js" />
@@ -607,6 +609,12 @@
     <Content Include="Views\Home\Admin.cshtml" />
     <Content Include="Views\Shared\_GA.cshtml" />
     <Content Include="Views\Home\Privacy.cshtml" />
+    <Content Include="Views\Home\Dashboard\_Layout.cshtml" />
+    <Content Include="Views\Home\Dashboard\_TopBar.cshtml" />
+    <Content Include="Views\Home\Dashboard\_Sidebar.cshtml" />
+    <Content Include="Views\Home\Dashboard\Form\_PersonalInfo.cshtml" />
+    <Content Include="Views\Home\Dashboard\Form\_YesNoQuestions.cshtml" />
+    <Content Include="Views\Home\Dashboard\Form\_TaxQuestions.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

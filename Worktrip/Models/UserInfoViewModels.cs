@@ -100,6 +100,16 @@ namespace Worktrip.Models
                         taxInfo.HSA = u.HSA;
                         taxInfo.C1098T = u.C1098T;
                         taxInfo.C1099R = u.C1099R;
+                        taxInfo.NewHire = u.NewHire;
+                        taxInfo.MultipleW2s = u.MultipleW2s;
+                        taxInfo.C1099INT = u.C1099INT;
+                        taxInfo.C1099G = u.C1099G;
+                        taxInfo.ScheduleK1 = u.ScheduleK1;
+                        taxInfo.OwnBusiness = u.OwnBusiness;
+                        taxInfo.Other = u.Other;
+                        taxInfo.Itemize = u.Itemize;
+                        taxInfo.DriveToWork = u.DriveToWork;
+                        taxInfo.FlyReserveDays= u.FlyReserveDays;
                     }
                 }
 
@@ -347,7 +357,17 @@ namespace Worktrip.Models
                         House = d.House,
                         HSA = d.HSA,
                         C1098T = d.C1098T,
-                        C1099R = d.C1099R
+                        C1099R = d.C1099R,
+                        NewHire = d.NewHire,
+                        MultipleW2s = d.MultipleW2s,
+                        C1099INT = d.C1099INT,
+                        C1099G = d.C1099G,
+                        ScheduleK1 = d.ScheduleK1,
+                        OwnBusiness = d.OwnBusiness,
+                        Other = d.Other,
+                        Itemize = d.Itemize,
+                        DriveToWork = d.DriveToWork,
+                        FlyReserveDays = d.FlyReserveDays
                     }).ToDictionary(t => t.Year.ToString(), t => t),
                     Questions = db.UserQuestions.Include(q => q.User1).Where(q => q.AskedBy == userId).Select(q => new Question
                     {
@@ -474,7 +494,17 @@ namespace Worktrip.Models
         public bool? HSA { get; set; }
         public bool? C1098T { get; set; }
         public bool? C1099R { get; set; }
-}
+        public bool? NewHire { get; set; }
+        public bool? MultipleW2s { get; set; }
+        public bool? C1099INT { get; set; }
+        public bool? C1099G { get; set; }
+        public bool? ScheduleK1 { get; set; }
+        public bool? OwnBusiness { get; set; }
+        public bool? Other { get; set; }
+        public bool? Itemize { get; set; }
+        public bool? FlyReserveDays { get; set; }
+        public bool? DriveToWork { get; set; }
+    }
 
     public class Question
     {

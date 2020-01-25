@@ -507,6 +507,16 @@
     <Property Name="C1099R" Type="Boolean" />
     <NavigationProperty Name="Airport" Relationship="WorktripModel.FK_MiscTax_Airport" FromRole="UserMiscTaxInfo" ToRole="Airport" />
     <NavigationProperty Name="User" Relationship="WorktripModel.FK_MiscTax_User" FromRole="UserMiscTaxInfo" ToRole="User" />
+    <Property Name="Other" Type="Boolean" />
+    <Property Name="OwnBusiness" Type="Boolean" />
+    <Property Name="ScheduleK1" Type="Boolean" />
+    <Property Name="C1099G" Type="Boolean" />
+    <Property Name="C1099INT" Type="Boolean" />
+    <Property Name="MultipleW2s" Type="Boolean" />
+    <Property Name="NewHire" Type="Boolean" />
+    <Property Name="Itemize" Type="Boolean" />
+    <Property Name="DriveToWork" Type="Boolean" />
+    <Property Name="FlyReserveDays" Type="Boolean" />
   </EntityType>
   <Association Name="FK_MiscTax_Airport">
     <End Type="WorktripModel.Airport" Role="Airport" Multiplicity="0..1" />

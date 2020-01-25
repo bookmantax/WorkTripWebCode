@@ -11,11 +11,18 @@
 
 body {
     font-family: LatoLight;
+    background: #f1f5f9;
+    min-width: 320px;
 }
 
 .nav-bar-container, .nav-bar-inner {
     width: 100%;
-    background: url('/Content/img/navbar-bg.png');
+    /* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#2c539e+0,203075+55 */
+    background: #2c539e; /* Old browsers */
+    background: -moz-linear-gradient(45deg, #2c539e 0%, #203075 55%); /* FF3.6-15 */
+    background: -webkit-linear-gradient(45deg, #2c539e 0%,#203075 55%); /* Chrome10-25,Safari5.1-6 */
+    background: linear-gradient(45deg, #2c539e 0%,#203075 55%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#2c539e', endColorstr='#203075',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
     border: none;
 }
 
@@ -23,7 +30,7 @@ body {
     text-decoration: none;
 }
 
-.dashboard-button-name a:hover, .menu:hover, li.dashboard-button-container:hover {
+.dashboard-button-name a:hover, .menu:hover, li.dashboard-button-containerdashboard-button-container:hover {
     cursor: pointer;
 }
 
@@ -37,7 +44,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 div.field, div.input-group {
-    padding: 10px 0 !important;
+    padding:  2px 0 10px 0 !important;
 }
 
 .image-heading h1 {
@@ -168,16 +175,6 @@ div.field, div.input-group {
     max-height: 45px !important;
 }
 
-.dropdown-menu {
-    left: 10px !important;
-    top: 40px;
-    background: #152D58;
-}
-
-    .dropdown-menu .borderB {
-        border-bottom: 1px solid #000;
-    }
-
 .top-menu {
     width: 80%;
     height: 100px;
@@ -188,31 +185,54 @@ div.field, div.input-group {
 }
 
 .left-menu {
-    width: 20%;
-    float: left;
-    background: #f1f1f1;
-    box-shadow: 1px 1px 4px #333;
+    width: 200px;
+    position: fixed;
+    margin-top: 15px;
 }
 
 .content-center {
-    width: 80%;
-    float: right;
+    width: calc(100% - 400px);
+    max-width: 1200px;
+    margin: 0 auto;
+    overflow: hidden;
+}
+
+.form-wrapper {
+    max-width: 760px;
+    width: 100%;
+    margin: 0 auto;
 }
 
 .top-menu .row {
     margin-top: 10px;
 }
 
-.left-menu ul {
+.left-menu > ul {
     width: 100%;
     padding: 0;
 }
 
-    .left-menu ul li {
-        width: 80%;
-        margin: 10px auto !important;
-        overflow: hidden;
+.left-menu > ul > li {
+    margin: 10px auto !important;
+    overflow: hidden;
+    border-radius: 5px;
+}
+
+.left-menu > .dropdown > .btn {
+    background: transparent;
+    border: 2px solid #e74139;
+}
+
+.tax-year-selection-button > .dropdown-menu {
+    width: 100% !important;
+    font-size: 1.5em;
+    text-align: center;
+}
+
+    .tax-year-selection-button > .dropdown-menu > li > a {
+        font-weight:  bold;
     }
+
 
 .left-menu .btn-container {
     width: 100%;
@@ -356,12 +376,6 @@ div.taxes-dropdown-container {
     border-bottom: 4px solid #152D58;
 }
 
-.left-menu-collapse {
-    border-bottom: 4px solid #999;
-    overflow-y: auto;
-    max-height: calc(100vh - 175px);
-}
-
 .top-menu {
     border-bottom: 4px solid #E74139;
 }
@@ -371,10 +385,6 @@ div.taxes-dropdown-container {
     color: #fff;
 }
 
-.dropdown-menu-taxes > li > a:hover {
-    background: #f1f1f1 !important;
-    color: #E74139 !important;
-}
 
 .mobile-app {
     background: url(../img/phone.png) center no-repeat;
@@ -477,6 +487,12 @@ div.taxes-dropdown-container {
 }
 
 @media only screen and (max-width :1200px) {
+    .content-center {
+        margin: unset;
+        float: right;
+        width: calc(100% - 200px);
+    }
+
     .contact-border {
         border-right: none !important;
     }
@@ -487,8 +503,64 @@ div.taxes-dropdown-container {
 }
 
 @media only screen and (max-width :992px) {
-    .left-menu-collapse {
-        display: none;
+
+    .content-center {
+        width: 100%;
+        float: unset;
+    }
+
+    .container-dashboard {
+        padding: 0;
+    }
+
+    .left-menu {
+        position: unset;
+        width: 100%;
+    }
+
+    .progression {
+        display: flex;
+        flex-wrap: nowrap;
+        justify-content: space-between;
+        overflow: auto;
+        -ms-overflow-style: none;
+    }
+
+        .progression::-webkit-scrollbar {
+            display: none;
+        }
+
+        .progression > li {
+            flex-basis: 0;
+            flex-grow: 1;
+            min-width: 150px;
+        }
+
+    .left-menu .dashboard-button-container {
+        float: left;
+        margin: 5px !important;
+    }
+
+    .left-menu > .dropdown {
+        margin: 0 auto 10px auto !important;
+        max-width: 250px;
+    }
+
+    .progression > li:first-child {
+        margin-left: 15px !important;
+    }
+
+    .progression .dashboard-icon-cotainer {
+        height: 40px;
+    }
+
+        .progression .dashboard-icon-cotainer img {
+            width: 32px;
+            height: 32px;
+        }
+
+    .left-menu .btn-container {
+        margin: 0;
     }
 
     .container-responsive {
@@ -528,10 +600,7 @@ div.taxes-dropdown-container {
     div.field, div.input-group {
         padding: 5px 0 !important;
     }
-
-    .dropdown-menu {
-    }
-
+ 
     .custom-width {
         width: 90% !important;
     }
@@ -572,13 +641,6 @@ div.taxes-dropdown-container {
         border-radius: 0;
     }
 
-    .left-menu-collapse {
-        position: absolute;
-        min-width: 200px;
-        background: #f1f1f1;
-        z-index: 999;
-    }
-
     .content-center {
         width: 100% !important;
     }
@@ -593,10 +655,6 @@ div.taxes-dropdown-container {
         margin-top: 2px;
     }
 
-    .left-menu {
-        position: fixed;
-        z-index: 999;
-    }
 
     .top-menu {
         position: fixed;
@@ -605,16 +663,11 @@ div.taxes-dropdown-container {
     }
 
     .content-center {
-        margin-top: 100px;
         overflow: hidden;
     }
 
     #options .menu {
         display: none !important;
-    }
-
-    div.left-menu-collapse {
-        display: block;
     }
 
     .navbar-brand {
@@ -729,12 +782,12 @@ div.taxes-dropdown-container {
 }
 
 #Personal-info, #tax-question, #ynQuestions, .border-document {
-    margin: 50px;
-    padding-top: 20px;
-    padding-bottom: 20px;
+    margin: 15px;
+    padding: 5%;
     background: #fff;
     border-radius: 0;
-    border: 1px solid #e1e1e1;
+    border-radius: 5px;
+    box-shadow: 1px 6px 13px #dce3ea;
 }
 
 @media only screen and (max-width: 500px) {

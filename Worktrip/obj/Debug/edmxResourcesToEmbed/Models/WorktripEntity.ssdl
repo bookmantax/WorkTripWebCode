@@ -164,6 +164,16 @@
     <Property Name="HSA" Type="bit" />
     <Property Name="1098T" Type="bit" />
     <Property Name="1099R" Type="bit" />
+    <Property Name="Other" Type="bit" />
+    <Property Name="OwnBusiness" Type="bit" />
+    <Property Name="ScheduleK1" Type="bit" />
+    <Property Name="1099G" Type="bit" />
+    <Property Name="1099INT" Type="bit" />
+    <Property Name="MulipleW2s" Type="bit" />
+    <Property Name="NewHire" Type="bit" />
+    <Property Name="Itemize" Type="bit" />
+    <Property Name="DriveToWork" Type="bit" />
+    <Property Name="FlyReserveDays" Type="bit" />
   </EntityType>
   <EntityType Name="UserPerDiem">
     <Key>

@@ -628,6 +628,43 @@
                 $(".1099rpanel", $modal).prop('style').visibility = 'hidden';
             }
 
+            if (userInfo.TaxInfos[taxYear].C1099G != null && userInfo.TaxInfos[taxYear].C1099G == true) {
+                $(".1099gpanel", $modal).prop('style').visibility = 'visible';
+            } else {
+                $(".1099gpanel", $modal).prop('style').visibility = 'hidden';
+            }
+            if (userInfo.TaxInfos[taxYear].C1099INT != null && userInfo.TaxInfos[taxYear].C1099INT == true) {
+                $(".1099intpanel", $modal).prop('style').visibility = 'visible';
+            } else {
+                $(".1099intpanel", $modal).prop('style').visibility = 'hidden';
+            }
+            if (userInfo.TaxInfos[taxYear].NewHire != null && userInfo.TaxInfos[taxYear].NewHire == true) {
+                $(".newHirepanel", $modal).prop('style').visibility = 'visible';
+            } else {
+                $(".newHirepanel", $modal).prop('style').visibility = 'hidden';
+            }
+            if (userInfo.TaxInfos[taxYear].OwnBusiness != null && userInfo.TaxInfos[taxYear].OwnBusiness == true) {
+                $(".ownBusinesspanel", $modal).prop('style').visibility = 'visible';
+            } else {
+                $(".ownBusinesspanel", $modal).prop('style').visibility = 'hidden';
+            }
+            if (userInfo.TaxInfos[taxYear].ScheduleK1 != null && userInfo.TaxInfos[taxYear].ScheduleK1 == true) {
+                $(".scheduleK1panel", $modal).prop('style').visibility = 'visible';
+            } else {
+                $(".scheduleK1panel", $modal).prop('style').visibility = 'hidden';
+            }
+            if (userInfo.TaxInfos[taxYear].Other != null && userInfo.TaxInfos[taxYear].Other == true) {
+                $(".otherpanel", $modal).prop('style').visibility = 'visible';
+            } else {
+                $(".otherpanel", $modal).prop('style').visibility = 'hidden';
+            }
+            if (userInfo.TaxInfos[taxYear].MultipleW2s != null && userInfo.TaxInfos[taxYear].MultipleW2s == true) {
+                $(".multipleW2spanel", $modal).prop('style').visibility = 'visible';
+            } else {
+                $(".multipleW2spanel", $modal).prop('style').visibility = 'hidden';
+            }
+
+
             $(".modal-travel-expenses", $modal).text(formatExpense(
                 (userInfo.TaxInfos[taxYear].TotalSpentLayoverTransportation || 0)));
 
@@ -1517,30 +1554,52 @@
                             <div class="modal-user-questions panel-body">
                             </div>
                         </div>
-                        <div class="marriedpanel panel-success" style="visibility:hidden" >
+                        <div class="marriedpanel panel-success" style="visibility:hidden">
                             <div class="panel-heading">Married</div>
                         </div>
-                        <div class="dependentpanel panel-success" style="visibility:hidden" >
-                            <div class="panel-heading">Dependent</div>
+                        <div class="dependentpanel panel-success" style="visibility:hidden">
+                            <div class="panel-heading">Dependent(s)</div>
                         </div>
-                        <div class="loanspanel panel-success" style="visibility:hidden" >
-                            <div class="panel-heading">Loans</div>
+                        <div class="loanspanel panel-success" style="visibility:hidden">
+                            <div class="panel-heading">Students Loans</div>
                         </div>
-                        <div class="stockspanel panel-success" style="visibility:hidden" >
+                        <div class="stockspanel panel-success" style="visibility:hidden">
                             <div class="panel-heading">Stocks</div>
                         </div>
-                        <div class="housepanel panel-success" style="visibility:hidden" >
+                        <div class="housepanel panel-success" style="visibility:hidden">
                             <div class="panel-heading">House</div>
                         </div>
-                        <div class="hsapanel panel-success" style="visibility:hidden" >
+                        <div class="hsapanel panel-success" style="visibility:hidden">
                             <div class="panel-heading">HSA</div>
                         </div>
-                        <div class="1098tpanel panel-success" style="visibility:hidden" >
-                            <div class="panel-heading">1098T</div>
+                        <div class="1098tpanel panel-success" style="visibility:hidden">
+                            <div class="panel-heading">1098-Mortgage</div>
                         </div>
-                        <div class="1099rpanel panel-success" style="visibility:hidden" >
-                            <div class="panel-heading">1099R</div>
+                        <div class="1099rpanel panel-success" style="visibility:hidden">
+                            <div class="panel-heading">1099-R</div>
                         </div>
+                        <div class="1099gpanel panel-success" style="visibility:hidden">
+                            <div class="panel-heading">1099-G</div>
+                        </div>
+                        <div class="1099intpanel panel-success" style="visibility:hidden">
+                            <div class="panel-heading">1099-INT</div>
+                        </div>
+                        <div class="newHirepanel panel-success" style="visibility:hidden">
+                            <div class="panel-heading">New Hire</div>
+                        </div>
+                        <div class="otherpanel panel-success" style="visibility:hidden">
+                            <div class="panel-heading">Rental/Other Income</div>
+                        </div>
+                        <div class="scheduleK1panel panel-success" style="visibility:hidden">
+                            <div class="panel-heading">Schedule K-1</div>
+                        </div>
+                        <div class="ownBusinesspanel panel-success" style="visibility:hidden">
+                            <div class="panel-heading">Schedule C</div>
+                        </div>
+                        <div class="multipleW2spanel panel-success" style="visibility:hidden">
+                            <div class="panel-heading">Multiple W-2s</div>
+                        </div>
+
                     </div>
                     <div class="modal-docs">
                         <div class="modal-docs-loading hidden">
@@ -1644,7 +1703,7 @@
 
     <div id="main-tabs">
 
-        <ul class="nav nav-tabs" role="tablist">
+        @*<ul class="nav nav-tabs" role="tablist">
             <li role="presentation" class="active">
                 <a href="#unbound-users-tab" role="tab" data-toggle="tab">
                     Unassigned Clients
@@ -1660,9 +1719,9 @@
                     All Clients
                 </a>
             </li>
-        </ul>
+        </ul>*@
 
-        <div class="tab-content">
+        @*<div class="tab-content">
             <div role="tabpanel" class="tab-pane active fade in" id="unbound-users-tab">
                 <div id="unbound-controls" class="hidden" style="display: flex; flex-direction:row; justify-content:center;align-items:center">
                     <button id="unbound-save-btn" class="btn btn-success" style="margin: 10px">Save Changes</button>
@@ -1739,7 +1798,7 @@
                 </div>
 
             </div>
-            <div role="tabpanel" class="tab-pane fade" id="all-users-tab">
+            <div role="tabpanel" class="tab-pane fade" id="all-users-tab">*@
                 <input id="all-users-search" placeholder="Search by name or email" type="text" class="form-control" />
                 <table id="all-users-table" class="table table-striped table-hover table-bordered">
                     <thead>
@@ -1756,10 +1815,10 @@
                     </thead>
                     <tbody></tbody>
                 </table>
-            </div>
+            @*</div>
         </div>
 
-    </div>
+    </div>*@
 
     @*<div class="container-fluid">
             <div class="row">

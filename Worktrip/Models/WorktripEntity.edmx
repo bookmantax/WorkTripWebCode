@@ -169,6 +169,16 @@
           <Property Name="HSA" Type="bit" />
           <Property Name="1098T" Type="bit" />
           <Property Name="1099R" Type="bit" />
+          <Property Name="Other" Type="bit" />
+          <Property Name="OwnBusiness" Type="bit" />
+          <Property Name="ScheduleK1" Type="bit" />
+          <Property Name="1099G" Type="bit" />
+          <Property Name="1099INT" Type="bit" />
+          <Property Name="MulipleW2s" Type="bit" />
+          <Property Name="NewHire" Type="bit" />
+          <Property Name="Itemize" Type="bit" />
+          <Property Name="DriveToWork" Type="bit" />
+          <Property Name="FlyReserveDays" Type="bit" />
         </EntityType>
         <EntityType Name="UserPerDiem">
           <Key>
@@ -1051,7 +1061,17 @@
           <Property Name="C1099R" Type="Boolean" />
           <NavigationProperty Name="Airport" Relationship="WorktripModel.FK_MiscTax_Airport" FromRole="UserMiscTaxInfo" ToRole="Airport" />
           <NavigationProperty Name="User" Relationship="WorktripModel.FK_MiscTax_User" FromRole="UserMiscTaxInfo" ToRole="User" />
-        </EntityType>
+          <Property Name="Other" Type="Boolean" />
+          <Property Name="OwnBusiness" Type="Boolean" />
+          <Property Name="ScheduleK1" Type="Boolean" />
+          <Property Name="C1099G" Type="Boolean" />
+          <Property Name="C1099INT" Type="Boolean" />
+          <Property Name="MultipleW2s" Type="Boolean" />
+          <Property Name="NewHire" Type="Boolean" />
+          <Property Name="Itemize" Type="Boolean" />
+          <Property Name="DriveToWork" Type="Boolean" />
+          <Property Name="FlyReserveDays" Type="Boolean" />
+          </EntityType>
         <Association Name="FK_MiscTax_Airport">
           <End Type="WorktripModel.Airport" Role="Airport" Multiplicity="0..1" />
           <End Type="WorktripModel.UserMiscTaxInfo" Role="UserMiscTaxInfo" Multiplicity="*" />
@@ -1282,6 +1302,16 @@
           <EntitySetMapping Name="UserMiscTaxInfoes">
             <EntityTypeMapping TypeName="WorktripModel.UserMiscTaxInfo">
               <MappingFragment StoreEntitySet="UserMiscTaxInfo">
+                <ScalarProperty Name="FlyReserveDays" ColumnName="FlyReserveDays" />
+                <ScalarProperty Name="DriveToWork" ColumnName="DriveToWork" />
+                <ScalarProperty Name="Itemize" ColumnName="Itemize" />
+                <ScalarProperty Name="NewHire" ColumnName="NewHire" />
+                <ScalarProperty Name="MultipleW2s" ColumnName="MulipleW2s" />
+                <ScalarProperty Name="C1099INT" ColumnName="1099INT" />
+                <ScalarProperty Name="C1099G" ColumnName="1099G" />
+                <ScalarProperty Name="ScheduleK1" ColumnName="ScheduleK1" />
+                <ScalarProperty Name="OwnBusiness" ColumnName="OwnBusiness" />
+                <ScalarProperty Name="Other" ColumnName="Other" />
                 <ScalarProperty Name="C1099R" ColumnName="1099R" />
                 <ScalarProperty Name="C1098T" ColumnName="1098T" />
                 <ScalarProperty Name="HSA" ColumnName="HSA" />

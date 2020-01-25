@@ -1,0 +1,175 @@
+﻿<div class="left-menu">
+    <div class="dropdown tax-year-selection-button" style="margin-bottom: 5px;">
+        <button class="btn btn-block btn-lg dropdown-toggle" type="button" data-toggle="dropdown">
+            Tax Year:
+            <strong>
+                <span id="taxYear">@DateTime.Now.AddYears(-1).ToString("yyyy")</span>
+            </strong>
+            <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu">
+            <li><a class="dropdown-a" href="#">@DateTime.Now.AddYears(-1).ToString("yyyy")</a></li>
+            <li role="separator" class="divider"></li>
+            <li><a class="dropdown-a" href="#">@DateTime.Now.AddYears(-2).ToString("yyyy")</a></li>
+            <li role="separator" class="divider"></li>
+            <li><a class="dropdown-a" href="#">@DateTime.Now.AddYears(-3).ToString("yyyy")</a></li>
+        </ul>
+    </div>
+    <ul class="progression">
+        <li class="dashboard-button-container">
+            <div class="btn-container" style="background: #E74139;">
+                <div class="dashboard-icon-cotainer">
+                    <img src="~/Content/img/user.png" />
+                </div>
+                <div class="dashboard-button-name">
+                    <a id="pInfo">Personal Info</a>
+                </div>
+            </div>
+        </li>
+
+        <li id="wSch-side-item" class="dashboard-button-container">
+            <div class="btn-container">
+                <div class="dashboard-icon-cotainer">
+                    <img src="~/Content/img/Layover.png" />
+                </div>
+                <div class="dashboard-button-name">
+                    <a id="wSch">Yes/No Questions</a>
+                </div>
+            </div>
+        </li>
+
+        <li class="dashboard-button-container">
+            <div id="tax-docs-side-item" class="btn-container">
+                <div class="dashboard-icon-cotainer">
+                    <img src="~/Content/img/file.png" />
+                </div>
+                <div class="dashboard-button-name">
+                    <a id="tDoc">Tax Documents</a>
+                </div>
+            </div>
+        </li>
+
+        <li id="tQuest-side-item" class="dashboard-button-container">
+            <div class="btn-container">
+                <div class="dashboard-icon-cotainer">
+                    <img src="~/Content/img/Question.png" />
+                </div>
+                <div class="dashboard-button-name">
+                    <a id="tQuest">Tax Questions</a>
+                </div>
+            </div>
+        </li>
+        <li class="dashboard-button-container">
+            <div class="btn-container">
+                <div class="dashboard-icon-cotainer">
+                    <img src="~/Content/img/money.png" />
+                </div>
+                <div class="dashboard-button-name">
+                    <a id="mPay">Sign and Pay</a>
+                </div>
+            </div>
+        </li>
+        <li class="dashboard-button-container">
+            <div class="btn-container">
+                <div class="dashboard-icon-cotainer">
+                    <img src="~/Content/img/money.png" />
+                </div>
+                <div class="dashboard-button-name">
+                    <a id="tReturn">Tax Return</a>
+                </div>
+            </div>
+        </li>
+    </ul>
+</div>
+<!--<div class="top-menu">
+    <div class="row">
+        <div class="container ">
+            <ul class="nav navbar-nav" style="width: 100% !important;">
+                <li class="dropdown custom-width taxYear-container">
+                    <div class="dropdown" style="margin-bottom: 5px;">
+                        <button class="btn btn-primary dropdown-toggle" type="button" style="background: #152D58;" data-toggle="dropdown">
+                            <span id="taxYear">@DateTime.Now.AddYears(-1).ToString("yyyy")</span> taxes
+                            <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-taxes" style="background: #152D58; position: absolute;">
+                          Please add this class="dropdown-a" to every new item
+                            <li><a class="dropdown-a" style="color: #fff" href="#">@DateTime.Now.AddYears(-1).ToString("yyyy")</a></li>
+                            <li><a class="dropdown-a" href="#" style="color: #fff">@DateTime.Now.AddYears(-2).ToString("yyyy")</a></li>
+                            <li><a class="dropdown-a" href="#" style="color: #fff">@DateTime.Now.AddYears(-3).ToString("yyyy")</a></li>
+                        </ul>
+                    </div>
+                    <div style="color:#e74139;font-size:16px;padding:8px">
+                        Your refund: <span id="refund-amount" class="text-success" style="font-weight:bold;">$1234</span>
+                    </div>
+                </li>
+                <li class="top-menu-steps-items">
+                    <div id="pInfo-status" class="guide-container">
+                        <div class="guide-message">
+                            <i class="fa" aria-hidden="true"></i>
+                            <p>Check Personal Info</p>
+                        </div>
+                    </div>
+
+                </li>
+
+                <li class="top-menu-steps-items">
+                    <div class="arrow-right"></div>
+                </li>
+
+                <li id="wSch-status-item" class="top-menu-steps-items">
+                    <div id="wSch-status" class="guide-container">
+                        <div class="guide-message">
+                            <i class="fa" aria-hidden="true"></i>
+                            <p>Yes/No Questions</p>
+                        </div>
+                    </div>
+
+                </li>
+                <li id="wSch-arrow" class="top-menu-steps-items"><div class="arrow-right"></div></li>
+
+
+                <li class="top-menu-steps-items">
+                    <div id="tDoc-status" class="guide-container">
+                        <div class="guide-message">
+                            <i class="fa" aria-hidden="true"></i>
+                            <p>Upload Documents</p>
+                        </div>
+                    </div>
+
+                </li>
+                <li class="top-menu-steps-items"><div class="arrow-right"></div></li>
+
+
+                <li id="tQuest-status-item" class="top-menu-steps-items">
+                    <div id="tQuest-status" class="guide-container">
+                        <div class="guide-message">
+                            <i class="fa" aria-hidden="true"></i>
+                            <p>Tax Questions</p>
+                        </div>
+                    </div>
+                </li>
+                <li id="tQuest-arrow" class="top-menu-steps-items"><div class="arrow-right"></div></li>
+
+                <li class="top-menu-steps-items">
+                    <div id="mPay-status" class="guide-container">
+                        <div class="guide-message">
+                            <i class="fa" aria-hidden="true"></i>
+                            <p>Make a Payment</p>
+                        </div>
+                    </div>
+
+                </li>
+                <li class="top-menu-steps-items"><div class="arrow-right"></div></li>
+                <li class="top-menu-steps-items">
+                    <div id="tReturn-status" class="guide-container">
+                        <div class="guide-message">
+                            <i class="fa" aria-hidden="true"></i>
+                            <p>Tax Return</p>
+                        </div>
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>-->
