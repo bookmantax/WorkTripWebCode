@@ -55,6 +55,8 @@ namespace Worktrip.Models
         public Nullable<bool> Itemize { get; set; }
         public Nullable<bool> DriveToWork { get; set; }
         public Nullable<bool> FlyReserveDays { get; set; }
+        public string Spouse { get; set; }
+        public Nullable<double> TrainingExpenses { get; set; }
     
         public virtual Airport Airport { get; set; }
         public virtual User User { get; set; }

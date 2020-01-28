@@ -4,7 +4,57 @@
 };
 
 
+function clearSectionInputs(sectionId) {
+    $('#' + sectionId + ' input').each(function () {
+        var $editButton = $(this).next(".input-group-btn");
+        $(this).val("").removeAttr('disabled');
+        $editButton.addClass("hidden");
+    })
+}
+
+function displayNoQuestionPanelIfNoQuestions() {
+    var married = $("input[name='married']:checked").val() == 'yes';
+    var dependent = $("input[name='dependent']:checked").val() == 'yes';
+    var itemize = $("input[name='itemize']:checked").val() == 'yes';
+
+    if (!married && !itemize) {
+        $('[name="no-questions-panel"]').css("display", "inherit");
+    } else {
+        $('[name="no-questions-panel"]').css("display", "none");
+    }
+}
+
+function getSpouseData() {
+    var spouse = {};
+    var inputs = $("input[name^='Spouse']:not(:hidden)");
+
+    if (!inputs.length) {
+        return null;
+    }
+    
+    inputs.each(function (index, element) {
+        var key = element.name.split('.')[1];
+        var value = $(element).val();
+        spouse[key] = value;
+    })
+
+    return JSON.stringify(spouse);
+}
+
+function generateAndDisplayPromoCode(userInfo) {
+    if (!userInfo.FirstName || !userInfo.LastName || !userInfo.DOB) {
+        return 
+    }
+
+    var promoCode = (userInfo.FirstName.slice(0, 2) + userInfo.LastName.slice(0, 2) + userInfo.DOB.slice(-2)).toUpperCase();
+    $(".promo-code").text(promoCode);
+    $(".promo-code-name").text(userInfo.FirstName);
+    $("#promo-code-menu-bytton, #promo-code-menu-button").css("display", "inherit");
+}
+
 function refreshPersonalInfo(userInfo) {
+
+    generateAndDisplayPromoCode(userInfo);
     $(".input-confirm").addClass("hidden");
 
     $("#Personal-info input").each(function () {
@@ -19,8 +69,6 @@ function refreshPersonalInfo(userInfo) {
         $editButton.addClass("hidden");
 
         if (info != null) {
-            console.log(this);
-            console.log(info)
             $(this)
                 .val(info)
                 .attr("disabled", "");
@@ -29,36 +77,9 @@ function refreshPersonalInfo(userInfo) {
         }
     });
 
-
-
-    //populate airline and base airport based on tax year
     var taxYear = $("#taxYear").text();
 
-    //$("#base-airport-select").empty();
-
     if (userInfo.TaxInfos[taxYear]) {
-
-        //var existingCode = userInfo.TaxInfos[taxYear].BaseAirportCode;
-
-        //if (existingCode) {
-        //    $("#base-airport-select")
-        //        .val(existingCode);
-
-        //    if (!$("#base-airport-select").val()){
-
-        //        $("#base-airport-select")
-        //            .append("<option value='" + existingCode + "'></option>")
-        //            .val(existingCode);
-        //    }
-
-        //    $("#base-airport-select").nextAll(".input-group-btn").removeClass("hidden");
-        //    $("#base-airport-select").attr("disabled", "");
-        //} else {
-        //    $("#base-airport-select").val("");
-        //    $("#base-airport-select").removeAttr("disabled");
-        //    $("#base-airport-select").nextAll(".input-group-btn").addClass("hidden");
-        //}
-
         var existingAirline = userInfo.TaxInfos[taxYear].Airline;
 
         if (existingAirline) {
@@ -72,12 +93,7 @@ function refreshPersonalInfo(userInfo) {
             $("#airline-select").removeAttr("disabled");
             $("#airline-select").nextAll(".input-group-btn").addClass("hidden");
         }
-
     } else {
-        //$("#base-airport-select").val("");
-        //$("#base-airport-select").removeAttr("disabled");
-        //$("#base-airport-select").nextAll(".input-group-btn").addClass("hidden");
-
         $("#airline-select").val("");
         $("#airline-select").removeAttr("disabled");
         $("#airline-select").nextAll(".input-group-btn").addClass("hidden");
@@ -89,15 +105,25 @@ function refreshPersonalInfo(userInfo) {
 function refreshTaxInfo(userInfo, taxYear) {
     $("#training-days-title").text("2. How many days were you training in " + taxYear + "?");
 
+    $('[name="Spouse.DOB"]').datetimepicker({
+        format: 'L',
+        ignoreReadonly: true,
+    })
+
     $("#tax-question input").each(function () {
         if (!userInfo.TaxInfos) {
             return;
         }
-
+        var inputName = $(this).attr("name");
         var taxInfo = userInfo.TaxInfos[taxYear] || {};
 
-        var info = taxInfo[$(this).attr("name")];
-
+        if (inputName.split('.')[0] === "Spouse") {
+            var name = inputName.split('.')[1];
+            var spouse = JSON.parse(taxInfo.Spouse);
+            info = spouse && spouse[name] ? spouse[name] : null;
+        } else {
+            info = taxInfo[inputName];
+        }
         $(this)
             .val("")
             .removeAttr("disabled");
@@ -119,12 +145,13 @@ function refreshTaxInfo(userInfo, taxYear) {
     });
 
     if (userInfo.TaxInfos[taxYear]) {
-        console.log(userInfo.TaxInfos[taxYear])
         if (userInfo.TaxInfos[taxYear].Married) {
             $("input[name='married']")[0].checked = true;
             document.getElementById("marriedLabel").style.visibility = "visible";
+            $("#spouse-section").css('display', 'inherit')
         } else {
             $("input[name='married']")[1].checked = true;
+            $("#spouse-section").css('display', 'none')
         }
         if (userInfo.TaxInfos[taxYear].Dependent) {
             $("input[name='dependent']")[0].checked = true;
@@ -172,8 +199,10 @@ function refreshTaxInfo(userInfo, taxYear) {
         if (userInfo.TaxInfos[taxYear].NewHire) {
             $("input[name='newHire']")[0].checked = true;
             document.getElementById("newHireLabel").style.visibility = "visible";
+            $('[name="question-training-expenses"]').css("display", "inherit");
         } else {
             $("input[name='newHire']")[1].checked = true;
+            $('[name="question-training-expenses"]').css("display", "none");
         }
         if (userInfo.TaxInfos[taxYear].Other) {
             $("input[name='other']")[0].checked = true;
@@ -215,7 +244,8 @@ function refreshTaxInfo(userInfo, taxYear) {
         if (userInfo.TaxInfos[taxYear].Itemize) {
             $("input[name='itemize']")[0].checked = true;
             document.getElementById("itemizeLabel").style.visibility = "visible";
-            $('[name="question-driveToWork"], [name="question-flyReserveDays"]').css("display", "inherit");
+            
+            $('[name="question-driveToWork"], [name="question-flyReserveDays"], #additional-questions-section').css("display", "inherit");
 
             if (userInfo.TaxInfos[taxYear].DriveToWork) {
                 $("input[name='driveToWork']")[0].checked = true;
@@ -225,31 +255,21 @@ function refreshTaxInfo(userInfo, taxYear) {
 
             if (userInfo.TaxInfos[taxYear].FlyReserveDays) {
                 $("input[name='flyReserveDays']")[0].checked = true;
+                $('[name="question-total-spent-layover-transportation"]').css("display", "inherit");
             } else {
                 $("input[name='flyReserveDays']")[1].checked = true;
+                $('[name="question-total-spent-layover-transportation"]').css("display", "none");
             }
 
         } else {
             $("input[name='itemize']")[1].checked = true;
+            $('#additional-questions-section').css("display", "none");
         }
-
-        //$("#international-layover-checkbox").prop('checked', userInfo.TaxInfos[taxYear].InternationalLayovers);
-        ////show or hide navigation Items based on InternationalLayovers boolean
-        //if (userInfo.TaxInfos[taxYear].InternationalLayovers) {
-        //    //$("#tQuest-status-item").prop("style").display = "inherit";
-        //    //$("#tQuest-arrow").prop("style").display = "inherit";
-        //    $("#tQuest-side-item").prop("style").display = "inherit";
-        //} else {
-        //    //$("#tQuest-status-item").prop("style").display = "none";
-        //    //$("#tQuest-arrow").prop("style").display = "none";
-        //    $("#tQuest-side-item").prop("style").display = "none";
-        //}
 
         var existingState = userInfo.TaxInfos[taxYear].DLState;
 
         if (existingState) {
             $("#dl-select").val(existingState);
-
             $("#dl-select").nextAll(".input-group-btn").removeClass("hidden");
             $("#dl-select").attr("disabled", "");
         } else {
@@ -269,10 +289,12 @@ function refreshTaxInfo(userInfo, taxYear) {
             "$" + userInfo.TaxInfos[taxYear].TaxReturn : "Processing"
     );
 
+    displayNoQuestionPanelIfNoQuestions();
     refreshStatusbar(userInfo, taxYear);
 }
 
 function refreshQuestions(userInfo, taxYear) {
+    console.log(userInfo)
     $("#asked-questions ul").empty();
 
     if (!userInfo.Questions || !userInfo.Questions[taxYear]) {
@@ -474,7 +496,6 @@ function downloadTaxReturn() {
         success: function (response) {
             if (response.status == 0 && response.files.length > 0) {
                 if (!$('div#tax-return-container').is(":visible")) {
-                    console.log('in' + elemId);
                     $('div.box-dashboard-container').hide();
                     $('div#Personal-info').hide();
                     $('div#tax-question').hide();
@@ -483,6 +504,7 @@ function downloadTaxReturn() {
                     $('div#tax-return-container').fadeIn(500);
                     $('div#no-tax-return-container').hide();
                     $('div#ynQuestions').hide();
+                    $('div#promo-code-container').hide();
                     $('div.btn-container').css('background', '#999');
                     elem.closest('div.btn-container').css('background', '#E74139');
 
@@ -492,7 +514,6 @@ function downloadTaxReturn() {
             }
             else {
                 if (!$('div#tax-return-container').is(":visible")) {
-                    console.log('in' + elemId);
                     $('div.box-dashboard-container').hide();
                     $('div#Personal-info').hide();
                     $('div#tax-question').hide();
@@ -501,6 +522,7 @@ function downloadTaxReturn() {
                     $('div#tax-return-container').hide();
                     $('div#no-tax-return-container').fadeIn(500);
                     $('div#ynQuestions').hide();
+                    $('div#promo-code-container').hide();
                     $('div.btn-container').css('background', '#999');
                     elem.closest('div.btn-container').css('background', '#E74139');
 
@@ -523,15 +545,8 @@ $(function () {
         ignoreReadonly: true
     });
 
-    dobPicker.on('dp.change', function () {
-        $("#save-personal-info-btn").trigger("click", { "passive": true });
-    })
 
-    refreshDashboardViews(prefetchedUserTaxInfo, $("#taxYear").text());
-
-    $("#Personal-info>div>.input-group>input").change(function () {
-        console.log('dasdasda')
-        //check for valid zip code format
+    function triggerSavingPersonalInfo() {
         if ($(this).attr("name") == "Zip") {
             var isValidZip = /(^\d{5}$)|(^\d{5}-\d{4}$)/.test(this.value);
             if (isValidZip == true) {
@@ -543,7 +558,13 @@ $(function () {
         } else {
             $("#save-personal-info-btn").trigger("click", { "passive": true });
         }
-    });
+    }
+
+    refreshDashboardViews(prefetchedUserTaxInfo, $("#taxYear").text());
+
+    $("#Personal-info>div>.input-group>input").change(triggerSavingPersonalInfo);
+    $("#dl-select").change(triggerSavingPersonalInfo);
+    dobPicker.on('dp.change', triggerSavingPersonalInfo)
 
     $("#Personal-info>div>.input-group>select").on("select2:select", function () {
         $("#save-personal-info-btn").trigger("click", { "passive": true });
@@ -551,6 +572,7 @@ $(function () {
 
     $("#tax-question input").change(function () {
         $("#save-tax-info-btn").trigger("click", { "passive": true });
+        displayNoQuestionPanelIfNoQuestions();
     })
 
     $("#save-ynQuestions-btn").click(function (e, obj) {
@@ -663,7 +685,6 @@ $(function () {
         }
 
 
-
         $.ajax({
             url: "/Home/UpdateYesNoQuestions",
             type: "POST",
@@ -678,17 +699,16 @@ $(function () {
                     $(window).scrollTop(0);
                     $('div.left-menu-collapse').slideDown(500);
                     if (!$('div#tax-return-container').is(":visible")) {
-                        console.log('in' + elemId);
                         $('div.box-dashboard-container').hide();
                         $('div#Personal-info').hide();
-                        $('div#tax-question').hide();
+                        $('div#tax-question').fadeIn(500);
                         $('div#make-payment').hide();
-                        $('div#tax-documents-container').fadeIn(500);
+                        $('div#tax-documents-container').hide();
                         $('div#tax-return-container').hide();
                         $('div#no-tax-return-container').hide();
                         $('div#ynQuestions').hide();
                         $('div.btn-container').css('background', '#999');
-                        $("#tax-docs-side-item").css('background', '#E74139');
+                        $("#tQuest-side-item").css('background', '#E74139');
 
                         if (!$('div#options .menu-dashboard').is(":visible"))
                             $('div.left-menu-collapse').slideUp(500);
@@ -736,13 +756,14 @@ $(function () {
 
         $("#Personal-info input").each(function () {
             var fieldProperty = $(this).attr("name");
-
+           
             var info = prefetchedUserTaxInfo[fieldProperty];
 
             if (info != null || info === null) {
                 //Filter out undefined fields
                 updateInfo[fieldProperty] = $(this).val();
             }
+
         });
 
         var state = $("#state-select").val();
@@ -752,13 +773,14 @@ $(function () {
 
         var taxYear = $("#taxYear").text();
 
-        if (taxYear && ($("#airline-select").val() || $("#base-airport-select").val())) {
+        if (taxYear && ($("#airline-select").val() || $("#base-airport-select").val()) || $('[name="licenseState"]').val()) {
             updateInfo.TaxInfos = {};
 
             updateInfo.TaxInfos[taxYear] = {
                 Year: taxYear,
                 BaseAirportCode: $("#base-airport-select").val(),
-                Airline: $("#airline-select").val()
+                Airline: $("#airline-select").val(),
+                DLState: $('[name="licenseState"]').val(),
             };
         }
 
@@ -839,10 +861,15 @@ $(function () {
 
         updateInfo.TaxInfos[taxYear] = { Year: taxYear };
 
+
         $("#tax-question input").each(function () {
             var fieldProperty = $(this).attr("name");
 
             var val = $(this).val();
+
+            if (fieldProperty.split('.')[0] == "Spouse") {
+                return;
+            }
 
             if (fieldProperty == "DaysInTrainingOrAway") {
                 //parse in case we get inputs like '10 days'
@@ -859,7 +886,10 @@ $(function () {
             updateInfo.TaxInfos[taxYear][fieldProperty] = val;
         });
 
+
+        updateInfo.TaxInfos[taxYear]['Spouse'] = getSpouseData();
         updateInfo.TaxInfos[taxYear]['DLState'] = $("#dl-select").val();
+
 
         $.ajax({
             url: "/Home/UpdateTaxInfo",
@@ -875,20 +905,18 @@ $(function () {
         });
     });
 
-
+    $("#ynQuestions input").change(function () {
+        $("#save-ynQuestions-btn").trigger("click", { "passive": true });
+    })
 
     $("input[name='married']").change(function (e, obj) {
         if ($(this).val() == 'yes') {
             document.getElementById("marriedLabel").style.visibility = "visible";
+            $("#spouse-section").css('display', 'inherit');
         } else {
             document.getElementById("marriedLabel").style.visibility = "hidden";
-        }
-    });
-    $("input[name='married']").change(function (e, obj) {
-        if ($(this).val() == 'yes') {
-            document.getElementById("marriedLabel").style.visibility = "visible";
-        } else {
-            document.getElementById("marriedLabel").style.visibility = "hidden";
+            $("#spouse-section").css('display', 'none');
+            clearSectionInputs('spouse-section');
         }
     });
     $("input[name='dependent']").change(function (e, obj) {
@@ -979,8 +1007,11 @@ $(function () {
     $("input[name='newHire']").change(function (e, obj) {
         if ($(this).val() == 'yes') {
             document.getElementById("newHireLabel").style.visibility = "visible";
+            $('[name="question-training-expenses"]').css("display", "inherit");
         } else {
             document.getElementById("newHireLabel").style.visibility = "hidden";
+            $('[name="question-training-expenses"]').css("display", "none");
+            $('[name="question-training-expenses input"]').val("");
         }
     });
     $("input[name='multipleW2s']").change(function (e, obj) {
@@ -994,16 +1025,24 @@ $(function () {
     $("input[name='itemize']").change(function (e, obj) {
         if ($(this).val() == 'yes') {
             document.getElementById("itemizeLabel").style.visibility = "visible";
-            $('[name="question-driveToWork"], [name="question-flyReserveDays"]').css("display", "inherit")
+            $('[name="question-driveToWork"], [name="question-flyReserveDays"], #additional-questions-section').css("display", "inherit");
         } else {
             document.getElementById("itemizeLabel").style.visibility = "hidden";
-            $('[name="question-driveToWork"], [name="question-flyReserveDays"]').css("display", "none")
+            $('[name="question-driveToWork"], [name="question-flyReserveDays"],  #additional-questions-section').css("display", "none");
             clearYesNoQuestion('driveToWork');
             clearYesNoQuestion('flyReserveDays');
+            clearSectionInputs("additional-questions-section");
         }
     });
 
-
+    $("input[name='flyReserveDays']").change(function (e, obj) {
+        if ($(this).val() == 'yes') {
+            $('[name="question-total-spent-layover-transportation"]').css("display", "inherit");
+        } else {
+            $('[name="question-total-spent-layover-transportation"]').css("display", "none");
+            $('[name="question-total-spent-layover-transportation"] input').val("");
+        }
+    });
 
     $("#airline-select").select2({
         theme: "bootstrap",
@@ -1094,7 +1133,6 @@ $(function () {
                 refreshDashboardViews(userInfo, $("#taxYear").text());
                 //Return view to Personal Info
                 if (!$('div#Personal-info').is(":visible")) {
-                    console.log('in' + elemId);
                     $('div.box-dashboard-container').hide();
                     $('div#Personal-info').fadeIn(500);
                     $('div#tax-question').hide();

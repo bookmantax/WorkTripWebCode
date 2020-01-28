@@ -72,6 +72,14 @@
 
         };
 
+        function updateSpouseDetails(spouse) {
+            $("#spouse-first-name", $modal).text(spouseDetails.FirstName);
+            $("#spouse-middle-name", $modal).text(spouseDetails.MiddleName);
+            $("#spouse-last-name", $modal).text(spouseDetails.LastName);
+            $("#spouse-ssn", $modal).text(spouseDetails.SSN);
+            $("#spouse-dob", $modal).text(spouseDetails.DOB);
+        }
+
         var curTaxYear = parseInt("@DateTime.Now.AddYears(-1).ToString("yyyy")");
 
         var preparers = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(ViewBag.Preparers));
@@ -664,6 +672,29 @@
                 $(".multipleW2spanel", $modal).prop('style').visibility = 'hidden';
             }
 
+            if (userInfo.TaxInfos[taxYear].Itemize != null && userInfo.TaxInfos[taxYear].Itemize == true) {
+                $(".itemizepanel", $modal).prop('style').visibility = 'visible';
+            } else {
+                $(".itemizepanel", $modal).prop('style').visibility = 'hidden';
+            }
+            if (userInfo.TaxInfos[taxYear].DriveToWork != null && userInfo.TaxInfos[taxYear].DriveToWork == true) {
+                $(".drivespanel", $modal).prop('style').visibility = 'visible';
+            } else {
+                $(".drivespanel", $modal).prop('style').visibility = 'hidden';
+            }
+            if (userInfo.TaxInfos[taxYear].FlyReserveDays != null && userInfo.TaxInfos[taxYear].FlyReserveDays == true) {
+                $(".adayspanel", $modal).prop('style').visibility = 'visible';
+            } else {
+                $(".adayspanel", $modal).prop('style').visibility = 'hidden';
+            }
+
+
+            if (userInfo.TaxInfos[taxYear].Spouse != null) {
+                var spouseDetails = JSON.parse(userInfo.TaxInfos[taxYear].Spouse);
+                updateSpouseDetails(spouseDetails);
+            } else {
+                $("[name='spouse-details']", $modal).css("display", "none");
+            }
 
             $(".modal-travel-expenses", $modal).text(formatExpense(
                 (userInfo.TaxInfos[taxYear].TotalSpentLayoverTransportation || 0)));
@@ -1552,52 +1583,92 @@
                         <div class="panel panel-info">
                             <div class="panel-heading">User Questions</div>
                             <div class="modal-user-questions panel-body">
+                                <div class="marriedpanel panel-success" style="visibility:hidden">
+                                    <div class="panel-heading">Married</div>
+                                </div>
+                                <div class="dependentpanel panel-success" style="visibility:hidden">
+                                    <div class="panel-heading">Dependent(s)</div>
+                                </div>
+                                <div class="loanspanel panel-success" style="visibility:hidden">
+                                    <div class="panel-heading">Students Loans</div>
+                                </div>
+                                <div class="stockspanel panel-success" style="visibility:hidden">
+                                    <div class="panel-heading">Stocks</div>
+                                </div>
+                                <div class="housepanel panel-success" style="visibility:hidden">
+                                    <div class="panel-heading">House</div>
+                                </div>
+                                <div class="hsapanel panel-success" style="visibility:hidden">
+                                    <div class="panel-heading">HSA</div>
+                                </div>
+                                <div class="1098tpanel panel-success" style="visibility:hidden">
+                                    <div class="panel-heading">1098-Mortgage</div>
+                                </div>
+                                <div class="1099rpanel panel-success" style="visibility:hidden">
+                                    <div class="panel-heading">1099-R</div>
+                                </div>
+                                <div class="1099gpanel panel-success" style="visibility:hidden">
+                                    <div class="panel-heading">1099-G</div>
+                                </div>
+                                <div class="1099intpanel panel-success" style="visibility:hidden">
+                                    <div class="panel-heading">1099-INT</div>
+                                </div>
+                                <div class="newHirepanel panel-success" style="visibility:hidden">
+                                    <div class="panel-heading">New Hire</div>
+                                </div>
+                                <div class="otherpanel panel-success" style="visibility:hidden">
+                                    <div class="panel-heading">Rental/Other Income</div>
+                                </div>
+                                <div class="scheduleK1panel panel-success" style="visibility:hidden">
+                                    <div class="panel-heading">Schedule K-1</div>
+                                </div>
+                                <div class="ownBusinesspanel panel-success" style="visibility:hidden">
+                                    <div class="panel-heading">Schedule C</div>
+                                </div>
+                                <div class="multipleW2spanel panel-success" style="visibility:hidden">
+                                    <div class="panel-heading">Multiple W-2s</div>
+                                </div>
+                                <div class="itemizepanel panel-success" style="visibility:hidden">
+                                    <div class="panel-heading">Itemize</div>
+                                </div>
+
+                                <div class="drivespanel panel-success" style="visibility:hidden">
+                                    <div class="panel-heading">Drives</div>
+                                </div>
+
+                                <div class="adayspanel panel-success" style="visibility:hidden">
+                                    <div class="panel-heading">Adays</div>
+                                </div>
                             </div>
                         </div>
-                        <div class="marriedpanel panel-success" style="visibility:hidden">
-                            <div class="panel-heading">Married</div>
-                        </div>
-                        <div class="dependentpanel panel-success" style="visibility:hidden">
-                            <div class="panel-heading">Dependent(s)</div>
-                        </div>
-                        <div class="loanspanel panel-success" style="visibility:hidden">
-                            <div class="panel-heading">Students Loans</div>
-                        </div>
-                        <div class="stockspanel panel-success" style="visibility:hidden">
-                            <div class="panel-heading">Stocks</div>
-                        </div>
-                        <div class="housepanel panel-success" style="visibility:hidden">
-                            <div class="panel-heading">House</div>
-                        </div>
-                        <div class="hsapanel panel-success" style="visibility:hidden">
-                            <div class="panel-heading">HSA</div>
-                        </div>
-                        <div class="1098tpanel panel-success" style="visibility:hidden">
-                            <div class="panel-heading">1098-Mortgage</div>
-                        </div>
-                        <div class="1099rpanel panel-success" style="visibility:hidden">
-                            <div class="panel-heading">1099-R</div>
-                        </div>
-                        <div class="1099gpanel panel-success" style="visibility:hidden">
-                            <div class="panel-heading">1099-G</div>
-                        </div>
-                        <div class="1099intpanel panel-success" style="visibility:hidden">
-                            <div class="panel-heading">1099-INT</div>
-                        </div>
-                        <div class="newHirepanel panel-success" style="visibility:hidden">
-                            <div class="panel-heading">New Hire</div>
-                        </div>
-                        <div class="otherpanel panel-success" style="visibility:hidden">
-                            <div class="panel-heading">Rental/Other Income</div>
-                        </div>
-                        <div class="scheduleK1panel panel-success" style="visibility:hidden">
-                            <div class="panel-heading">Schedule K-1</div>
-                        </div>
-                        <div class="ownBusinesspanel panel-success" style="visibility:hidden">
-                            <div class="panel-heading">Schedule C</div>
-                        </div>
-                        <div class="multipleW2spanel panel-success" style="visibility:hidden">
-                            <div class="panel-heading">Multiple W-2s</div>
+                        <div name="spouse-details" class="panel panel-info">
+                            <div class="panel-heading">Spouse details</div>
+                            <div class="panel-body">
+                                <table>
+                                    <tbody>
+                                        <tr>
+                                            <th>First Name:</th>
+                                            <td id="spouse-first-name"></td>
+                                        </tr>
+                                        <tr>
+                                            <th>Middle Name:</th>
+                                            <td id="spouse-middle-name"></td>
+                                        </tr>
+                                        <tr>
+                                            <th>Last Name:</th>
+                                            <td id="spouse-last-name"></td>
+                                        </tr>
+                                        <tr>
+                                            <th>SSN:</th>
+                                            <td id="spouse-ssn"></td>
+                                        </tr>
+                                        <tr>
+                                            <th>Date of birth:</th>
+                                            <td id="spouse-dob"></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
 
                     </div>

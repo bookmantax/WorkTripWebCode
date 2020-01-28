@@ -256,3 +256,4 @@ C:\Users\Damian\Desktop\WorkTripWebCode\Worktrip\bin\zh-Hant\System.Spatial.reso
 C:\Users\Damian\Desktop\WorkTripWebCode\Worktrip\obj\Debug\Worktrip.csproj.CopyComplete
 C:\Users\Damian\Desktop\WorkTripWebCode\Worktrip\obj\Debug\Worktrip.dll
 C:\Users\Damian\Desktop\WorkTripWebCode\Worktrip\obj\Debug\Worktrip.pdb
+C:\Users\Damian\Desktop\WorkTripWebCode\Worktrip\obj\Debug\Worktrip.csprojAssemblyReference.cache

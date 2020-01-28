@@ -17,6 +17,7 @@ namespace Worktrip.Models
         public string Email { get; set; }
         public string PhoneNumber { get; set; }
         public string DOB { get; set; }
+        public string SSN { get; set; }
         public string Address { get; set; }
         public string City { get; set; }
         public string State { get; set; }
@@ -45,6 +46,7 @@ namespace Worktrip.Models
                 userInfo.LastName = this.LastName;
                 userInfo.Email = this.Email;
                 userInfo.PhoneNumber = this.PhoneNumber;
+                userInfo.SSN = this.SSN;
                 userInfo.DOB = String.IsNullOrEmpty(this.DOB) ? (DateTime?)null : DateTime.Parse(this.DOB);
                 userInfo.Address = this.Address;
                 userInfo.City = this.City;
@@ -60,8 +62,9 @@ namespace Worktrip.Models
                     {
                         var taxInfo = UserInfoViewModel.GetOrCreateUserInfo(db, userId, kvPair.Value.Year);
 
-                        taxInfo.BaseAirportCode = kvPair.Value.BaseAirportCode?.ToUpper();
+                        //taxInfo.BaseAirportCode = kvPair.Value.BaseAirportCode?.ToUpper();
                         taxInfo.Airline = kvPair.Value?.Airline;
+                        taxInfo.DLState = kvPair.Value.DLState;
                     }
                 }
 
@@ -108,8 +111,43 @@ namespace Worktrip.Models
                         taxInfo.OwnBusiness = u.OwnBusiness;
                         taxInfo.Other = u.Other;
                         taxInfo.Itemize = u.Itemize;
-                        taxInfo.DriveToWork = u.DriveToWork;
-                        taxInfo.FlyReserveDays= u.FlyReserveDays;
+                        taxInfo.DriveToWork =  u.DriveToWork;
+                        taxInfo.FlyReserveDays=  u.FlyReserveDays;
+                        
+                        if (taxInfo.Married != true)
+                        {
+                            taxInfo.Spouse = null;
+                        }
+
+                        if  (taxInfo.NewHire != true)
+                        {
+                            taxInfo.TrainingExpenses = null;
+                        }
+
+                        if (taxInfo.Itemize != true)
+                        {
+                            taxInfo.DriveToWork = null;
+                            taxInfo.FlyReserveDays = null;
+                        }
+
+                        if (taxInfo.FlyReserveDays != true)
+                        {
+                            taxInfo.TotalSpentLayoverTransportation = null;
+                        }
+
+                        if (taxInfo.Itemize != true)
+                        {
+                            taxInfo.TrainingExpenses = null;
+                            taxInfo.CellphoneBill = null;
+                            taxInfo.ClothingFees = null;
+                            taxInfo.DriverLayoverTips = null;
+                            taxInfo.FlightGearLuggageFees = null;
+                            taxInfo.LaundryFees = null;
+                            taxInfo.TechPurchasesFees = null;
+                            taxInfo.TotalSpentLayoverTransportation = null;
+                            taxInfo.UnreimbursedExpenses = null;
+                            taxInfo.InternationalLayovers = null;
+                        }
                     }
                 }
 
@@ -138,21 +176,21 @@ namespace Worktrip.Models
                         var taxInfo = UserInfoViewModel.GetOrCreateUserInfo(db, userId, kvPair.Value.Year);
 
                         var u = kvPair.Value;
-
+                        taxInfo.TrainingExpenses = u.TrainingExpenses;
                         taxInfo.CellphoneBill = u.CellphoneBill;
                         taxInfo.ClothingFees = u.ClothingFees;
-                        taxInfo.DaysInTrainingOrAway = u.DaysInTrainingOrAway;
                         taxInfo.DriverLayoverTips = u.DriverLayoverTips;
                         taxInfo.FlightGearLuggageFees = u.FlightGearLuggageFees;
-                        taxInfo.IdentityFees = u.IdentityFees;
-                        taxInfo.InternetBill = u.InternetBill;
                         taxInfo.LaundryFees = u.LaundryFees;
                         taxInfo.TechPurchasesFees = u.TechPurchasesFees;
                         taxInfo.TotalSpentLayoverTransportation = u.TotalSpentLayoverTransportation;
-                        taxInfo.TransactionalFees = u.TransactionalFees;
                         taxInfo.UnreimbursedExpenses = u.UnreimbursedExpenses;
-                        taxInfo.DLState = u.DLState;
                         taxInfo.InternationalLayovers = u.InternationalLayovers;
+                        taxInfo.Spouse = taxInfo.Married != null && taxInfo.Married == true ? u.Spouse : null;
+                        //taxInfo.IdentityFees = u.IdentityFees;
+                        //taxInfo.InternetBill = u.InternetBill;
+                        //taxInfo.TransactionalFees = u.TransactionalFees;
+                        //taxInfo.DaysInTrainingOrAway = u.DaysInTrainingOrAway;
                     }
                 }
 
@@ -319,6 +357,7 @@ namespace Worktrip.Models
                     LastName = userInfo.LastName,
                     Email = userInfo.Email,
                     PhoneNumber = userInfo.PhoneNumber,
+                    SSN = userInfo.SSN,
                     DOB = userInfo.DOB.HasValue ? userInfo.DOB.Value.ToString("yyyy-MM-dd") : null,
                     Address = userInfo.Address,
                     City = userInfo.City,
@@ -367,7 +406,9 @@ namespace Worktrip.Models
                         Other = d.Other,
                         Itemize = d.Itemize,
                         DriveToWork = d.DriveToWork,
-                        FlyReserveDays = d.FlyReserveDays
+                        FlyReserveDays = d.FlyReserveDays,
+                        Spouse = d.Spouse,
+                        TrainingExpenses = d.TrainingExpenses
                     }).ToDictionary(t => t.Year.ToString(), t => t),
                     Questions = db.UserQuestions.Include(q => q.User1).Where(q => q.AskedBy == userId).Select(q => new Question
                     {
@@ -504,6 +545,8 @@ namespace Worktrip.Models
         public bool? Itemize { get; set; }
         public bool? FlyReserveDays { get; set; }
         public bool? DriveToWork { get; set; }
+        public string Spouse { get; set; }
+        public double? TrainingExpenses { get; set; }
     }
 
     public class Question

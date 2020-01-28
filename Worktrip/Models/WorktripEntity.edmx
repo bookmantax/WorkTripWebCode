@@ -95,6 +95,7 @@
           <Property Name="City" Type="nvarchar" MaxLength="256" />
           <Property Name="State" Type="nvarchar" MaxLength="256" />
           <Property Name="Zip" Type="nvarchar" MaxLength="5" />
+          <Property Name="SSN" Type="varchar" MaxLength="20" />
         </EntityType>
         <EntityType Name="UserActionsLog">
           <Key>
@@ -179,6 +180,8 @@
           <Property Name="Itemize" Type="bit" />
           <Property Name="DriveToWork" Type="bit" />
           <Property Name="FlyReserveDays" Type="bit" />
+          <Property Name="Spouse" Type="nvarchar" MaxLength="4000" />
+          <Property Name="TrainingExpenses" Type="float" />
         </EntityType>
         <EntityType Name="UserPerDiem">
           <Key>
@@ -829,6 +832,7 @@
           <NavigationProperty Name="UserToPreparers" Relationship="WorktripModel.FK_UserToPreparer_TaxPreparer" FromRole="User" ToRole="UserToPreparer" />
           <NavigationProperty Name="UserToPreparers1" Relationship="WorktripModel.FK_UserToPreparer_User" FromRole="User" ToRole="UserToPreparer" />
           <NavigationProperty Name="UserMiscTaxInfoes" Relationship="WorktripModel.FK_MiscTax_User" FromRole="User" ToRole="UserMiscTaxInfo" />
+          <Property Name="SSN" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
           </EntityType>
         <Association Name="FK_PreparerNotes_TaxPreparer">
           <End Type="WorktripModel.User" Role="User" Multiplicity="1" />
@@ -1071,6 +1075,8 @@
           <Property Name="Itemize" Type="Boolean" />
           <Property Name="DriveToWork" Type="Boolean" />
           <Property Name="FlyReserveDays" Type="Boolean" />
+          <Property Name="Spouse" Type="String" MaxLength="4000" FixedLength="false" Unicode="true" />
+          <Property Name="TrainingExpenses" Type="Double" />
           </EntityType>
         <Association Name="FK_MiscTax_Airport">
           <End Type="WorktripModel.Airport" Role="Airport" Multiplicity="0..1" />
@@ -1247,6 +1253,7 @@
           <EntitySetMapping Name="Users">
             <EntityTypeMapping TypeName="WorktripModel.User">
               <MappingFragment StoreEntitySet="User">
+                <ScalarProperty Name="SSN" ColumnName="SSN" />
                 <ScalarProperty Name="Zip" ColumnName="Zip" />
                 <ScalarProperty Name="State" ColumnName="State" />
                 <ScalarProperty Name="City" ColumnName="City" />
@@ -1302,6 +1309,8 @@
           <EntitySetMapping Name="UserMiscTaxInfoes">
             <EntityTypeMapping TypeName="WorktripModel.UserMiscTaxInfo">
               <MappingFragment StoreEntitySet="UserMiscTaxInfo">
+                <ScalarProperty Name="TrainingExpenses" ColumnName="TrainingExpenses" />
+                <ScalarProperty Name="Spouse" ColumnName="Spouse" />
                 <ScalarProperty Name="FlyReserveDays" ColumnName="FlyReserveDays" />
                 <ScalarProperty Name="DriveToWork" ColumnName="DriveToWork" />
                 <ScalarProperty Name="Itemize" ColumnName="Itemize" />

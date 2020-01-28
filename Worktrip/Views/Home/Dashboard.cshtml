@@ -20,7 +20,7 @@
     @Styles.Render("~/Content/dropzonecss")
     @Styles.Render("~/Content/dashboard.css")
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.43/css/bootstrap-datetimepicker.min.css">
-    
+
     <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     @Scripts.Render("~/bundles/bootstrap")
@@ -31,6 +31,8 @@
     <script src="https://js.braintreegateway.com/js/braintree-2.27.0.min.js"></script>>
 
     @Html.Partial("_GA")
+
+    <link href="https://fonts.googleapis.com/css?family=Titillium+Web:900&display=swap" rel="stylesheet">
 
     <script>
         //auto logout after 10 minutes
@@ -58,6 +60,7 @@
 
 
         var prefetchedUserTaxInfo = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model));
+
         var brainTreeInited = false;
         var client_token = "@ViewBag.BraintreeToken";
         var curTaxYear = parseInt("@DateTime.Now.AddYears(-1).ToString("yyyy")");
@@ -184,9 +187,6 @@
                     </div>
                 </div>
             </div>
-
-
-
             <div class=" jumbotron file-upload-container" style="display: none;" id="work-schedule-container">
 
                 <div class="row header">
@@ -233,6 +233,30 @@
                     </div>
                 </div>
             </div> <!-- /container -->
+            <div class="row formContainer" id="promo-code-container" style="display: none">
+                <div style="z-index:100" class="form-wrapper">
+                    <div class="panel panel-default">
+                        <div class="panel-heading"><p style="font-size: 1.2em; font-weight: bold; margin: 0">Promotional Code</p></div>
+                        <div class="panel-body">
+                            <p><strong><span class="promo-code-name"></span>, we value your business and would love to offer you a free tax return next year!</strong></p>
+                            <p class="alert alert-success">Your Promo Code is <strong class="promo-code"></strong></p>
+                            <p>
+                                Refer us to your colleagues and every 3 FAs that use your Promo Code will earn you a free tax return!
+                                Keep referring and earn free tax returns for years to come 🙂
+                            </p>
+                            <div class="promo-code-banner">
+                                <img src="~/Content/img/worktrip-vertical.png" />
+                                <p><strong>$20 off</strong> Tax Preparation</p>
+                                <p>Coupon Code: <span class="promo-code"></span></p>
+                                <br />
+                                <a href="https://www.worktrip.tax">www.worktrip.tax</a>
+                                <p class="text-small">*Offer Valid Throught 02/29/2020</p>
+                                <p class="text-small">Fot New Customers</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <div class="lets-talk-container2 row formContainer" id="tax-return-container" style="z-index: 999; display: none;overflow-x:hidden;overflow-y:auto;">
                 <div class="lets-talk-inner-wrapper">
                     <button type="button" class="close cancel-btn" data-dismiss="div.getStartedDiv">×</button>
@@ -251,7 +275,7 @@
                     </form>
                 </div>
             </div>
-            <div class="lets-talk-container2 row formContainer" id="no-tax-return-container" style="display: none;">
+            <div class="lets-talk-container2 row formContainer form-wrapper" id="no-tax-return-container" style="display: none;">
                 <div id="payment-not-ready" style="text-align:center;" class="border-document col-lg-offset-3 col-md-offset-3 col-lg-6 col-md-6 col-sm-12 col-xs-12">
                     <div style="font-size:20px">
                         <i class="fa fa-id-card-o" style="text-align: center; font-size: 50px; color: #e74139;"></i>
@@ -323,6 +347,7 @@
                         $('div#make-payment').hide();
                         $('div#tax-return-container').hide();
                         $('div#no-tax-return-container').hide();
+                        $('div#promo-code-container').hide();
                         if (!$('div#options .menu-dashboard').is(":visible"))
                             $('div.left-menu-collapse').slideUp(500);
                         $('div.btn-container').css('background', '#999');
@@ -340,6 +365,7 @@
                         $('div#make-payment').hide();
                         $('div#tax-return-container').hide();
                         $('div#no-tax-return-container').hide();
+                        $('div#promo-code-container').hide();
                         $('div#tax-question').fadeIn(500);
                         if (!$('div#options .menu-dashboard').is(":visible"))
                             $('div.left-menu-collapse').slideUp(500);
@@ -357,6 +383,7 @@
                         $('div#ynQuestions').hide();
                         $('div#tax-return-container').hide();
                         $('div#no-tax-return-container').hide();
+                        $('div#promo-code-container').hide();
                         $('div#make-payment').fadeIn(500, function(){
                         });
                         $('div#tax-question').hide();
@@ -378,7 +405,27 @@
                         $('div#make-payment').hide();
                         $('div#tax-return-container').hide();
                         $('div#no-tax-return-container').hide();
+                        $('div#promo-code-container').hide();
                         $('div#tax-documents-container').fadeIn(500);
+                        $('div#ynQuestions').hide();
+                        $('div.btn-container').css('background', '#999');
+                        elem.closest('div.btn-container').css('background', '#E74139');
+
+                        if (!$('div#options .menu-dashboard').is(":visible"))
+                            $('div.left-menu-collapse').slideUp(500);
+                    }
+
+                } else if (elemId == "tPromo") {
+                    if (!$('div#tax-documents-container').is(":visible")) {
+                        console.log('in' + elemId);
+                        $('div.box-dashboard-container').hide();
+                        $('div#Personal-info').hide();
+                        $('div#tax-question').hide();
+                        $('div#make-payment').hide();
+                        $('div#tax-return-container').hide();
+                        $('div#no-tax-return-container').hide();
+                        $('div#tax-documents-container').hide();
+                        $('div#promo-code-container').fadeIn(500);
                         $('div#ynQuestions').hide();
                         $('div.btn-container').css('background', '#999');
                         elem.closest('div.btn-container').css('background', '#E74139');
@@ -394,6 +441,7 @@
                         $('div.box-dashboard-container').hide();
                         $('div#tax-return-container').hide();
                         $('div#no-tax-return-container').hide();
+                        $('div#promo-code-container').hide();
                         $('div#Personal-info').fadeIn(500);
                         $('div#tax-documents-container').hide();
                         $('div#ynQuestions').hide();
@@ -419,6 +467,7 @@
                         $('div#make-payment').hide();
                         $('div#tax-return-container').hide();
                         $('div#no-tax-return-container').hide();
+                        $('div#promo-code-container').hide();
                         $('div#ynQuestions').hide();
                         $('div.btn-container').css('background', '#999');
                         if (!$('div#options .menu-dashboard').is(":visible"))
@@ -433,8 +482,6 @@
 
             });
 
-
-
             $('#tQuest').on('click', function (e) {
                 e.preventDefault();
                 if (!$('div#tax-question-container').is(":visible")) {
@@ -445,6 +492,7 @@
                     $('div#make-payment').hide();
                     $('div#tax-return-container').hide();
                     $('div#no-tax-return-container').hide();
+                    $('div#promo-code-container').hide();
                     $('div#tax-question').fadeIn(500);
                     if (!$('div#options .menu-dashboard').is(":visible"))
                         $('div.left-menu-collapse').slideUp(500);
@@ -464,6 +512,7 @@
                     $('div#ynQuestions').hide();
                     $('div#tax-return-container').hide();
                     $('div#no-tax-return-container').hide();
+                    $('div#promo-code-container').hide();
                     $('div#make-payment').fadeIn(500);
                     $('div#tax-question').hide();
                     if (!$('div#options .menu-dashboard').is(":visible"))
@@ -488,6 +537,7 @@
                     $('div#make-payment').hide();
                     $('div#tax-return-container').hide();
                     $('div#no-tax-return-container').hide();
+                    $('div#promo-code-container').hide();
                     $('div#tax-documents-container').fadeIn(500);
                     $('div#ynQuestions').hide();
                     $('div.btn-container').css('background', '#999');
@@ -505,6 +555,7 @@
                     $('div.box-dashboard-container').hide();
                     $('div#tax-return-container').hide();
                     $('div#no-tax-return-container').hide();
+                        $('div#promo-code-container').hide();
                     $('div#Personal-info').fadeIn(500);
                     $('div#tax-documents-container').hide();
                     $('div#ynQuestions').hide();
@@ -525,6 +576,7 @@
                     $('div#Personal-info').hide();
                     $('div#tax-return-container').hide();
                     $('div#no-tax-return-container').hide();
+                        $('div#promo-code-container').hide();
                     $('div#tax-documents-container').hide();
                     $('div#tax-question').hide();
                     $('div#make-payment').hide();

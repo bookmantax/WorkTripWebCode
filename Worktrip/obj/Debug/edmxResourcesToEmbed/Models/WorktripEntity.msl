@@ -146,6 +146,7 @@
     <EntitySetMapping Name="Users">
       <EntityTypeMapping TypeName="WorktripModel.User">
         <MappingFragment StoreEntitySet="User">
+          <ScalarProperty Name="SSN" ColumnName="SSN" />
           <ScalarProperty Name="Zip" ColumnName="Zip" />
           <ScalarProperty Name="State" ColumnName="State" />
           <ScalarProperty Name="City" ColumnName="City" />
@@ -201,6 +202,8 @@
     <EntitySetMapping Name="UserMiscTaxInfoes">
       <EntityTypeMapping TypeName="WorktripModel.UserMiscTaxInfo">
         <MappingFragment StoreEntitySet="UserMiscTaxInfo">
+          <ScalarProperty Name="TrainingExpenses" ColumnName="TrainingExpenses" />
+          <ScalarProperty Name="Spouse" ColumnName="Spouse" />
           <ScalarProperty Name="FlyReserveDays" ColumnName="FlyReserveDays" />
           <ScalarProperty Name="DriveToWork" ColumnName="DriveToWork" />
           <ScalarProperty Name="Itemize" ColumnName="Itemize" />

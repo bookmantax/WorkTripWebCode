@@ -336,8 +336,10 @@
     <Content Include="Content\img\pdf-thumbnail.png" />
     <Content Include="Content\img\sos.png" />
     <Content Include="Content\img\iphone-payment.png" />
+    <Content Include="Content\img\voucher.png" />
     <Content Include="Content\img\worktrip-bg-pic.jpg" />
     <Content Include="Content\img\worktrip-bg-video.mp4" />
+    <Content Include="Content\img\worktrip-vertical.png" />
     <Content Include="Content\magnific-popup.css" />
     <Content Include="Content\main.css" />
     <Content Include="Content\cat\meow1.mp3" />
@@ -582,7 +584,7 @@
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Home\About.cshtml" />
     <Content Include="Views\Home\Contact.cshtml" />
-    <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\Home\Index_old.cshtml" />
     <Content Include="Views\Account\_ExternalLoginsListPartial.cshtml" />
     <Content Include="Views\Account\ConfirmEmail.cshtml" />
     <Content Include="Views\Account\ExternalLoginConfirmation.cshtml" />
@@ -595,12 +597,12 @@
     <Content Include="Views\Account\ResetPasswordConfirmation.cshtml" />
     <Content Include="Views\Account\SendCode.cshtml" />
     <Content Include="Views\Account\VerifyCode.cshtml" />
-    <Content Include="Views\Manage\AddPhoneNumber.cshtml" />
-    <Content Include="Views\Manage\ChangePassword.cshtml" />
-    <Content Include="Views\Manage\Index.cshtml" />
-    <Content Include="Views\Manage\ManageLogins.cshtml" />
-    <Content Include="Views\Manage\SetPassword.cshtml" />
-    <Content Include="Views\Manage\VerifyPhoneNumber.cshtml" />
+    <Content Include="Views\Home\Manage\AddPhoneNumber.cshtml" />
+    <Content Include="Views\Home\Manage\ChangePassword.cshtml" />
+    <Content Include="Views\Home\Manage\Index.cshtml" />
+    <Content Include="Views\Home\Manage\ManageLogins.cshtml" />
+    <Content Include="Views\Home\Manage\SetPassword.cshtml" />
+    <Content Include="Views\Home\Manage\VerifyPhoneNumber.cshtml" />
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
@@ -615,6 +617,7 @@
     <Content Include="Views\Home\Dashboard\Form\_PersonalInfo.cshtml" />
     <Content Include="Views\Home\Dashboard\Form\_YesNoQuestions.cshtml" />
     <Content Include="Views\Home\Dashboard\Form\_TaxQuestions.cshtml" />
+    <Content Include="Views\Home\HomePage\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

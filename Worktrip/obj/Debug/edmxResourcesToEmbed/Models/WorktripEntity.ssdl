@@ -90,6 +90,7 @@
     <Property Name="City" Type="nvarchar" MaxLength="256" />
     <Property Name="State" Type="nvarchar" MaxLength="256" />
     <Property Name="Zip" Type="nvarchar" MaxLength="5" />
+    <Property Name="SSN" Type="varchar" MaxLength="20" />
   </EntityType>
   <EntityType Name="UserActionsLog">
     <Key>
@@ -174,6 +175,8 @@
     <Property Name="Itemize" Type="bit" />
     <Property Name="DriveToWork" Type="bit" />
     <Property Name="FlyReserveDays" Type="bit" />
+    <Property Name="Spouse" Type="nvarchar" MaxLength="4000" />
+    <Property Name="TrainingExpenses" Type="float" />
   </EntityType>
   <EntityType Name="UserPerDiem">
     <Key>
