@@ -1,0 +1,132 @@
+﻿<div class="modal fade" id="register-modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-body py-5 px-4 px-sm-5">
+                <div class="text-center">
+                    <img src="~/Content/img/logo.png" width="60%" class="mb-5" />
+                </div>
+
+                @* CREATE ACCOUNT FORM *@
+                <form action="" method="post" id="create-account-form">
+                    <div class="alert alert-warning d-none" role="alert">
+                        <i class="fas fa-exclamation-circle mr-1"></i>Incorrect email address or password.
+                    </div>
+
+                    @Html.AntiForgeryToken()
+                    <div class="form-group">
+                        <label class="m-0 text-primary font-weight-bold" style="font-size: 0.9em">First Name</label>
+                        <input class="form-control form-control-lg" placeholder="" name="firstName" />
+                    </div>
+                    <div class="form-group">
+                        <label class="m-0 text-primary font-weight-bold" style="font-size: 0.9em">Last Name</label>
+                        <input class="form-control form-control-lg" placeholder="" name="lastName" />
+                    </div>
+                    <div class="form-group">
+                        <label class="m-0 text-primary font-weight-bold" style="font-size: 0.9em">Phone number</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="basic-addon1"><i class="fas fa-phone-alt"></i></span>
+                            </div>
+                            <input class="form-control form-control-lg text-monospace" placeholder="" name="phoneNumber" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="m-0 text-primary font-weight-bold" style="font-size: 0.9em">Promo Code</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="basic-addon1"><i class="fas fa-tag"></i></span>
+                            </div>
+                            <input class="form-control form-control-lg" placeholder="" name="promoCode" />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-secondary btn-lg btn-block">Sign up</button>
+                    </div>
+                </form>
+
+                @* CONFIRM PHONE NUMBER *@
+                <form action="" method="post" id="confirm-phone-number-form" style="display: none">
+                    <h5 class="text-primary font-weight-semibold mb-3">Please enter the verification code sent to your phone.</h5>
+
+                    <div class="alert alert-warning" role="alert" style="display: none">
+                        <i class="fas fa-exclamation-circle mr-1"></i> Verification code is not correct.
+                    </div>
+
+
+                    @Html.AntiForgeryToken()
+                    <div class="form-group my-3">
+                        <label class="m-0 text-primary font-weight-bold" style="font-size: 0.9em">Confirmation code</label>
+                        <input class="form-control form-control-lg text-monospace" placeholder="" name="code" />
+                    </div>
+
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-secondary btn-lg btn-block">Confirm phone number</button>
+                    </div>
+                </form>
+
+
+                <div id="complete-registration" style="display: none">
+                    @* COMPLETE REGISTRATION WITH FACEBBOOK FORM *@
+                    <form id="signupForm" action="/Account/ExternalLoginCustom" method="post">
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" name="userId" class="userId-input" />
+                        <button type="submit" class="btn btn-default btn-lg btn-block" style="color: #3b5998; background: #dfe3ee" id="facebook-register" name="provider" value="Facebook" title="Log in using your Facebook account"><i class="fab fa-facebook-square fa-lg mr-3"></i> Sign in with Facebook</button>
+                    </form>
+
+                    <div class="d-flex my-3 align-items-center justify-content-between">
+                        <hr style="width: 45%" /><strong>OR</strong><hr style="width: 45%" />
+                    </div>
+
+                    @* COMPLETE REGISTRATION FORM *@
+                    <form id="complete-registration-form">
+                        <div class="alert alert-warning d-none" role="alert">
+                            <i class="fas fa-exclamation-circle mr-1"></i>Incorrect email address or password.
+                        </div>
+
+                        @Html.AntiForgeryToken()
+
+                        <div class="form-group">
+                            <label class="m-0 text-primary font-weight-bold" style="font-size: 0.9em">Email address</label>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" id="basic-addon1"><i class="fas fa-at"></i></span>
+                                </div>
+                                <input class="form-control form-control-lg" placeholder="" name="email" />
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="m-0 text-primary font-weight-bold" style="font-size: 0.9em">Password</label>
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" id="basic-addon1"><i class="fas fa-key"></i></span>
+                                </div>
+                                <input class="form-control form-control-lg" type="password" placeholder="Password" name="password" id="create-account-password" />
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="m-0 text-primary font-weight-bold" style="font-size: 0.9em">Confirm Password</label>
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" id="basic-addon1"><i class="fas fa-key"></i></span>
+                                </div>
+                                <input class="form-control form-control-lg" type="password" placeholder="Password" name="confirmpassword" />
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-secondary btn-lg btn-block">Sign up</button>
+                        </div>
+                    </form>
+
+                </div>
+                <div class="text-center mt-3" id="have-account-already">
+                    <h6 class="font-weight-bold m-0 text-secondary">Do you have an account already?</h6>
+                    <button data-toggle="modal" data-target="#login-modal" data-dismiss="modal" class="btn btn-link text-primary">Click here to sign in</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

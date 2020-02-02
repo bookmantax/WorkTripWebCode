@@ -51,16 +51,13 @@ $(document).ready(function () {
 
     $("#btnLogin").on("click", function (e) {
         e.preventDefault();
-
         $("div.letsTalk").hide();
         $("div.letsTalkNext").hide();
         $("div.complete").hide();
         $("div.verifyEmail").hide();
         $("div.emailSent").hide();
         $("div.callYou").hide();
-
         $("div.login").fadeIn(500);
-
         $("#loginForm input[name='email']").focus();
     });
 

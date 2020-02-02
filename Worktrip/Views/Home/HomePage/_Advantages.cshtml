@@ -1,0 +1,27 @@
+﻿
+@{
+
+    var advantages = new List<Tuple<string, string, string, string, string>>
+{
+        Tuple.Create("Maximize Your Tax Savings", "The IRS no longer allows FAs to itemize Per Diem and other deductions. But some States still do! If you live in NY, CA, MN, or HI talk to us about your expenses.", "Learn More", "#", "fa-piggy-bank"),
+        Tuple.Create("The HSA Debacle", "We love HSAs, but this is the most common tax return mistake we see with “do it yourself” filing. Talk to our Tax Professionals today about your HSA.", "Learn More", "#", "fa-comments-dollar"),
+        Tuple.Create("State Taxes", "State tax returns are routinely butchered by “do it yourself” software. Each State has unique tax deductions and credits. Let us worry about that.", "Learn More", "#", "fa-file-alt"),
+        Tuple.Create("No Obligations", "We take a lot of pride in being better than the competition. Complicated taxes? No problem! Give us a chance to knock your sox off before you make a payment.", "Learn More", "#", "fa-handshake"),
+    };
+}
+
+<div class="container">
+    <div class="d-flex flex-wrap align-items-stretch px-xl-5 py-5">
+        @foreach (var adventage in advantages)
+        {
+            <div class="col-sm-12 col-lg-6 my-3">
+                <div class=" bg-light text-center text-primary p-5 h-100">
+                    <i class="fas @adventage.Item5 fa-7x mb-4"></i>
+                    <h3 class="font-weight-bold">@adventage.Item1</h3>
+                    <p class="lead font-weight-semibold" >@adventage.Item2</p>
+                    <a data-toggle="modal" data-target="#register-modal" class="btn btn-secondary rounded-0 font-weight-bold">@adventage.Item3</a>
+                </div>
+            </div>
+        }
+    </div>
+</div>

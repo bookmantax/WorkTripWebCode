@@ -260,7 +260,8 @@ namespace Worktrip.Controllers
                     Body = "Your WorkTrip security code is: " + code
                 };
 
-                UserManager.SmsService.Send(message);
+                // TODO: Bring back messeging
+                //UserManager.SmsService.Send(message);
 
 
                 using (var db = new WorktripEntities())
@@ -271,14 +272,15 @@ namespace Worktrip.Controllers
                     //text all preparers regarding new user sign up
                     var preparers = db.Users.Include(u => u.Roles).Where(u => u.Roles.Any(r => r.Name == "Preparer")).ToList();
 
-                    foreach (var p in preparers)
-                    {
-                        UserManager.SmsService.Send(new IdentityMessage
-                        {
-                            Destination = p.PhoneNumber,
-                            Body = "Sign up alert: " + firstName + " " + lastName + ", " + phoneNumber
-                        });
-                    }
+                    // TODO: Bring back messeging
+                    //foreach (var p in preparers)
+                    //{
+                    //    UserManager.SmsService.Send(new IdentityMessage
+                    //    {
+                    //        Destination = p.PhoneNumber,
+                    //        Body = "Sign up alert: " + firstName + " " + lastName + ", " + phoneNumber
+                    //    });
+                    //}
                 }
 
                 return Json(new { status = 0, userId = user.Id, phoneNumber = phoneNumber });
@@ -299,7 +301,6 @@ namespace Worktrip.Controllers
 
                 return Json(new { status = 0 });
             }
-
 
             return Json(new { status = -1 });
         }
@@ -441,11 +442,12 @@ namespace Worktrip.Controllers
 
                 var callbackUrl = Url.Action("ResetPassword", "Home", new {userId = user.Id, code = code }, protocol: Request.Url.Scheme);
 
-                UserManager.SmsService.Send(new IdentityMessage
-                {
-                    Destination = phoneNumber,
-                    Body = "Your WorkTrip Password Reset Link: " + callbackUrl
-                });
+                //TODO: bring it back
+                //UserManager.SmsService.Send(new IdentityMessage
+                //{
+                //    Destination = phoneNumber,
+                //    Body = "Your WorkTrip Password Reset Link: " + callbackUrl
+                //});
 
                 return Json(new { status = 0 });
             }
