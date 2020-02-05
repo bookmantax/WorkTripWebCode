@@ -520,6 +520,9 @@
     <Property Name="FlyReserveDays" Type="Boolean" />
     <Property Name="Spouse" Type="String" MaxLength="4000" FixedLength="false" Unicode="true" />
     <Property Name="TrainingExpenses" Type="Double" />
+    <Property Name="Dependants" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="AverageCostRoundTrip" Type="Double" />
+    <Property Name="AverageMilesRoundTrip" Type="Int32" />
   </EntityType>
   <Association Name="FK_MiscTax_Airport">
     <End Type="WorktripModel.Airport" Role="Airport" Multiplicity="0..1" />

@@ -113,30 +113,11 @@ namespace Worktrip.Models
                         taxInfo.Itemize = u.Itemize;
                         taxInfo.DriveToWork =  u.DriveToWork;
                         taxInfo.FlyReserveDays=  u.FlyReserveDays;
-                        
-                        if (taxInfo.Married != true)
-                        {
-                            taxInfo.Spouse = null;
-                        }
-
-                        if  (taxInfo.NewHire != true)
-                        {
-                            taxInfo.TrainingExpenses = null;
-                        }
 
                         if (taxInfo.Itemize != true)
                         {
                             taxInfo.DriveToWork = null;
                             taxInfo.FlyReserveDays = null;
-                        }
-
-                        if (taxInfo.FlyReserveDays != true)
-                        {
-                            taxInfo.TotalSpentLayoverTransportation = null;
-                        }
-
-                        if (taxInfo.Itemize != true)
-                        {
                             taxInfo.TrainingExpenses = null;
                             taxInfo.CellphoneBill = null;
                             taxInfo.ClothingFees = null;
@@ -147,6 +128,40 @@ namespace Worktrip.Models
                             taxInfo.TotalSpentLayoverTransportation = null;
                             taxInfo.UnreimbursedExpenses = null;
                             taxInfo.InternationalLayovers = null;
+                            taxInfo.AverageMilesRoundTrip = null;
+                            taxInfo.AverageCostRoundTrip = null;
+                        }
+                        
+                        if (taxInfo.Married != true)
+                        {
+                            taxInfo.Spouse = null;
+                        }
+
+                        if (taxInfo.Dependent != true)
+                        {
+                            taxInfo.Dependants = null;
+                        }
+
+                        if  (taxInfo.NewHire != true)
+                        {
+                            taxInfo.TrainingExpenses = null;
+                        }
+
+                        if (taxInfo.FlyReserveDays == true && taxInfo.DriveToWork == true)
+                        {
+                            taxInfo.AverageMilesRoundTrip = null;
+
+                        }
+
+                        if (taxInfo.FlyReserveDays == true && taxInfo.DriveToWork != true)
+                        {
+                            taxInfo.AverageCostRoundTrip = null;
+                        }
+
+                        if (taxInfo.FlyReserveDays != true)
+                        {
+                            taxInfo.AverageMilesRoundTrip = null;
+                            taxInfo.AverageCostRoundTrip = null;
                         }
                     }
                 }
@@ -186,7 +201,10 @@ namespace Worktrip.Models
                         taxInfo.TotalSpentLayoverTransportation = u.TotalSpentLayoverTransportation;
                         taxInfo.UnreimbursedExpenses = u.UnreimbursedExpenses;
                         taxInfo.InternationalLayovers = u.InternationalLayovers;
-                        taxInfo.Spouse = taxInfo.Married != null && taxInfo.Married == true ? u.Spouse : null;
+                        taxInfo.Spouse = taxInfo.Married == true ? u.Spouse : null;
+                        taxInfo.Dependants = taxInfo.Dependent == true ? u.Dependants : null;
+                        taxInfo.AverageCostRoundTrip = u.AverageCostRoundTrip;
+                        taxInfo.AverageMilesRoundTrip = u.AverageMilesRoundTrip;
                         //taxInfo.IdentityFees = u.IdentityFees;
                         //taxInfo.InternetBill = u.InternetBill;
                         //taxInfo.TransactionalFees = u.TransactionalFees;
@@ -408,7 +426,10 @@ namespace Worktrip.Models
                         DriveToWork = d.DriveToWork,
                         FlyReserveDays = d.FlyReserveDays,
                         Spouse = d.Spouse,
-                        TrainingExpenses = d.TrainingExpenses
+                        TrainingExpenses = d.TrainingExpenses,
+                        Dependants = d.Dependants,
+                        AverageCostRoundTrip = d.AverageCostRoundTrip,
+                        AverageMilesRoundTrip = d.AverageMilesRoundTrip,
                     }).ToDictionary(t => t.Year.ToString(), t => t),
                     Questions = db.UserQuestions.Include(q => q.User1).Where(q => q.AskedBy == userId).Select(q => new Question
                     {
@@ -547,6 +568,9 @@ namespace Worktrip.Models
         public bool? DriveToWork { get; set; }
         public string Spouse { get; set; }
         public double? TrainingExpenses { get; set; }
+        public string Dependants { get; set; }
+        public double? AverageCostRoundTrip { get; set; }
+        public int? AverageMilesRoundTrip { get; set; }
     }
 
     public class Question

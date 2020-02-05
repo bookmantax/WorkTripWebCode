@@ -42,6 +42,7 @@
     @Scripts.Render("~/bundles/dropzone")
 
 
+
     <script>
         var statusDict = {
             "Started" : "Account created",
@@ -72,7 +73,7 @@
 
         };
 
-        function updateSpouseDetails(spouse) {
+        function updateSpouseDetails(spouseDetails, $modal) {
             $("#spouse-first-name", $modal).text(spouseDetails.FirstName);
             $("#spouse-middle-name", $modal).text(spouseDetails.MiddleName);
             $("#spouse-last-name", $modal).text(spouseDetails.LastName);
@@ -691,9 +692,16 @@
 
             if (userInfo.TaxInfos[taxYear].Spouse != null) {
                 var spouseDetails = JSON.parse(userInfo.TaxInfos[taxYear].Spouse);
-                updateSpouseDetails(spouseDetails);
+                updateSpouseDetails(spouseDetails, $modal);
             } else {
                 $("[name='spouse-details']", $modal).css("display", "none");
+            }
+
+            if (userInfo.TaxInfos[taxYear].Dependants !== null) {
+                var dependants = JSON.parse(userInfo.TaxInfos[taxYear].Dependants);
+                $("#dependants-table", $modal).bootstrapTable({ data: dependants })
+            } else {
+                $("[name='dependants-details']", $modal).css("display", "none");
             }
 
             $(".modal-travel-expenses", $modal).text(formatExpense(
@@ -1667,6 +1675,22 @@
                                             <td id="spouse-dob"></td>
                                         </tr>
                                     </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div name="dependants-details" class="panel panel-info">
+                            <div class="panel-heading">Dependants details</div>
+                            <div class="panel-body">
+                                <table id="dependants-table" class="table table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th data-field="FirstName">First Name:</th>
+                                            <th data-field="MiddleName">Middle Name:</th>
+                                            <th data-field="LastName">Last Name:</th>
+                                            <th data-field="SSN">SSN:</th>
+                                            <th data-field="DOB">Date of birth:</th>
+                                        </tr>
+                                    </thead>
                                 </table>
                             </div>
                         </div>

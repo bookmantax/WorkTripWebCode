@@ -177,6 +177,9 @@
     <Property Name="FlyReserveDays" Type="bit" />
     <Property Name="Spouse" Type="nvarchar" MaxLength="4000" />
     <Property Name="TrainingExpenses" Type="float" />
+    <Property Name="Dependants" Type="nvarchar(max)" />
+    <Property Name="AverageCostRoundTrip" Type="float" />
+    <Property Name="AverageMilesRoundTrip" Type="int" />
   </EntityType>
   <EntityType Name="UserPerDiem">
     <Key>

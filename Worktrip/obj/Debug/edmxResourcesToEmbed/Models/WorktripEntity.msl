@@ -202,6 +202,9 @@
     <EntitySetMapping Name="UserMiscTaxInfoes">
       <EntityTypeMapping TypeName="WorktripModel.UserMiscTaxInfo">
         <MappingFragment StoreEntitySet="UserMiscTaxInfo">
+          <ScalarProperty Name="AverageMilesRoundTrip" ColumnName="AverageMilesRoundTrip" />
+          <ScalarProperty Name="AverageCostRoundTrip" ColumnName="AverageCostRoundTrip" />
+          <ScalarProperty Name="Dependants" ColumnName="Dependants" />
           <ScalarProperty Name="TrainingExpenses" ColumnName="TrainingExpenses" />
           <ScalarProperty Name="Spouse" ColumnName="Spouse" />
           <ScalarProperty Name="FlyReserveDays" ColumnName="FlyReserveDays" />

@@ -57,6 +57,9 @@ namespace Worktrip.Models
         public Nullable<bool> FlyReserveDays { get; set; }
         public string Spouse { get; set; }
         public Nullable<double> TrainingExpenses { get; set; }
+        public string Dependants { get; set; }
+        public Nullable<double> AverageCostRoundTrip { get; set; }
+        public Nullable<int> AverageMilesRoundTrip { get; set; }
     
         public virtual Airport Airport { get; set; }
         public virtual User User { get; set; }

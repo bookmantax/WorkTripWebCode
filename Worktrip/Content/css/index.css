@@ -42,6 +42,16 @@
     max-height: 100vh;
 }
 
+.hero-button {
+    width: 220px;
+}
+
+@media only screen and (max-width: 992px) {
+    .hero-button {
+        width: 150px;
+    }
+}
+
 .font-weight-semibold {
     font-weight: 500;
 }

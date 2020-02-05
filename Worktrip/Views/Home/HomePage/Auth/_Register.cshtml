@@ -7,9 +7,9 @@
                 </div>
 
                 @* CREATE ACCOUNT FORM *@
-                <form action="" method="post" id="create-account-form">
-                    <div class="alert alert-warning d-none" role="alert">
-                        <i class="fas fa-exclamation-circle mr-1"></i>Incorrect email address or password.
+                <form id="create-account-form">
+                    <div class="alert alert-warning" role="alert" style="display: none">
+                        <i class="fas fa-exclamation-circle mr-1"></i><span class="message"></span>.
                     </div>
 
                     @Html.AntiForgeryToken()

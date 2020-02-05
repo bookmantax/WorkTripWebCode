@@ -80,12 +80,11 @@ function registerUser() {
 	var completeForm = $("#complete-registration-form");
 
 	function createUserAndSendCode(form) {
-		var form = Form($());
-		var data = form.getData();
+		var $form = Form($(form));
+		var data = $form.getData();
 		data.phoneNumber = formatPhoneNumber(data.phoneNumber)
-
-		form.loading(true);
-		form.hideError();
+		$form.loading(true);
+		$form.hideError();
 
 		$.ajax({
 			type: "POST",
@@ -97,9 +96,10 @@ function registerUser() {
 					phoneNumber = response.phoneNumber;
 					createAccountForm.hide();
 					confirmForm.show();
-
-				} else {
-					form.loading(false);
+				} else { 
+					$form.showError();
+					$(form).find(".alert .message").html(response.message);
+					$form.loading(false);
 				}
 			}
 		});

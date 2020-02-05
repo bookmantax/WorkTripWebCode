@@ -1,4 +1,6 @@
-﻿function clearYesNoQuestion(name) {
+﻿var dependantsList;
+
+function clearYesNoQuestion(name) {
     $("input[name='" + name + "']")[0].checked = false;
     $("input[name='" + name + "']")[1].checked = false;
 };
@@ -105,10 +107,18 @@ function refreshPersonalInfo(userInfo) {
 function refreshTaxInfo(userInfo, taxYear) {
     $("#training-days-title").text("2. How many days were you training in " + taxYear + "?");
 
+
+    dependantsList = dependants();
+
     $('[name="Spouse.DOB"]').datetimepicker({
         format: 'L',
         ignoreReadonly: true,
     })
+
+    if (userInfo.TaxInfos) {
+        var data = JSON.parse(userInfo.TaxInfos[taxYear].Dependants);
+        dependantsList.setDependants(data)
+    }
 
     $("#tax-question input").each(function () {
         if (!userInfo.TaxInfos) {
@@ -117,6 +127,9 @@ function refreshTaxInfo(userInfo, taxYear) {
         var inputName = $(this).attr("name");
         var taxInfo = userInfo.TaxInfos[taxYear] || {};
 
+        if (inputName.split('.')[0] === "Dependant") {
+            return
+        }
         if (inputName.split('.')[0] === "Spouse") {
             var name = inputName.split('.')[1];
             var spouse = JSON.parse(taxInfo.Spouse);
@@ -156,8 +169,10 @@ function refreshTaxInfo(userInfo, taxYear) {
         if (userInfo.TaxInfos[taxYear].Dependent) {
             $("input[name='dependent']")[0].checked = true;
             document.getElementById("dependentLabel").style.visibility = "visible";
+            $("#dependants-section").css('display', 'inherit')
         } else {
             $("input[name='dependent']")[1].checked = true;
+            $("#dependants-section").css('display', 'none')
         }
         if (userInfo.TaxInfos[taxYear].StudentLoans) {
             $("input[name='loans']")[0].checked = true;
@@ -255,11 +270,20 @@ function refreshTaxInfo(userInfo, taxYear) {
 
             if (userInfo.TaxInfos[taxYear].FlyReserveDays) {
                 $("input[name='flyReserveDays']")[0].checked = true;
-                $('[name="question-total-spent-layover-transportation"]').css("display", "inherit");
+                if (userInfo.TaxInfos[taxYear].DriveToWork) {
+                    $('[name="question-average-miles-round-trip"]').css("display", "inherit");
+                    $('[name="question-average-cost-round-trip"]').css("display", "none");
+                } else {
+                    $('[name="question-average-cost-round-trip"]').css("display", "inherit");
+                    $('[name="question-average-miles-round-trip"]').css("display", "none");
+                }
             } else {
                 $("input[name='flyReserveDays']")[1].checked = true;
-                $('[name="question-total-spent-layover-transportation"]').css("display", "none");
+                $('[name="question-average-cost-round-trip"]').css("display", "none");
+                $('[name="question-average-miles-round-trip"]').css("display", "none");
             }
+
+
 
         } else {
             $("input[name='itemize']")[1].checked = true;
@@ -294,7 +318,6 @@ function refreshTaxInfo(userInfo, taxYear) {
 }
 
 function refreshQuestions(userInfo, taxYear) {
-    console.log(userInfo)
     $("#asked-questions ul").empty();
 
     if (!userInfo.Questions || !userInfo.Questions[taxYear]) {
@@ -538,6 +561,21 @@ function downloadTaxReturn() {
 }
 
 $(function () {
+    $('.ssn').inputmask('999-99-9999');
+    dependantsList = dependants();
+
+
+    var addButton = $("#add-dependant-button");
+
+    addButton.on('click', function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        dependantsList.add();
+
+    });
+
+
+
     $("#welcome-popup").css("opacity", 1);
 
     var dobPicker = $('#dob-input').datetimepicker({
@@ -867,6 +905,10 @@ $(function () {
 
             var val = $(this).val();
 
+            if (fieldProperty.split('.')[0] == "Dependant") {
+                return;
+            }
+
             if (fieldProperty.split('.')[0] == "Spouse") {
                 return;
             }
@@ -888,6 +930,7 @@ $(function () {
 
 
         updateInfo.TaxInfos[taxYear]['Spouse'] = getSpouseData();
+        updateInfo.TaxInfos[taxYear]['Dependants'] = dependantsList.getData();
         updateInfo.TaxInfos[taxYear]['DLState'] = $("#dl-select").val();
 
 
@@ -1035,12 +1078,61 @@ $(function () {
         }
     });
 
-    $("input[name='flyReserveDays']").change(function (e, obj) {
+
+    $("input[name='driveToWork']").change(function (e, obj) {
         if ($(this).val() == 'yes') {
-            $('[name="question-total-spent-layover-transportation"]').css("display", "inherit");
+            if ($("input[name='flyReserveDays']").val() == "yes") {
+                $('[name="question-average-miles-round-trip"]').css("display", "inherit");
+
+                $('[name="question-average-cost-round-trip"]').css("display", "none");
+                $('[name="question-average-cost-round-trip"] input').val("");
+
+
+            } else {
+                $('[name="question-average-cost-round-trip"]').css("display", "none");
+                $('[name="question-average-cost-round-trip"] input').val("");
+
+                $('[name="question-average-miles-round-trip"]').css("display", "none");
+                $('[name="question-average-miles-round-trip"] input').val("");
+            }
         } else {
-            $('[name="question-total-spent-layover-transportation"]').css("display", "none");
-            $('[name="question-total-spent-layover-transportation"] input').val("");
+            if ($("input[name='flyReserveDays']").val() == "yes") {
+                $('[name="question-average-cost-round-trip"]').css("display", "inherit");
+
+                $('[name="question-average-miles-round-trip"]').css("display", "none");
+                $('[name="question-average-miles-round-trip"] input').val("");
+            } else {
+                $('[name="question-average-cost-round-trip"]').css("display", "none");
+                $('[name="question-average-cost-round-trip"] input').val("");
+
+                $('[name="question-average-miles-round-trip"]').css("display", "none");
+                $('[name="question-average-miles-round-trip"] input').val("");
+            }
+        }
+    });
+
+    $("input[name='flyReserveDays']").change(function (e, obj) {
+
+            console.log('fly reserved')
+        if ($(this).val() == 'yes') {
+            if ($('[name="driveToWork"]').val() === 'yes') {
+                $('[name="question-average-cost-round-trip"]').css("display", "inherit");
+
+                $('[name="question-average-miles-round-trip"]').css("display", "none");
+                $('[name="question-average-miles-round-trip"] input').val("");
+            } else {
+                $('[name="question-average-miles-round-trip"]').css("display", "inherit");
+
+                $('[name="question-average-cost-round-trip"]').css("display", "none");
+                $('[name="question-average-cost-round-trip"] input').val("");
+            }
+
+        } else {
+            $('[name="question-average-cost-round-trip"]').css("display", "none");
+            $('[name="question-average-cost-round-trip"] input').val("");
+
+            $('[name="question-average-miles-round-trip"]').css("display", "none");
+            $('[name="question-average-miles-round-trip"] input').val("");
         }
     });
 
@@ -1658,3 +1750,145 @@ var formDict = {
         class: 'form-1099-sa'
     }
 };
+
+
+
+function dependants() {
+    var template = $("#dependant-template").html();
+    var dependantList = $("#dependant-list");
+    var addButton = $("#add-dependant-button");
+  
+    function count () {
+        return dependantList.find(".dependant").length
+    }
+
+    function add(data) {
+        var newDependant = $(template).clone();
+
+        newDependant.find('[name="Dependant.DOB"]').each(function () {
+            $(this).datetimepicker({
+                format: 'L',
+                ignoreReadonly: true
+            });
+        });
+
+        if (data) {
+            newDependant.find('[name="Dependant.FirstName"]').val(data.FirstName);
+            newDependant.find('[name="Dependant.LastName"]').val(data.LastName);
+            newDependant.find('[name="Dependant.MiddleName"]').val(data.MiddleName);
+            newDependant.find('[name="Dependant.LastName"]').val(data.LastName);
+            newDependant.find('[name="Dependant.SSN"]').val(data.SSN);
+            newDependant.find('[name="Dependant.DOB"]').val(data.DOB);
+        }
+
+        newDependant.find('input').each(function () {
+            var $addOn = $(this).prev(".input-group-addon");
+            var $editButton = $(this).next(".input-group-btn");
+
+
+            if ($(this).prop('name') == "Dependant.DOB") {
+                $(this).on('dp.change', function () {
+                    $("#save-tax-info-btn").trigger("click", { "passive": true });
+                })
+            } else {
+                $(this).change(function () {
+                    $("#save-tax-info-btn").trigger("click", { "passive": true });
+                })
+            }
+   
+            $addOn.removeClass("input-group-disabled");
+            $editButton.addClass("hidden");
+            info = $(this).val();
+            if (info) {
+                $(this).attr("disabled", "");
+                $addOn.addClass("input-group-disabled");
+                $editButton.removeClass("hidden");
+
+
+                $editButton.on('click', function (e) {
+                     $(this)
+                         .addClass("hidden")
+                         .prevAll("input,select")
+                         .removeAttr("disabled")
+                         .focus()
+                         .prev(".input-group-addon").removeClass("input-group-disabled");
+                 });
+            }
+
+           
+        })
+
+        dependantList.append(newDependant);
+        updateView();
+    }
+
+    function deleteAll () {
+        dependantList.html("");
+    }
+
+    function setDependants(data) {
+        deleteAll();
+
+        if (!data || data.length === 0) {
+            add();
+            return;
+        }
+
+        for (var i = 0; i < data.length; i++) {
+            add(data[i]);
+        }
+    }
+
+    function rebindDeleteButtons () {
+        dependantList.find('.delete-dependant-button').off('click', deleteDependant);
+        dependantList.find('.delete-dependant-button').on('click', deleteDependant);
+    }
+
+    function getData () {
+        var data = []
+
+        var disabled = dependantList.find(':input:disabled').removeAttr('disabled');
+
+        dependantList.find('.dependant:not(:hidden)').each(function () {
+            var person = {};
+            console.log(this)
+            var personData = $(this).find('input').serializeArray()
+
+            for (var i = 0; i < personData.length; i++) {
+                var name = personData[i].name.split('.')[1];
+                var value = personData[i].value;
+                person[name] = value;
+            }
+
+            data.push(person);
+        })
+
+        disabled.attr('disabled', 'disabled');
+
+        return JSON.stringify(data);
+    }
+
+    function deleteDependant () {
+        $(this).closest('.dependant').remove()
+        updateView();
+    }
+
+    function updateDependantNumbers  () {
+        dependantList.find('.dependant-number').each(function (index) {
+            $(this).html("Dependant " + (index + 1))
+        })
+    }
+
+    function updateView () {
+        updateDependantNumbers();
+        rebindDeleteButtons();
+        $('.ssn').inputmask('999-99-9999'); 
+     }
+
+    return {
+        add,
+        setDependants,
+        getData,
+    }
+
+}
