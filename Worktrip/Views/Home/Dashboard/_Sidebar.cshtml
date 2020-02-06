@@ -1,4 +1,4 @@
-﻿<div class="left-menu">
+﻿<div class="left-menu" style="overflow: auto; max-height: calc(100% - 80px);">
     <div class="dropdown tax-year-selection-button" style="margin-bottom: 5px;">
         <button class="btn btn-block btn-lg dropdown-toggle" type="button" data-toggle="dropdown">
             Tax Year:
@@ -58,7 +58,16 @@
                 </div>
             </div>
         </li>
-
+        <li class="dashboard-button-container" id="promo-code-menu-button" style="display: none">
+            <div class="btn-container">
+                <div class="dashboard-icon-cotainer">
+                    <img src="~/Content/img/voucher.png" />
+                </div>
+                <div class="dashboard-button-name">
+                    <a id="tPromo">Promo Code</a>
+                </div>
+            </div>
+        </li>
 
         <li class="dashboard-button-container">
             <div class="btn-container">
@@ -81,15 +90,6 @@
             </div>
         </li>
 
-        <li class="dashboard-button-container" id="promo-code-menu-button" style="display: none">
-            <div class="btn-container">
-                <div class="dashboard-icon-cotainer">
-                    <img src="~/Content/img/voucher.png" />
-                </div>
-                <div class="dashboard-button-name">
-                    <a id="tPromo">Promo Code</a>
-                </div>
-            </div>
-        </li>
+        
     </ul>
 </div>

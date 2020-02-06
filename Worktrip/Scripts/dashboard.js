@@ -115,7 +115,7 @@ function refreshTaxInfo(userInfo, taxYear) {
         ignoreReadonly: true,
     })
 
-    if (userInfo.TaxInfos) {
+    if (userInfo.TaxInfos && userInfo.TaxInfos[taxYear] && userInfo.TaxInfos[taxYear].Dependants) {
         var data = JSON.parse(userInfo.TaxInfos[taxYear].Dependants);
         dependantsList.setDependants(data)
     }
@@ -130,7 +130,7 @@ function refreshTaxInfo(userInfo, taxYear) {
         if (inputName.split('.')[0] === "Dependant") {
             return
         }
-        if (inputName.split('.')[0] === "Spouse") {
+        if (inputName.split('.')[0] === "Spouse" && taxInfo.Spouse) {
             var name = inputName.split('.')[1];
             var spouse = JSON.parse(taxInfo.Spouse);
             info = spouse && spouse[name] ? spouse[name] : null;

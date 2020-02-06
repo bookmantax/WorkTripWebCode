@@ -246,12 +246,12 @@ div.field, div.input-group {
     text-align: center;
     border: none;
     padding: 0;
-    height: 50px;
+    height: 40px;
 }
 
 .dashboard-icon-cotainer img {
-    width: 45px;
-    height: 45px;
+    width: 32px;
+    height: 32px;
 }
 
 .dashboard-button-name {

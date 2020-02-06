@@ -43,6 +43,17 @@
 
     <script>
         var shouldShowPasswordReset = "@ViewBag.action" === 'resetpw';
+        $(function () {
+
+            $(".modal").on("shown.bs.modal", function () {
+                var urlReplace = "#" + $(this).attr('id');
+                history.pushState(null, null, urlReplace);
+            });
+
+            $(window).on('popstate', function () {
+                $(".modal").modal('hide');
+            });
+        })
     </script>
 </body>
 </html>

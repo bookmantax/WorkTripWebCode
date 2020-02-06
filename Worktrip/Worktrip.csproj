@@ -473,7 +473,6 @@
     <Content Include="Scripts\bootstrap-table.min.js" />
     <Content Include="Content\main.less" />
     <Content Include="fonts\lato-light.woff" />
-    <Content Include="Content\img\Thumbs.db" />
     <Content Include="fonts\FontAwesome.otf" />
     <Content Include="fonts\fontawesome-webfont.woff2" />
     <Content Include="fonts\fontawesome-webfont.woff" />
@@ -579,7 +578,6 @@
     <Content Include="Scripts\jquery-validation-1.19.1\README.md" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Scripts\jquery-3.4.1.min.js" />
-    <Content Include="Scripts\jquery-migrate-1.4.1.js" />
     <Content Include="Scripts\jquery-ui-1.11.0.js" />
     <Content Include="Scripts\jquery-ui-1.11.0.min.js" />
     <Content Include="Scripts\jquery-validation-1.19.1\demo\ajaxSubmit-integration-demo.html" />
