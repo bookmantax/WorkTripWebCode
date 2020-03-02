@@ -1,130 +1,129 @@
-D:\WorkTrip Website\WorkTripWebCode\Worktrip\bin\roslyn\csc.exe
-D:\WorkTrip Website\WorkTripWebCode\Worktrip\bin\roslyn\Microsoft.Build.Tasks.CodeAnalysis.dll
-D:\WorkTrip Website\WorkTripWebCode\Worktrip\bin\roslyn\Microsoft.CodeAnalysis.CSharp.dll
-D:\WorkTrip Website\WorkTripWebCode\Worktrip\bin\roslyn\Microsoft.CodeAnalysis.dll
-D:\WorkTrip Website\WorkTripWebCode\Worktrip\bin\roslyn\Microsoft.CodeAnalysis.VisualBasic.dll
-D:\WorkTrip Website\WorkTripWebCode\Worktrip\bin\roslyn\Microsoft.CSharp.Core.targets
-D:\WorkTrip Website\WorkTripWebCode\Worktrip\bin\roslyn\Microsoft.VisualBasic.Core.targets
-D:\WorkTrip Website\WorkTripWebCode\Worktrip\bin\roslyn\System.Collections.Immutable.dll
-D:\WorkTrip Website\WorkTripWebCode\Worktrip\bin\roslyn\System.Reflection.Metadata.dll
-D:\WorkTrip Website\WorkTripWebCode\Worktrip\bin\roslyn\vbc.exe
-D:\WorkTrip Website\WorkTripWebCode\Worktrip\bin\roslyn\VBCSCompiler.exe
-D:\WorkTrip Website\WorkTripWebCode\Worktrip\bin\roslyn\VBCSCompiler.exe.config
-D:\WorkTrip Website\WorkTripWebCode\Worktrip\bin\Worktrip.dll.config
-D:\WorkTrip Website\WorkTripWebCode\Worktrip\bin\Worktrip.dll
-D:\WorkTrip Website\WorkTripWebCode\Worktrip\bin\Worktrip.pdb
-D:\WorkTrip Website\WorkTripWebCode\Worktrip\bin\Antlr3.Runtime.dll
-D:\WorkTrip Website\WorkTripWebCode\Worktrip\bin\Braintree.dll
-D:\WorkTrip Website\WorkTripWebCode\Worktrip\bin\EntityFramework.dll
-D:\WorkTrip Website\WorkTripWebCode\Worktrip\bin\EntityFramework.SqlServer.dll
-D:\WorkTrip Website\WorkTripWebCode\Worktrip\bin\Facebook.dll
-D:\WorkTrip Website\WorkTripWebCode\Worktrip\bin\Microsoft.AspNet.Identity.Core.dll
-D:\WorkTrip Website\WorkTripWebCode\Worktrip\bin\Microsoft.AspNet.Identity.EntityFramework.dll
-D:\WorkTrip Website\WorkTripWebCode\Worktrip\bin\Microsoft.AspNet.Identity.Owin.dll
-D:\WorkTrip Website\WorkTripWebCode\Worktrip\bin\Microsoft.Azure.KeyVault.Core.dll
-D:\WorkTrip Website\WorkTripWebCode\Worktrip\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll
-D:\WorkTrip Website\WorkTripWebCode\Worktrip\bin\Microsoft.Data.Edm.dll
-D:\WorkTrip Website\WorkTripWebCode\Worktrip\bin\Microsoft.Data.OData.dll
-D:\WorkTrip Website\WorkTripWebCode\Worktrip\bin\Microsoft.Data.Services.Client.dll
-D:\WorkTrip Website\WorkTripWebCode\Worktrip\bin\Microsoft.Owin.dll
-D:\WorkTrip Website\WorkTripWebCode\Worktrip\bin\Microsoft.Owin.Host.SystemWeb.dll
-D:\WorkTrip Website\WorkTripWebCode\Worktrip\bin\Microsoft.Owin.Security.Cookies.dll
-D:\WorkTrip Website\WorkTripWebCode\Worktrip\bin\Microsoft.Owin.Security.dll
-D:\WorkTrip Website\WorkTripWebCode\Worktrip\bin\Microsoft.Owin.Security.Facebook.dll
-D:\WorkTrip Website\WorkTripWebCode\Worktrip\bin\Microsoft.Owin.Security.Google.dll
-D:\WorkTrip Website\WorkTripWebCode\Worktrip\bin\Microsoft.Owin.Security.MicrosoftAccount.dll
-D:\WorkTrip Website\WorkTripWebCode\Worktrip\bin\Microsoft.Owin.Security.OAuth.dll
-D:\WorkTrip Website\WorkTripWebCode\Worktrip\bin\Microsoft.Owin.Security.Twitter.dll
-D:\WorkTrip Website\WorkTripWebCode\Worktrip\bin\Microsoft.Web.Infrastructure.dll
-D:\WorkTrip Website\WorkTripWebCode\Worktrip\bin\Microsoft.WindowsAzure.Configuration.dll
-D:\WorkTrip Website\WorkTripWebCode\Worktrip\bin\Microsoft.WindowsAzure.Storage.dll
-D:\WorkTrip Website\WorkTripWebCode\Worktrip\bin\Newtonsoft.Json.dll
-D:\WorkTrip Website\WorkTripWebCode\Worktrip\bin\Owin.dll
-D:\WorkTrip Website\WorkTripWebCode\Worktrip\bin\RestSharp.dll
-D:\WorkTrip Website\WorkTripWebCode\Worktrip\bin\System.Spatial.dll
-D:\WorkTrip Website\WorkTripWebCode\Worktrip\bin\System.Web.Helpers.dll
-D:\WorkTrip Website\WorkTripWebCode\Worktrip\bin\System.Web.Mvc.dll
-D:\WorkTrip Website\WorkTripWebCode\Worktrip\bin\System.Web.Optimization.dll
-D:\WorkTrip Website\WorkTripWebCode\Worktrip\bin\System.Web.Razor.dll
-D:\WorkTrip Website\WorkTripWebCode\Worktrip\bin\System.Web.WebPages.Deployment.dll
-D:\WorkTrip Website\WorkTripWebCode\Worktrip\bin\System.Web.WebPages.dll
-D:\WorkTrip Website\WorkTripWebCode\Worktrip\bin\System.Web.WebPages.Razor.dll
-D:\WorkTrip Website\WorkTripWebCode\Worktrip\bin\Twilio.Api.dll
-D:\WorkTrip Website\WorkTripWebCode\Worktrip\bin\WebGrease.dll
-D:\WorkTrip Website\WorkTripWebCode\Worktrip\bin\Facebook.xml
-D:\WorkTrip Website\WorkTripWebCode\Worktrip\bin\Microsoft.Azure.KeyVault.Core.xml
-D:\WorkTrip Website\WorkTripWebCode\Worktrip\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.xml
-D:\WorkTrip Website\WorkTripWebCode\Worktrip\bin\Microsoft.Data.Edm.xml
-D:\WorkTrip Website\WorkTripWebCode\Worktrip\bin\Microsoft.Data.OData.xml
-D:\WorkTrip Website\WorkTripWebCode\Worktrip\bin\Microsoft.Data.Services.Client.xml
-D:\WorkTrip Website\WorkTripWebCode\Worktrip\bin\Microsoft.Owin.xml
-D:\WorkTrip Website\WorkTripWebCode\Worktrip\bin\Microsoft.Owin.Security.xml
-D:\WorkTrip Website\WorkTripWebCode\Worktrip\bin\Microsoft.Owin.Security.Facebook.xml
-D:\WorkTrip Website\WorkTripWebCode\Worktrip\bin\Microsoft.WindowsAzure.Configuration.xml
-D:\WorkTrip Website\WorkTripWebCode\Worktrip\bin\Microsoft.WindowsAzure.Storage.pdb
-D:\WorkTrip Website\WorkTripWebCode\Worktrip\bin\Microsoft.WindowsAzure.Storage.xml
-D:\WorkTrip Website\WorkTripWebCode\Worktrip\bin\Newtonsoft.Json.xml
-D:\WorkTrip Website\WorkTripWebCode\Worktrip\bin\RestSharp.xml
-D:\WorkTrip Website\WorkTripWebCode\Worktrip\bin\System.Spatial.xml
-D:\WorkTrip Website\WorkTripWebCode\Worktrip\bin\System.Web.Helpers.xml
-D:\WorkTrip Website\WorkTripWebCode\Worktrip\bin\System.Web.Mvc.xml
-D:\WorkTrip Website\WorkTripWebCode\Worktrip\bin\System.Web.Optimization.xml
-D:\WorkTrip Website\WorkTripWebCode\Worktrip\bin\System.Web.Razor.xml
-D:\WorkTrip Website\WorkTripWebCode\Worktrip\bin\System.Web.WebPages.xml
-D:\WorkTrip Website\WorkTripWebCode\Worktrip\bin\System.Web.WebPages.Deployment.xml
-D:\WorkTrip Website\WorkTripWebCode\Worktrip\bin\System.Web.WebPages.Razor.xml
-D:\WorkTrip Website\WorkTripWebCode\Worktrip\bin\Twilio.Api.pdb
-D:\WorkTrip Website\WorkTripWebCode\Worktrip\bin\Twilio.Api.xml
-D:\WorkTrip Website\WorkTripWebCode\Worktrip\bin\Antlr3.Runtime.pdb
-D:\WorkTrip Website\WorkTripWebCode\Worktrip\bin\EntityFramework.xml
-D:\WorkTrip Website\WorkTripWebCode\Worktrip\bin\EntityFramework.SqlServer.xml
-D:\WorkTrip Website\WorkTripWebCode\Worktrip\bin\Microsoft.AspNet.Identity.Core.xml
-D:\WorkTrip Website\WorkTripWebCode\Worktrip\bin\Microsoft.AspNet.Identity.Owin.xml
-D:\WorkTrip Website\WorkTripWebCode\Worktrip\bin\Microsoft.AspNet.Identity.EntityFramework.xml
-D:\WorkTrip Website\WorkTripWebCode\Worktrip\bin\Microsoft.Owin.Host.SystemWeb.xml
-D:\WorkTrip Website\WorkTripWebCode\Worktrip\bin\Microsoft.Owin.Security.Cookies.xml
-D:\WorkTrip Website\WorkTripWebCode\Worktrip\bin\Microsoft.Owin.Security.OAuth.xml
-D:\WorkTrip Website\WorkTripWebCode\Worktrip\bin\Microsoft.Owin.Security.Google.xml
-D:\WorkTrip Website\WorkTripWebCode\Worktrip\bin\Microsoft.Owin.Security.Twitter.xml
-D:\WorkTrip Website\WorkTripWebCode\Worktrip\bin\Microsoft.Owin.Security.MicrosoftAccount.xml
-D:\WorkTrip Website\WorkTripWebCode\Worktrip\bin\de\Microsoft.Data.Edm.resources.dll
-D:\WorkTrip Website\WorkTripWebCode\Worktrip\bin\es\Microsoft.Data.Edm.resources.dll
-D:\WorkTrip Website\WorkTripWebCode\Worktrip\bin\fr\Microsoft.Data.Edm.resources.dll
-D:\WorkTrip Website\WorkTripWebCode\Worktrip\bin\it\Microsoft.Data.Edm.resources.dll
-D:\WorkTrip Website\WorkTripWebCode\Worktrip\bin\ja\Microsoft.Data.Edm.resources.dll
-D:\WorkTrip Website\WorkTripWebCode\Worktrip\bin\ko\Microsoft.Data.Edm.resources.dll
-D:\WorkTrip Website\WorkTripWebCode\Worktrip\bin\ru\Microsoft.Data.Edm.resources.dll
-D:\WorkTrip Website\WorkTripWebCode\Worktrip\bin\zh-Hans\Microsoft.Data.Edm.resources.dll
-D:\WorkTrip Website\WorkTripWebCode\Worktrip\bin\zh-Hant\Microsoft.Data.Edm.resources.dll
-D:\WorkTrip Website\WorkTripWebCode\Worktrip\bin\de\Microsoft.Data.OData.resources.dll
-D:\WorkTrip Website\WorkTripWebCode\Worktrip\bin\es\Microsoft.Data.OData.resources.dll
-D:\WorkTrip Website\WorkTripWebCode\Worktrip\bin\fr\Microsoft.Data.OData.resources.dll
-D:\WorkTrip Website\WorkTripWebCode\Worktrip\bin\it\Microsoft.Data.OData.resources.dll
-D:\WorkTrip Website\WorkTripWebCode\Worktrip\bin\ja\Microsoft.Data.OData.resources.dll
-D:\WorkTrip Website\WorkTripWebCode\Worktrip\bin\ko\Microsoft.Data.OData.resources.dll
-D:\WorkTrip Website\WorkTripWebCode\Worktrip\bin\ru\Microsoft.Data.OData.resources.dll
-D:\WorkTrip Website\WorkTripWebCode\Worktrip\bin\zh-Hans\Microsoft.Data.OData.resources.dll
-D:\WorkTrip Website\WorkTripWebCode\Worktrip\bin\zh-Hant\Microsoft.Data.OData.resources.dll
-D:\WorkTrip Website\WorkTripWebCode\Worktrip\bin\de\Microsoft.Data.Services.Client.resources.dll
-D:\WorkTrip Website\WorkTripWebCode\Worktrip\bin\es\Microsoft.Data.Services.Client.resources.dll
-D:\WorkTrip Website\WorkTripWebCode\Worktrip\bin\fr\Microsoft.Data.Services.Client.resources.dll
-D:\WorkTrip Website\WorkTripWebCode\Worktrip\bin\it\Microsoft.Data.Services.Client.resources.dll
-D:\WorkTrip Website\WorkTripWebCode\Worktrip\bin\ja\Microsoft.Data.Services.Client.resources.dll
-D:\WorkTrip Website\WorkTripWebCode\Worktrip\bin\ko\Microsoft.Data.Services.Client.resources.dll
-D:\WorkTrip Website\WorkTripWebCode\Worktrip\bin\ru\Microsoft.Data.Services.Client.resources.dll
-D:\WorkTrip Website\WorkTripWebCode\Worktrip\bin\zh-Hans\Microsoft.Data.Services.Client.resources.dll
-D:\WorkTrip Website\WorkTripWebCode\Worktrip\bin\zh-Hant\Microsoft.Data.Services.Client.resources.dll
-D:\WorkTrip Website\WorkTripWebCode\Worktrip\bin\de\System.Spatial.resources.dll
-D:\WorkTrip Website\WorkTripWebCode\Worktrip\bin\es\System.Spatial.resources.dll
-D:\WorkTrip Website\WorkTripWebCode\Worktrip\bin\fr\System.Spatial.resources.dll
-D:\WorkTrip Website\WorkTripWebCode\Worktrip\bin\it\System.Spatial.resources.dll
-D:\WorkTrip Website\WorkTripWebCode\Worktrip\bin\ja\System.Spatial.resources.dll
-D:\WorkTrip Website\WorkTripWebCode\Worktrip\bin\ko\System.Spatial.resources.dll
-D:\WorkTrip Website\WorkTripWebCode\Worktrip\bin\ru\System.Spatial.resources.dll
-D:\WorkTrip Website\WorkTripWebCode\Worktrip\bin\zh-Hans\System.Spatial.resources.dll
-D:\WorkTrip Website\WorkTripWebCode\Worktrip\bin\zh-Hant\System.Spatial.resources.dll
-D:\WorkTrip Website\WorkTripWebCode\Worktrip\obj\Release\Worktrip.csprojAssemblyReference.cache
-D:\WorkTrip Website\WorkTripWebCode\Worktrip\obj\Release\Worktrip.csproj.CoreCompileInputs.cache
-D:\WorkTrip Website\WorkTripWebCode\Worktrip\obj\Release\Worktrip.csproj.CopyComplete
-D:\WorkTrip Website\WorkTripWebCode\Worktrip\obj\Release\Worktrip.dll
-D:\WorkTrip Website\WorkTripWebCode\Worktrip\obj\Release\Worktrip.pdb
+C:\Users\Damian\Desktop\WorkTripWebCode - Copy\Worktrip\bin\roslyn\csc.exe
+C:\Users\Damian\Desktop\WorkTripWebCode - Copy\Worktrip\bin\roslyn\Microsoft.Build.Tasks.CodeAnalysis.dll
+C:\Users\Damian\Desktop\WorkTripWebCode - Copy\Worktrip\bin\roslyn\Microsoft.CodeAnalysis.CSharp.dll
+C:\Users\Damian\Desktop\WorkTripWebCode - Copy\Worktrip\bin\roslyn\Microsoft.CodeAnalysis.dll
+C:\Users\Damian\Desktop\WorkTripWebCode - Copy\Worktrip\bin\roslyn\Microsoft.CodeAnalysis.VisualBasic.dll
+C:\Users\Damian\Desktop\WorkTripWebCode - Copy\Worktrip\bin\roslyn\Microsoft.CSharp.Core.targets
+C:\Users\Damian\Desktop\WorkTripWebCode - Copy\Worktrip\bin\roslyn\Microsoft.VisualBasic.Core.targets
+C:\Users\Damian\Desktop\WorkTripWebCode - Copy\Worktrip\bin\roslyn\System.Collections.Immutable.dll
+C:\Users\Damian\Desktop\WorkTripWebCode - Copy\Worktrip\bin\roslyn\System.Reflection.Metadata.dll
+C:\Users\Damian\Desktop\WorkTripWebCode - Copy\Worktrip\bin\roslyn\vbc.exe
+C:\Users\Damian\Desktop\WorkTripWebCode - Copy\Worktrip\bin\roslyn\VBCSCompiler.exe
+C:\Users\Damian\Desktop\WorkTripWebCode - Copy\Worktrip\bin\roslyn\VBCSCompiler.exe.config
+C:\Users\Damian\Desktop\WorkTripWebCode - Copy\Worktrip\bin\Worktrip.dll.config
+C:\Users\Damian\Desktop\WorkTripWebCode - Copy\Worktrip\bin\Worktrip.dll
+C:\Users\Damian\Desktop\WorkTripWebCode - Copy\Worktrip\bin\Worktrip.pdb
+C:\Users\Damian\Desktop\WorkTripWebCode - Copy\Worktrip\bin\Antlr3.Runtime.dll
+C:\Users\Damian\Desktop\WorkTripWebCode - Copy\Worktrip\bin\Braintree.dll
+C:\Users\Damian\Desktop\WorkTripWebCode - Copy\Worktrip\bin\EntityFramework.dll
+C:\Users\Damian\Desktop\WorkTripWebCode - Copy\Worktrip\bin\EntityFramework.SqlServer.dll
+C:\Users\Damian\Desktop\WorkTripWebCode - Copy\Worktrip\bin\Facebook.dll
+C:\Users\Damian\Desktop\WorkTripWebCode - Copy\Worktrip\bin\Microsoft.AspNet.Identity.Core.dll
+C:\Users\Damian\Desktop\WorkTripWebCode - Copy\Worktrip\bin\Microsoft.AspNet.Identity.EntityFramework.dll
+C:\Users\Damian\Desktop\WorkTripWebCode - Copy\Worktrip\bin\Microsoft.AspNet.Identity.Owin.dll
+C:\Users\Damian\Desktop\WorkTripWebCode - Copy\Worktrip\bin\Microsoft.Azure.KeyVault.Core.dll
+C:\Users\Damian\Desktop\WorkTripWebCode - Copy\Worktrip\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll
+C:\Users\Damian\Desktop\WorkTripWebCode - Copy\Worktrip\bin\Microsoft.Data.Edm.dll
+C:\Users\Damian\Desktop\WorkTripWebCode - Copy\Worktrip\bin\Microsoft.Data.OData.dll
+C:\Users\Damian\Desktop\WorkTripWebCode - Copy\Worktrip\bin\Microsoft.Data.Services.Client.dll
+C:\Users\Damian\Desktop\WorkTripWebCode - Copy\Worktrip\bin\Microsoft.Owin.dll
+C:\Users\Damian\Desktop\WorkTripWebCode - Copy\Worktrip\bin\Microsoft.Owin.Host.SystemWeb.dll
+C:\Users\Damian\Desktop\WorkTripWebCode - Copy\Worktrip\bin\Microsoft.Owin.Security.Cookies.dll
+C:\Users\Damian\Desktop\WorkTripWebCode - Copy\Worktrip\bin\Microsoft.Owin.Security.dll
+C:\Users\Damian\Desktop\WorkTripWebCode - Copy\Worktrip\bin\Microsoft.Owin.Security.Facebook.dll
+C:\Users\Damian\Desktop\WorkTripWebCode - Copy\Worktrip\bin\Microsoft.Owin.Security.Google.dll
+C:\Users\Damian\Desktop\WorkTripWebCode - Copy\Worktrip\bin\Microsoft.Owin.Security.MicrosoftAccount.dll
+C:\Users\Damian\Desktop\WorkTripWebCode - Copy\Worktrip\bin\Microsoft.Owin.Security.OAuth.dll
+C:\Users\Damian\Desktop\WorkTripWebCode - Copy\Worktrip\bin\Microsoft.Owin.Security.Twitter.dll
+C:\Users\Damian\Desktop\WorkTripWebCode - Copy\Worktrip\bin\Microsoft.Web.Infrastructure.dll
+C:\Users\Damian\Desktop\WorkTripWebCode - Copy\Worktrip\bin\Microsoft.WindowsAzure.Configuration.dll
+C:\Users\Damian\Desktop\WorkTripWebCode - Copy\Worktrip\bin\Microsoft.WindowsAzure.Storage.dll
+C:\Users\Damian\Desktop\WorkTripWebCode - Copy\Worktrip\bin\Newtonsoft.Json.dll
+C:\Users\Damian\Desktop\WorkTripWebCode - Copy\Worktrip\bin\Owin.dll
+C:\Users\Damian\Desktop\WorkTripWebCode - Copy\Worktrip\bin\RestSharp.dll
+C:\Users\Damian\Desktop\WorkTripWebCode - Copy\Worktrip\bin\System.Spatial.dll
+C:\Users\Damian\Desktop\WorkTripWebCode - Copy\Worktrip\bin\System.Web.Helpers.dll
+C:\Users\Damian\Desktop\WorkTripWebCode - Copy\Worktrip\bin\System.Web.Mvc.dll
+C:\Users\Damian\Desktop\WorkTripWebCode - Copy\Worktrip\bin\System.Web.Optimization.dll
+C:\Users\Damian\Desktop\WorkTripWebCode - Copy\Worktrip\bin\System.Web.Razor.dll
+C:\Users\Damian\Desktop\WorkTripWebCode - Copy\Worktrip\bin\System.Web.WebPages.Deployment.dll
+C:\Users\Damian\Desktop\WorkTripWebCode - Copy\Worktrip\bin\System.Web.WebPages.dll
+C:\Users\Damian\Desktop\WorkTripWebCode - Copy\Worktrip\bin\System.Web.WebPages.Razor.dll
+C:\Users\Damian\Desktop\WorkTripWebCode - Copy\Worktrip\bin\Twilio.Api.dll
+C:\Users\Damian\Desktop\WorkTripWebCode - Copy\Worktrip\bin\WebGrease.dll
+C:\Users\Damian\Desktop\WorkTripWebCode - Copy\Worktrip\bin\Facebook.xml
+C:\Users\Damian\Desktop\WorkTripWebCode - Copy\Worktrip\bin\Microsoft.Azure.KeyVault.Core.xml
+C:\Users\Damian\Desktop\WorkTripWebCode - Copy\Worktrip\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.xml
+C:\Users\Damian\Desktop\WorkTripWebCode - Copy\Worktrip\bin\Microsoft.Data.Edm.xml
+C:\Users\Damian\Desktop\WorkTripWebCode - Copy\Worktrip\bin\Microsoft.Data.OData.xml
+C:\Users\Damian\Desktop\WorkTripWebCode - Copy\Worktrip\bin\Microsoft.Data.Services.Client.xml
+C:\Users\Damian\Desktop\WorkTripWebCode - Copy\Worktrip\bin\Microsoft.Owin.xml
+C:\Users\Damian\Desktop\WorkTripWebCode - Copy\Worktrip\bin\Microsoft.Owin.Security.xml
+C:\Users\Damian\Desktop\WorkTripWebCode - Copy\Worktrip\bin\Microsoft.Owin.Security.Facebook.xml
+C:\Users\Damian\Desktop\WorkTripWebCode - Copy\Worktrip\bin\Microsoft.WindowsAzure.Configuration.xml
+C:\Users\Damian\Desktop\WorkTripWebCode - Copy\Worktrip\bin\Microsoft.WindowsAzure.Storage.pdb
+C:\Users\Damian\Desktop\WorkTripWebCode - Copy\Worktrip\bin\Microsoft.WindowsAzure.Storage.xml
+C:\Users\Damian\Desktop\WorkTripWebCode - Copy\Worktrip\bin\Newtonsoft.Json.xml
+C:\Users\Damian\Desktop\WorkTripWebCode - Copy\Worktrip\bin\RestSharp.xml
+C:\Users\Damian\Desktop\WorkTripWebCode - Copy\Worktrip\bin\System.Spatial.xml
+C:\Users\Damian\Desktop\WorkTripWebCode - Copy\Worktrip\bin\System.Web.Helpers.xml
+C:\Users\Damian\Desktop\WorkTripWebCode - Copy\Worktrip\bin\System.Web.Mvc.xml
+C:\Users\Damian\Desktop\WorkTripWebCode - Copy\Worktrip\bin\System.Web.Optimization.xml
+C:\Users\Damian\Desktop\WorkTripWebCode - Copy\Worktrip\bin\System.Web.Razor.xml
+C:\Users\Damian\Desktop\WorkTripWebCode - Copy\Worktrip\bin\System.Web.WebPages.xml
+C:\Users\Damian\Desktop\WorkTripWebCode - Copy\Worktrip\bin\System.Web.WebPages.Deployment.xml
+C:\Users\Damian\Desktop\WorkTripWebCode - Copy\Worktrip\bin\System.Web.WebPages.Razor.xml
+C:\Users\Damian\Desktop\WorkTripWebCode - Copy\Worktrip\bin\Twilio.Api.pdb
+C:\Users\Damian\Desktop\WorkTripWebCode - Copy\Worktrip\bin\Twilio.Api.xml
+C:\Users\Damian\Desktop\WorkTripWebCode - Copy\Worktrip\bin\Antlr3.Runtime.pdb
+C:\Users\Damian\Desktop\WorkTripWebCode - Copy\Worktrip\bin\EntityFramework.xml
+C:\Users\Damian\Desktop\WorkTripWebCode - Copy\Worktrip\bin\EntityFramework.SqlServer.xml
+C:\Users\Damian\Desktop\WorkTripWebCode - Copy\Worktrip\bin\Microsoft.AspNet.Identity.Core.xml
+C:\Users\Damian\Desktop\WorkTripWebCode - Copy\Worktrip\bin\Microsoft.AspNet.Identity.Owin.xml
+C:\Users\Damian\Desktop\WorkTripWebCode - Copy\Worktrip\bin\Microsoft.AspNet.Identity.EntityFramework.xml
+C:\Users\Damian\Desktop\WorkTripWebCode - Copy\Worktrip\bin\Microsoft.Owin.Host.SystemWeb.xml
+C:\Users\Damian\Desktop\WorkTripWebCode - Copy\Worktrip\bin\Microsoft.Owin.Security.Cookies.xml
+C:\Users\Damian\Desktop\WorkTripWebCode - Copy\Worktrip\bin\Microsoft.Owin.Security.OAuth.xml
+C:\Users\Damian\Desktop\WorkTripWebCode - Copy\Worktrip\bin\Microsoft.Owin.Security.Google.xml
+C:\Users\Damian\Desktop\WorkTripWebCode - Copy\Worktrip\bin\Microsoft.Owin.Security.Twitter.xml
+C:\Users\Damian\Desktop\WorkTripWebCode - Copy\Worktrip\bin\Microsoft.Owin.Security.MicrosoftAccount.xml
+C:\Users\Damian\Desktop\WorkTripWebCode - Copy\Worktrip\bin\de\Microsoft.Data.Edm.resources.dll
+C:\Users\Damian\Desktop\WorkTripWebCode - Copy\Worktrip\bin\es\Microsoft.Data.Edm.resources.dll
+C:\Users\Damian\Desktop\WorkTripWebCode - Copy\Worktrip\bin\fr\Microsoft.Data.Edm.resources.dll
+C:\Users\Damian\Desktop\WorkTripWebCode - Copy\Worktrip\bin\it\Microsoft.Data.Edm.resources.dll
+C:\Users\Damian\Desktop\WorkTripWebCode - Copy\Worktrip\bin\ja\Microsoft.Data.Edm.resources.dll
+C:\Users\Damian\Desktop\WorkTripWebCode - Copy\Worktrip\bin\ko\Microsoft.Data.Edm.resources.dll
+C:\Users\Damian\Desktop\WorkTripWebCode - Copy\Worktrip\bin\ru\Microsoft.Data.Edm.resources.dll
+C:\Users\Damian\Desktop\WorkTripWebCode - Copy\Worktrip\bin\zh-Hans\Microsoft.Data.Edm.resources.dll
+C:\Users\Damian\Desktop\WorkTripWebCode - Copy\Worktrip\bin\zh-Hant\Microsoft.Data.Edm.resources.dll
+C:\Users\Damian\Desktop\WorkTripWebCode - Copy\Worktrip\bin\de\Microsoft.Data.OData.resources.dll
+C:\Users\Damian\Desktop\WorkTripWebCode - Copy\Worktrip\bin\es\Microsoft.Data.OData.resources.dll
+C:\Users\Damian\Desktop\WorkTripWebCode - Copy\Worktrip\bin\fr\Microsoft.Data.OData.resources.dll
+C:\Users\Damian\Desktop\WorkTripWebCode - Copy\Worktrip\bin\it\Microsoft.Data.OData.resources.dll
+C:\Users\Damian\Desktop\WorkTripWebCode - Copy\Worktrip\bin\ja\Microsoft.Data.OData.resources.dll
+C:\Users\Damian\Desktop\WorkTripWebCode - Copy\Worktrip\bin\ko\Microsoft.Data.OData.resources.dll
+C:\Users\Damian\Desktop\WorkTripWebCode - Copy\Worktrip\bin\ru\Microsoft.Data.OData.resources.dll
+C:\Users\Damian\Desktop\WorkTripWebCode - Copy\Worktrip\bin\zh-Hans\Microsoft.Data.OData.resources.dll
+C:\Users\Damian\Desktop\WorkTripWebCode - Copy\Worktrip\bin\zh-Hant\Microsoft.Data.OData.resources.dll
+C:\Users\Damian\Desktop\WorkTripWebCode - Copy\Worktrip\bin\de\Microsoft.Data.Services.Client.resources.dll
+C:\Users\Damian\Desktop\WorkTripWebCode - Copy\Worktrip\bin\es\Microsoft.Data.Services.Client.resources.dll
+C:\Users\Damian\Desktop\WorkTripWebCode - Copy\Worktrip\bin\fr\Microsoft.Data.Services.Client.resources.dll
+C:\Users\Damian\Desktop\WorkTripWebCode - Copy\Worktrip\bin\it\Microsoft.Data.Services.Client.resources.dll
+C:\Users\Damian\Desktop\WorkTripWebCode - Copy\Worktrip\bin\ja\Microsoft.Data.Services.Client.resources.dll
+C:\Users\Damian\Desktop\WorkTripWebCode - Copy\Worktrip\bin\ko\Microsoft.Data.Services.Client.resources.dll
+C:\Users\Damian\Desktop\WorkTripWebCode - Copy\Worktrip\bin\ru\Microsoft.Data.Services.Client.resources.dll
+C:\Users\Damian\Desktop\WorkTripWebCode - Copy\Worktrip\bin\zh-Hans\Microsoft.Data.Services.Client.resources.dll
+C:\Users\Damian\Desktop\WorkTripWebCode - Copy\Worktrip\bin\zh-Hant\Microsoft.Data.Services.Client.resources.dll
+C:\Users\Damian\Desktop\WorkTripWebCode - Copy\Worktrip\bin\de\System.Spatial.resources.dll
+C:\Users\Damian\Desktop\WorkTripWebCode - Copy\Worktrip\bin\es\System.Spatial.resources.dll
+C:\Users\Damian\Desktop\WorkTripWebCode - Copy\Worktrip\bin\fr\System.Spatial.resources.dll
+C:\Users\Damian\Desktop\WorkTripWebCode - Copy\Worktrip\bin\it\System.Spatial.resources.dll
+C:\Users\Damian\Desktop\WorkTripWebCode - Copy\Worktrip\bin\ja\System.Spatial.resources.dll
+C:\Users\Damian\Desktop\WorkTripWebCode - Copy\Worktrip\bin\ko\System.Spatial.resources.dll
+C:\Users\Damian\Desktop\WorkTripWebCode - Copy\Worktrip\bin\ru\System.Spatial.resources.dll
+C:\Users\Damian\Desktop\WorkTripWebCode - Copy\Worktrip\bin\zh-Hans\System.Spatial.resources.dll
+C:\Users\Damian\Desktop\WorkTripWebCode - Copy\Worktrip\bin\zh-Hant\System.Spatial.resources.dll
+C:\Users\Damian\Desktop\WorkTripWebCode - Copy\Worktrip\obj\Release\Worktrip.csproj.CopyComplete
+C:\Users\Damian\Desktop\WorkTripWebCode - Copy\Worktrip\obj\Release\Worktrip.dll
+C:\Users\Damian\Desktop\WorkTripWebCode - Copy\Worktrip\obj\Release\Worktrip.pdb
+C:\Users\Damian\Desktop\WorkTripWebCode - Copy\Worktrip\obj\Release\Worktrip.csprojAssemblyReference.cache

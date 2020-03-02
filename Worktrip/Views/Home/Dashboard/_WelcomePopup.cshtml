@@ -1,0 +1,87 @@
+﻿<div id="welcome-popup" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header" style="border: none">
+                <button type="button" class="close" data-dismiss="modal"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
+            </div>
+            <div class="modal-body">
+                <div class="welcome-step active">
+                    <img src="~/Content/img/welcome-modal-1.png" />
+                    <h2>File your tax return in 3 easy steps</h2>
+                    <p>A Tax Pro will reach out to you via text and answer any questions</p>
+                </div>
+                <div class="welcome-step">
+                    <img src="~/Content/img/welcome-modal-3.png" />
+                    <p class="step-number"><span>Step 1</span></p>
+                    <h2>Answer 5 minutes of questions</h2>
+                    <p>Fill out the Personal Questions and Yes/No questions for us to get started</p>
+                </div>
+                <div class="welcome-step">
+                    <img src="~/Content/img/welcome-modal-2.png" />
+                    <p class="step-number"><span>Step 2</span></p>
+                    <h2>Upload your tax documents</h2>
+                    <p>Answering the Yes/No questions will instruct you on which documents you will need</p>
+                </div>
+                <div class="welcome-step">
+                    <img src="~/Content/img/welcome-modal-4.png" />
+                    <p class="step-number"><span>Step 3</span></p>
+                    <h2>Schedule a final tax review</h2>
+                    <p>Once we input your tax info, we'll set up a quick final call to finish the tax return</p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-link pull-left" id="prevButton"><span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span></button>
+                <p class="step-indicators"> </p>
+                <button class="btn btn-link pull-right" id="nextButton"><span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span></button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        var modal = $('#welcome-popup');
+        var prevButton = $('#prevButton');
+        var nextButton = $('#nextButton');
+        var stepIndicators = $('.step-indicators');
+        var steps = $('.welcome-step');
+        var stepsNumber = steps.length;
+
+        for (var i = 0; i < stepsNumber; i++) {
+            stepIndicators.append($('<span>'));
+        }
+    
+        modal.on("show.bs.modal", reset);
+        prevButton.on('click', prev);
+        nextButton.on('click', next);
+
+        function next() {
+            var isLastStepActive = $('.welcome-step').last().hasClass('active');
+
+            if (isLastStepActive) {
+                reset();
+            } else {
+                steps.filter('.active').removeClass('active').next().addClass('active'); 
+                stepIndicators.find('.active').removeClass('active').next().addClass('active');
+            }
+        }
+
+        function prev() {
+            var isFirstStepActive = $('.welcome-step').first().hasClass('active');
+
+            if (isFirstStepActive) {
+                steps.removeClass('active').last().addClass('active');
+                stepIndicators.children().removeClass('active').last().addClass('active');
+            } else {
+                steps.filter('.active').removeClass('active').prev().addClass('active');
+                stepIndicators.find('.active').removeClass('active').prev().addClass('active');
+            }
+        }
+
+        function reset() {
+            stepIndicators.children().removeClass('active').first().addClass('active');
+            $(".welcome-step.active").removeClass('active');
+            $('.welcome-step').first().addClass('active');
+        }
+    })
+</script>

@@ -42,6 +42,7 @@
     @Scripts.Render("~/bundles/dropzone")
 
 
+    <link href="https://fonts.googleapis.com/css?family=Titillium+Web:900&display=swap" rel="stylesheet">
 
     <script>
         var statusDict = {
@@ -567,10 +568,20 @@
                 taxYear: taxYear
             };
 
+            // Showing up coupon if user provide name, laste name and birthday
+
+            if (userInfo.FirstName && userInfo.LastName && userInfo.DOB) {
+                var promoCode = (userInfo.FirstName.slice(0, 2) + userInfo.LastName.slice(0, 2) + userInfo.DOB.slice(-2)).toUpperCase();
+                $(".promo-code", $modal).text(promoCode);
+                $("#promo-code-panel", $modal).show();
+            }
+
+
             $(".modal-name", $modal).text(userInfo.FirstName + " " + ((userInfo.MiddleName || " ") + " ") + userInfo.LastName);
             $(".modal-phone", $modal).text(userInfo.PhoneNumber);
             $(".modal-email", $modal).text(userInfo.Email);
             $(".modal-dob", $modal).text(userInfo.DOB || "");
+            $(".modal-ssn", $modal).text(userInfo.SSN || "");
             $(".modal-address", $modal).text(userInfo.Address || "");
             $(".modal-city", $modal).text(userInfo.City || "");
             $(".modal-state", $modal).text(userInfo.State || "");
@@ -708,6 +719,8 @@
                 (userInfo.TaxInfos[taxYear].TotalSpentLayoverTransportation || 0)));
 
             var totalExpenses =
+                (userInfo.TaxInfos[taxYear].AverageCostRoundTrip || 0) +
+                (userInfo.TaxInfos[taxYear].TrainingExpenses || 0) +
                 (userInfo.TaxInfos[taxYear].TransactionalFees || 0) +
                 (userInfo.TaxInfos[taxYear].ClothingFees || 0) +
                 (userInfo.TaxInfos[taxYear].LaundryFees || 0) +
@@ -720,7 +733,7 @@
 
             $(".modal-other-expenses", $modal).text(formatExpense(totalExpenses));
 
-            $(".modal-training-days", $modal).text(userInfo.TaxInfos[taxYear].DaysInTrainingOrAway || "");
+            $(".modal-round-trip-miles", $modal).text(userInfo.TaxInfos[taxYear].AverageMilesRoundTrip || "");
 
             $(".detail-questions-panel .modal-detailed", $modal).text("");
 
@@ -1066,11 +1079,11 @@
                         dictDefaultMessage: "Drop files here or click to upload",
                         acceptedFiles: ".pdf",
                         autoProcessQueue: true,
-                        init: function () {                          
+                        init: function () {
                             this.on("sending", function (file, xhr, formData) {
                                 formData.append("taxYear", currentUserInfo.taxYear);
                                 formData.append("userId", currentUserInfo.userId);
-                                
+
                             });
 
                             this.on("success", function (file) {
@@ -1455,6 +1468,10 @@
                             <div class="modal-dob panel-body"></div>
                         </div>
                         <div class="panel panel-primary">
+                            <div class="panel-heading">SSN</div>
+                            <div class="modal-ssn panel-body"></div>
+                        </div>
+                        <div class="panel panel-primary">
                             <div class="panel-heading">Address</div>
                             <div class="modal-address panel-body"></div>
                         </div>
@@ -1529,8 +1546,8 @@
                             <div class="modal-other-expenses panel-body"></div>
                         </div>
                         <div class="panel panel-warning">
-                            <div class="panel-heading">Training Days</div>
-                            <div class="modal-training-days panel-body"></div>
+                            <div class="panel-heading">Average Round Trip Miles</div>
+                            <div class="modal-round-trip-miles panel-body"></div>
                         </div>
                         <div class="panel panel-warning">
                             <div class="panel-heading">Open User Tabs <input id="internationalLayoverCheckbox" class="modal-internationalLayovers panel-body" type="checkbox" /></div>
@@ -1549,6 +1566,17 @@
                             </div>
                             <div class="detail-questions-panel panel-collapse collapse" role="tabpanel" aria-labelledby="detail-questions-heading">
                                 <div class="panel-body">
+
+                                    <div class="panel panel-warning">
+                                        <div class="panel-heading">Training Expenses</div>
+                                        <div class="modal-detailed modal-TrainingExpenses panel-body"></div>
+                                    </div>
+
+                                    <div class="panel panel-warning">
+                                        <div class="panel-heading">Average Round Trip Cost</div>
+                                        <div class="modal-detailed modal-AverageCostRoundTrip panel-body"></div>
+                                    </div>
+
                                     <div class="panel panel-warning">
                                         <div class="panel-heading">Transactional Fees</div>
                                         <div class="modal-detailed modal-TransactionalFees panel-body"></div>
@@ -1758,10 +1786,25 @@
                                 </div>
                             </div>
                         </div>
+
+
+                        <div class="panel panel-success" id="promo-code-panel" style="display: none">
+                            <div class="panel-heading">User Promo Code</div>
+                            <div class="panel-body" style="padding: 20px">
+                                <div class="promo-code-banner">
+                                    <img src="/Content/img/worktrip-vertical.png" />
+                                    <p><strong>$20 off</strong> Tax Preparation</p>
+                                    <p>Coupon Code: <span class="promo-code"></span></p>
+                                    <br />
+                                    <a href="https://www.worktrip.tax">www.worktrip.tax</a>
+                                    <p class="text-small">*Offer Valid Throught 04/15/2020</p>
+                                    <p class="text-small">For New Customers</p>
+                                </div>
+                            </div>
+                        </div>
+
                     </div>
-
                 </div>
-
             </div>
         </div>
     </script>
@@ -1788,7 +1831,7 @@
             </button>
         </div>
     </div>
-    
+
     <select class="form-control" id="select-tax-year" style="width:100px">
         <!-- Please add this class="dropdown-a" to every new item -->
         <option>@DateTime.Now.AddYears(-1).ToString("yyyy")</option>
@@ -1799,22 +1842,22 @@
     <div id="main-tabs">
 
         @*<ul class="nav nav-tabs" role="tablist">
-            <li role="presentation" class="active">
-                <a href="#unbound-users-tab" role="tab" data-toggle="tab">
-                    Unassigned Clients
-                </a>
-            </li>
-            <li role="presentation">
-                <a href="#my-users-tab" role="tab" data-toggle="tab">
-                    My Clients
-                </a>
-            </li>
-            <li role="presentation">
-                <a href="#all-users-tab" role="tab" data-toggle="tab">
-                    All Clients
-                </a>
-            </li>
-        </ul>*@
+                <li role="presentation" class="active">
+                    <a href="#unbound-users-tab" role="tab" data-toggle="tab">
+                        Unassigned Clients
+                    </a>
+                </li>
+                <li role="presentation">
+                    <a href="#my-users-tab" role="tab" data-toggle="tab">
+                        My Clients
+                    </a>
+                </li>
+                <li role="presentation">
+                    <a href="#all-users-tab" role="tab" data-toggle="tab">
+                        All Clients
+                    </a>
+                </li>
+            </ul>*@
 
         @*<div class="tab-content">
             <div role="tabpanel" class="tab-pane active fade in" id="unbound-users-tab">
@@ -1894,31 +1937,32 @@
 
             </div>
             <div role="tabpanel" class="tab-pane fade" id="all-users-tab">*@
-                <input id="all-users-search" placeholder="Search by name or email" type="text" class="form-control" />
-                <table id="all-users-table" class="table table-striped table-hover table-bordered">
-                    <thead>
-                        <tr>
-                            <th>Color Code</th>
-                            <th>First Name</th>
-                            <th>Last Name</th>
-                            <th>Phone Number</th>
-                            <th>Email</th>
-                            <th>Assigned To</th>
-                            <th>Status</th>
-                            <th>Date Modified</th>
-                        </tr>
-                    </thead>
-                    <tbody></tbody>
-                </table>
-            @*</div>
-        </div>
+        <input id="all-users-search" placeholder="Search by name or email" type="text" class="form-control" />
+        <table id="all-users-table" class="table table-striped table-hover table-bordered">
+            <thead>
+                <tr>
+                    <th>Color Code</th>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>Phone Number</th>
+                    <th>Email</th>
+                    <th>Assigned To</th>
+                    <th>Status</th>
+                    <th>Date Modified</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+        @*</div>
+                </div>
 
-    </div>*@
+            </div>*@
 
-    @*<div class="container-fluid">
-            <div class="row">
+        @*<div class="container-fluid">
+                <div class="row">
 
-            </div>
-        </div>*@
+                </div>
+            </div>*@
+    </div>
 </body>
 </html>

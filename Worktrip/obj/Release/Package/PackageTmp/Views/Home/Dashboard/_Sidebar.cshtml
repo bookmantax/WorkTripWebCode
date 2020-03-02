@@ -1,0 +1,95 @@
+﻿<div class="left-menu" style="overflow: auto; max-height: calc(100% - 80px);">
+    <div class="dropdown tax-year-selection-button" style="margin-bottom: 5px;">
+        <button class="btn btn-block btn-lg dropdown-toggle" type="button" data-toggle="dropdown">
+            Tax Year:
+            <strong>
+                <span id="taxYear">@DateTime.Now.AddYears(-1).ToString("yyyy")</span>
+            </strong>
+            <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu">
+            <li><a class="dropdown-a" href="#">@DateTime.Now.AddYears(-1).ToString("yyyy")</a></li>
+            <li role="separator" class="divider"></li>
+            <li><a class="dropdown-a" href="#">@DateTime.Now.AddYears(-2).ToString("yyyy")</a></li>
+            <li role="separator" class="divider"></li>
+            <li><a class="dropdown-a" href="#">@DateTime.Now.AddYears(-3).ToString("yyyy")</a></li>
+        </ul>
+    </div>
+    <ul class="progression">
+        <li class="dashboard-button-container">
+            <div class="btn-container" style="background: #E74139;">
+                <div class="dashboard-icon-cotainer">
+                    <img src="~/Content/img/user.png" />
+                </div>
+                <div class="dashboard-button-name">
+                    <a id="pInfo">Personal Info</a>
+                </div>
+            </div>
+        </li>
+
+        <li id="wSch-side-item" class="dashboard-button-container">
+            <div class="btn-container">
+                <div class="dashboard-icon-cotainer">
+                    <img src="~/Content/img/Layover.png" />
+                </div>
+                <div class="dashboard-button-name">
+                    <a id="wSch">Yes/No Questions</a>
+                </div>
+            </div>
+        </li>
+        <li class="dashboard-button-container">
+            <div id="tQuest-side-item" class="btn-container">
+                <div class="dashboard-icon-cotainer">
+                    <img src="~/Content/img/Question.png" />
+                </div>
+                <div class="dashboard-button-name">
+                    <a id="tQuest">Tax Questions</a>
+                </div>
+            </div>
+        </li>
+
+        <li class="dashboard-button-container">
+            <div id="tax-docs-side-item" class="btn-container">
+                <div class="dashboard-icon-cotainer">
+                    <img src="~/Content/img/file.png" />
+                </div>
+                <div class="dashboard-button-name">
+                    <a id="tDoc">Tax Documents</a>
+                </div>
+            </div>
+        </li>
+        <li class="dashboard-button-container" id="promo-code-menu-button" style="display: none">
+            <div class="btn-container">
+                <div class="dashboard-icon-cotainer">
+                    <img src="~/Content/img/voucher.png" />
+                </div>
+                <div class="dashboard-button-name">
+                    <a id="tPromo">Promo Code</a>
+                </div>
+            </div>
+        </li>
+
+        <li class="dashboard-button-container">
+            <div class="btn-container">
+                <div class="dashboard-icon-cotainer">
+                    <img src="~/Content/img/money.png" />
+                </div>
+                <div class="dashboard-button-name">
+                    <a id="mPay">Sign and Pay</a>
+                </div>
+            </div>
+        </li>
+        <li class="dashboard-button-container">
+            <div class="btn-container">
+                <div class="dashboard-icon-cotainer">
+                    <img src="~/Content/img/money.png" />
+                </div>
+                <div class="dashboard-button-name">
+                    <a id="tReturn">Tax Return</a>
+                </div>
+            </div>
+        </li>
+
+        
+    </ul>
+</div>

@@ -1,0 +1,316 @@
+﻿<div id="dependant-template" style="display: none">
+    <div class="dependant mb-3" style="border-bottom: 2px solid lightgrey; padding-bottom: 20px; margin-bottom: 40px">
+        <div class="dependant-header">
+            <h4 class="dependant-number"></h4>
+            <button class="delete-dependant-button btn btn-danger font-weight-bold">×</button>
+        </div>
+
+        <span class="input-title">First Name</span><br>
+        <div class="field input-group">
+            <input placeholder="First Name" type="text" class="form-control" name="Dependant.FirstName">
+            <span class="input-group-btn">
+                <button class="btn btn-primary input-edit">
+                    <span class="glyphicon glyphicon-edit"></span>
+                </button>
+            </span>
+        </div>
+        <span class="input-title">Middle Name</span><br>
+        <div class="field input-group">
+            <input type="text" class="form-control" name="Dependant.MiddleName">
+            <span class="input-group-btn">
+                <button class="btn btn-primary input-edit">
+                    <span class="glyphicon glyphicon-edit"></span>
+                </button>
+            </span>
+        </div>
+        <span class="input-title">Last Name</span><br>
+        <div class="field input-group">
+            <input placeholder="Last Name" type="text" class="form-control" name="Dependant.LastName">
+            <span class="input-group-btn">
+                <button class="btn btn-primary input-edit">
+                    <span class="glyphicon glyphicon-edit"></span>
+                </button>
+            </span>
+        </div>
+        <span class="input-title">Social Security Number</span><br>
+        <div class="field input-group">
+            <input type="text" class="form-control ssn" name="Dependant.SSN">
+            <span class="input-group-btn">
+                <button class="btn btn-primary input-edit">
+                    <span class="glyphicon glyphicon-edit"></span>
+                </button>
+            </span>
+        </div>
+        <span class="input-title">Date of Birth</span>
+        <div class="field input-group">
+            <input type="text" class="form-control" placeholder="mm/dd/yyyy" name="Dependant.DOB">
+            <span class="input-group-btn">
+                <button class="btn btn-primary input-edit">
+                    <span class="glyphicon glyphicon-edit"></span>
+                </button>
+            </span>
+        </div>
+    </div>
+</div>
+
+<div class="row formContainer" style="display: none;" id="tax-question">
+    <div style="z-index:100" class="form-wrapper">
+        <div class="panel panel-default" id="spouse-section">
+            <div class="panel-heading">
+                <p style="font-size: 1.2em; font-weight: bold; margin: 0">Spouse details</p>
+            </div>
+            <div class="panel-body">
+                <span class="input-title">First Name</span><br>
+                <div class="field input-group">
+                    <input placeholder="First Name" type="text" class="form-control" name="Spouse.FirstName" id="spouse-firstname-input">
+                    <span class="input-group-btn">
+                        <button class="btn btn-primary input-edit">
+                            <span class="glyphicon glyphicon-edit"></span>
+                        </button>
+                    </span>
+                </div>
+                <span class="input-title">Middle Name</span><br>
+                <div class="field input-group">
+                    <input type="text" class="form-control" name="Spouse.MiddleName" id="spouse-middlename-input">
+                    <span class="input-group-btn">
+                        <button class="btn btn-primary input-edit">
+                            <span class="glyphicon glyphicon-edit"></span>
+                        </button>
+                    </span>
+                </div>
+                <span class="input-title">Last Name</span><br>
+                <div class="field input-group">
+                    <input placeholder="Last Name" type="text" class="form-control" name="Spouse.LastName" id="spouse-lastname-input">
+                    <span class="input-group-btn">
+                        <button class="btn btn-primary input-edit">
+                            <span class="glyphicon glyphicon-edit"></span>
+                        </button>
+                    </span>
+                </div>
+                <span class="input-title">Social Security Number</span><br>
+                <div class="field input-group">
+                    <input type="text" class="form-control ssn" name="Spouse.SSN" id="spouse-ssn-input">
+                    <span class="input-group-btn">
+                        <button class="btn btn-primary input-edit">
+                            <span class="glyphicon glyphicon-edit"></span>
+                        </button>
+                    </span>
+                </div>
+                <span class="input-title">Date of Birth</span>
+                <div class="field input-group">
+                    <input type="text" class="form-control" placeholder="mm/dd/yyyy" name="Spouse.DOB" id="spouse-dob-input">
+                    <span class="input-group-btn">
+                        <button class="btn btn-primary input-edit">
+                            <span class="glyphicon glyphicon-edit"></span>
+                        </button>
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <div class="panel panel-default" id="dependants-section">
+            <div class="panel-heading">
+                <p style="font-size: 1.2em; font-weight: bold; margin: 0">Dependant(s) details</p>
+            </div>
+            <div class="panel-body" >
+                <div id="dependant-list"></div>
+                <button class="btn btn-primary" id="add-dependant-button">Add dependant</button>
+            </div>
+            
+        </div>
+
+
+        <div class="panel panel-default" id="additional-questions-section">
+            <div class="panel-heading">
+                <p style="font-size: 1.2em; font-weight: bold; margin: 0">Additional Questions for NY, CA, MN, PA, or Hi residents</p>
+            </div>
+            <div class="panel-body">
+                <div name="question-training-expenses">
+                    <span>Enter the Total for all of your Training Expenses</span>
+                    <div class="input-group">
+                        <span class="input-group-addon">$</span>
+                        <input placeholder="" type="text" class="form-control" name="TrainingExpenses">
+                        <span class="input-group-btn">
+                            <button class="btn btn-primary input-edit">
+                                <span class="glyphicon glyphicon-edit"></span>
+                            </button>
+                        </span>
+                    </div>
+                </div>
+                <div name="question-average-cost-round-trip">
+                    <span>Enter the average cost of your round trip travel to the Airport on Reserve Days</span>
+                    <div class="input-group">
+                        <span class="input-group-addon">$</span>
+                        <input placeholder="" type="text" class="form-control" name="AverageCostRoundTrip">
+                        <span class="input-group-btn">
+                            <button class="btn btn-primary input-edit">
+                                <span class="glyphicon glyphicon-edit"></span>
+                            </button>
+                        </span>
+                    </div>
+                </div>
+                <div name="question-average-miles-round-trip">
+                    <span>Enter your average round trip Driving Miles to the Airport</span>
+                    <div class="input-group">
+                        <input placeholder="" type="text" class="form-control" name="AverageMilesRoundTrip">
+                        <span class="input-group-btn">
+                            <button class="btn btn-primary input-edit">
+                                <span class="glyphicon glyphicon-edit"></span>
+                            </button>
+                        </span>
+                    </div>
+                </div>
+                <div name="question-total-spent-layover-transportation">
+                    <span>Enter the total money spent on cabs, trains, ubers, lyfts, etc while on Layovers last year</span>
+                    <div class="input-group">
+                        <span class="input-group-addon">$</span>
+                        <input placeholder="" type="text" class="form-control" name="TotalSpentLayoverTransportation">
+                        <span class="input-group-btn">
+                            <button class="btn btn-primary input-edit">
+                                <span class="glyphicon glyphicon-edit"></span>
+                            </button>
+                        </span>
+                    </div>
+                </div>
+                <div>
+                    <span>Enter all Uniform and Alteration fees for last year (include legging/pantyhose purchases)</span>
+                    <div class="input-group">
+                        <span class="input-group-addon">$</span>
+                        <input placeholder="" type="text" class="form-control" name="ClothingFees">
+                        <span class="input-group-btn">
+                            <button class="btn btn-primary input-edit">
+                                <span class="glyphicon glyphicon-edit"></span>
+                            </button>
+                        </span>
+                    </div>
+                </div>
+
+                <div>
+                    <span>Enter the total of all Dry Cleaning/Laundry fees for Uniforms last year</span>
+                    <div class="input-group">
+                        <span class="input-group-addon">$</span>
+                        <input placeholder="" type="text" class="form-control" name="LaundryFees">
+                        <span class="input-group-btn">
+                            <button class="btn btn-primary input-edit">
+                                <span class="glyphicon glyphicon-edit"></span>
+                            </button>
+                        </span>
+                    </div>
+                </div>
+
+                <div>
+                    <span>Enter all costs for Flight Gear/Luggage purchased last year</span>
+                    <div class="input-group">
+                        <span class="input-group-addon">$</span>
+                        <input placeholder="" type="text" class="form-control" name="FlightGearLuggageFees">
+                        <span class="input-group-btn">
+                            <button class="btn btn-primary input-edit">
+                                <span class="glyphicon glyphicon-edit"></span>
+                            </button>
+                        </span>
+                    </div>
+                </div>
+                <div>
+                    <span>Enter equipment purchases needed for work last year (iPad, Laptop, etc)</span>
+                    <div class="input-group">
+                        <span class="input-group-addon">$</span>
+                        <input placeholder="" type="text" class="form-control" name="TechPurchasesFees">
+                        <span class="input-group-btn">
+                            <button class="btn btn-primary input-edit">
+                                <span class="glyphicon glyphicon-edit"></span>
+                            </button>
+                        </span>
+                    </div>
+                </div>
+                <div>
+                    <span>Enter your total Cell Phone Bill for last year</span>
+                    <div class="input-group">
+                        <span class="input-group-addon">$</span>
+                        <input placeholder="" type="text" class="form-control" name="CellphoneBill">
+                        <span class="input-group-btn">
+                            <button class="btn btn-primary input-edit">
+                                <span class="glyphicon glyphicon-edit"></span>
+                            </button>
+                        </span>
+                    </div>
+                </div>
+
+                <div>
+                    <span>Enter all other Unreimbursed Work Expenses for last year (Visas, Passport, etc)</span>
+                    <div class="input-group">
+                        <span class="input-group-addon">$</span>
+                        <input placeholder="" type="text" class="form-control" name="UnreimbursedExpenses">
+                        <span class="input-group-btn">
+                            <button class="btn btn-primary input-edit">
+                                <span class="glyphicon glyphicon-edit"></span>
+                            </button>
+                        </span>
+                    </div>
+                </div>
+
+                @*<div>
+                    <span id="training-days-title" class="input-title">2. How many days were you training in ?</span>
+                    <div class="field input-group">
+                        <input type="text" class="form-control" name="DaysInTrainingOrAway" id="days-input">
+                        <span class="input-group-btn">
+                            <button class="btn btn-primary input-edit">
+                                <span class="glyphicon glyphicon-edit"></span>
+                            </button>
+                        </span>
+                    </div>
+                </div>*@
+
+                @*<div>
+                    <span>4. Currency exchange fees, atm, or foriegn fees on debit/credit cards?</span>
+                    <div class="input-group">
+                        <span class="input-group-addon">$</span>
+                        <input placeholder="" type="text" class="form-control" name="TransactionalFees">
+                        <span class="input-group-btn">
+                            <button class="btn btn-primary input-edit">
+                                <span class="glyphicon glyphicon-edit"></span>
+                            </button>
+                        </span>
+                    </div>
+                </div>*@
+                @*<div>
+                    <span>10. Total internet bill? </span>
+                    <div class="input-group">
+                        <span class="input-group-addon">$</span>
+                        <input placeholder="" type="text" class="form-control" name="InternetBill">
+                        <span class="input-group-btn">
+                            <button class="btn btn-primary input-edit">
+                                <span class="glyphicon glyphicon-edit"></span>
+                            </button>
+                        </span>
+                    </div>
+                </div>*@
+                @*<div>
+                    <span> Visas, Passport fees, and any misc items needed for work?</span>
+                    <div class="input-group">
+                        <span class="input-group-addon">$</span>
+                        <input placeholder="" type="text" class="form-control" name="IdentityFees">
+                        <span class="input-group-btn">
+                            <button class="btn btn-primary input-edit">
+                                <span class="glyphicon glyphicon-edit"></span>
+                            </button>
+                        </span>
+                    </div>
+                </div>*@
+
+
+            </div>
+        </div>
+        <div class="panel panel-default" name="no-questions-panel" style="display: none">
+            <div class="panel-body text-center">
+                <h5>All additional tax questions will be asked by your Tax Preparer on a Final Call.</h5>
+                <p>Please proceed to Tax Documents and upload your tax forms.</p>
+            </div>
+        </div>
+        <div class="col-md-4 col-md-offset-4 col-sm-4 col-sm-offset-4">
+            <br>
+            <button id="save-tax-info-btn" style="width:100%;" type="submit" class="btn btn-primary submit-button">
+                Save Changes
+            </button>
+        </div>
+    </div>
+</div>

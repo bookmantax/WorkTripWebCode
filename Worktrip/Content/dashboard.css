@@ -1427,4 +1427,92 @@ Tax Questions
     align-items: center;
 }
 
+#welcome-popup .welcome-step {
+    text-align: center;
+    display: none;
+}
+
+
+#welcome-popup .welcome-step.active {
+    display: inherit;
+}
+
+    #welcome-popup .welcome-step img {
+        max-width: 200px;
+        margin: 40px 0;
+    }
+
+    #welcome-popup .welcome-step h2 {
+        max-width: 400px;
+        margin: 0 auto 20px auto;
+        font-size: 2.75em;
+        font-weight: bold;
+        color: #2c539e;
+    }
+
+    #welcome-popup .welcome-step p {
+        font-size: 1.5em;
+        font-weight: bold;
+        margin: 0 auto;
+        max-width: 90%;
+    }
+
+#welcome-popup .step-indicators {
+    display: inline-block;
+    margin: 0;
+    line-height: 34px;
+    height: 100%;
+}
+
+#welcome-popup .step-indicators span {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    margin: 0 5px;
+    background: #d7d7d7;
+    border-radius: 5px;
+}
+
+#welcome-popup .modal-footer {
+    text-align: center;
+}
+
+#welcome-popup .step-indicators span.active {
+    background: green;
+   }
+
+#welcome-popup .step-number {
+    margin-bottom: 20px !important;
+}
+#welcome-popup .step-number > span {
+    color: red;
+    background: #ff00000f;
+    display: inline;
+    padding: 11px 23px;
+    border-radius: 6px;
+    font-weight: 900;
+}
+
+@media only screen and (max-width: 768px) {
+    #welcome-popup .welcome-step img {
+        max-width: 150px;
+        margin: 0 0 40px 0;
+    }
+
+    #welcome-popup .welcome-step h2 {
+        max-width: 95%; 
+        margin: 0 auto 10px auto;
+        font-size: 2em;
+        font-weight: bold;
+        color: #2c539e;
+    }
+
+    #welcome-popup .welcome-step p {
+        font-size: 1.2em;
+        font-weight: bold;
+        margin: 0 auto;
+        max-width: 95%;
+    }
+
+}
 

@@ -18,7 +18,7 @@
     @Styles.Render("~/Content/css/select2-bootstrap.min.css")
     @Styles.Render("~/Content/csspin-boxes.css")
     @Styles.Render("~/Content/dropzonecss")
-    @Styles.Render("~/Content/dashboard.css?v=2")
+    @Styles.Render("~/Content/dashboard.css")
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.43/css/bootstrap-datetimepicker.min.css">
 
     <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
@@ -76,33 +76,8 @@
         <div class="cp-spinner cp-boxes"></div>
     </div>
 
-    <div id="welcome-popup" class="dashboard-popup hidden">
-        <div class="popup">
-            <h2 class=ribbon style="font-family:sans-serif !important">
-                <i><u>Taxes the Easy Way</u></i>
-            </h2>
-            <div style="padding:25px;padding-top:10px;font-weight:bold;display:flex;flex-direction:column;align-items:center;">
-                <div>
-                    One of our tax professionals will contact you shortly to schedule a quick tax call. Please get started by:
-                </div>
-                <br />
-                <ol type="1">
-                    <li>Fill out your personal info</li>
-                    <li>Upload tax document images
-                        <ul>
-                            <li>W2</li>
-                            <li>Health Savings Account 1099-SA</li>
-                            <li>Student Loan Tax Forms</li>
-                            <li>Etc</li>
-                        </ul>
-                    </li>
-                </ol>
-            </div>
-
-            <div class="popup-close"><i class="fa fa-close"></i></div>
-        </div>
-    </div>
-
+   
+    @Html.Partial("Dashboard/_WelcomePopup")
     @Html.Partial("Dashboard/_TopBar")
     <div class="container-fluid container-dashboard">
         @Html.Partial("Dashboard/_Sidebar")
@@ -156,12 +131,12 @@
                         </div>
                     </div>
                     @*<div class="row border-document @(ViewBag.IsAdmin ? "" : "hidden")">
-                    <h2 class="lets-talk-header">Sign Documents</h2>
-                    <br />
-                    <div class="col-xs-12">
-                        <img src="~/Content/img/1040x.png" style="width: 250px;cursor:pointer;" id="pdfDemoBtn"/>
-                    </div>
-                </div>*@
+                            <h2 class="lets-talk-header">Sign Documents</h2>
+                            <br />
+                            <div class="col-xs-12">
+                                <img src="~/Content/img/1040x.png" style="width: 250px;cursor:pointer;" id="pdfDemoBtn"/>
+                            </div>
+                        </div>*@
                 </div>
                 <div id="payment-not-ready" style="text-align:center;" class="border-document col-lg-offset-3 col-md-offset-3 col-lg-6 col-md-6 col-sm-12 col-xs-12">
                     <div style="font-size:20px">
@@ -223,6 +198,7 @@
                     <div class="panel-body">
                         <div id="taxdropzone-alerts"></div>
                         <form action="@Url.Action("UploadUserTaxFile", "Home")" method="post" enctype="multipart/form-data" class="dropzone dropzoneArea" id="taxDropzone">
+                            <input name="taxYear" hidden />
                             <div class="fallback">
                                 <input name="file" type="file" multiple />
                                 <input type="submit" value="Upload" />
@@ -245,8 +221,8 @@
                                 <p>Coupon Code: <span class="promo-code"></span></p>
                                 <br />
                                 <a href="https://www.worktrip.tax">www.worktrip.tax</a>
-                                <p class="text-small">*Offer Valid Throught 02/29/2020</p>
-                                <p class="text-small">Fot New Customers</p>
+                                <p class="text-small">*Offer Valid Throught 04/15/2020</p>
+                                <p class="text-small">For New Customers</p>
                             </div>
                             <p style="font-size: 1.25em"><strong><span class="promo-code-name"></span>, we value your business and would love to offer you a free tax return next year!</strong></p>
                             <p class="alert alert-success">Your Promo Code is <strong class="promo-code"></strong></p>
@@ -294,7 +270,7 @@
         <div class="lets-talk-inner-wrapper">
             <button type="button" class="close cancel-btn" data-dismiss="#refer-div">×</button>
             <h2 class="lets-talk-header">Refer a Friend</h2>
-            <br/>
+            <br />
 
             <span class="input-title">Your friend's name</span><br>
 
@@ -385,7 +361,7 @@
                         $('div#tax-return-container').hide();
                         $('div#no-tax-return-container').hide();
                         $('div#promo-code-container').hide();
-                        $('div#make-payment').fadeIn(500, function(){
+                        $('div#make-payment').fadeIn(500, function () {
                         });
                         $('div#tax-question').hide();
                         if (!$('div#options .menu-dashboard').is(":visible"))
@@ -556,7 +532,7 @@
                     $('div.box-dashboard-container').hide();
                     $('div#tax-return-container').hide();
                     $('div#no-tax-return-container').hide();
-                        $('div#promo-code-container').hide();
+                    $('div#promo-code-container').hide();
                     $('div#Personal-info').fadeIn(500);
                     $('div#tax-documents-container').hide();
                     $('div#ynQuestions').hide();
@@ -591,7 +567,7 @@
                 }
             });
 
-            $(".menu-dashboard").click(function(){
+            $(".menu-dashboard").click(function () {
                 $('div.left-menu-collapse').slideDown(500);
             });
 

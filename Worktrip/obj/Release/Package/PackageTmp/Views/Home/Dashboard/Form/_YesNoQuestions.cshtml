@@ -1,0 +1,54 @@
+﻿@{ 
+    var questions = new List<Tuple<string, string, string, bool>>
+    {
+        Tuple.Create("1. Were you a new hire last year?", "newHire", "Congrats! We'll talk to you about deductible training expenses", false),
+        Tuple.Create("2. Are you Married?", "married", "Click Yes for anything that pertains to your spouse", false),
+        Tuple.Create("3. Do you have more than one Employer last year?", "multipleW2s", "Upload a W-2 for every job you had last year (include all spouse W-2s)", false),
+        Tuple.Create("4. Do you financially support children, parents, or grandparents?", "dependent", "You probably have a dependent", false),
+        Tuple.Create("5. Do you have an HSA account that you USED last year?", "hsa", "Upload a 1099-SA tax document.", false),
+        Tuple.Create("6. Did you have any Interest Income last year?", "1099INT", "Upload a 1099-INT tax document.", false),
+        Tuple.Create("7. Do you have any Student Loans?", "loans", "Look for a 1098-E or Student Loan Tax Document", false),
+        Tuple.Create("8. Do you own a Home or Rental Property?", "house", "Upload 1098-Mortgage tax document", false),
+        Tuple.Create("9. Did you have any Stocks or Bonds that are Not in a Retirement Account?", "stocks", "Download a PDF copy of the 1099-B or 1099-DIV from your brokerage website (Etrade, Fidelity, etc) and Upload it.", false),
+        Tuple.Create("10. Did you receive a State/Local Tax Refund or any Unemployment benefits last year?", "1099G", "Look for a 1099-G tax document", false),
+        Tuple.Create("11. Did you take any money out of 401K or Retirement Account last year? (If you took a Loan click No)", "1099R", "Upload a 1099-R tax document", false),
+        Tuple.Create("12. Are you an Owner/Member/Stockholder/Beneficiary of a Partnership, LLC, S Corp, Estate or Trust?", "scheduleK1", "We may be able to Itemize Per Diem and Expenses on you STATE tax return. Please answer the following questions", false),
+        Tuple.Create("13. Do you manage your own business? (click Yes for a \"side gig\" like Uber, Airbnb, beauty/healthy, etc)", "ownBusiness", "Schedule a call with your tax preparer", false),
+        Tuple.Create("14. Did you receive Rental Income, Foreign Income, or any Other Income last year?", "other", "Schedule a call with your tax preparer", false),
+        Tuple.Create("15. Did you take any Univeristy courses last year?", "1098T", "Look for a 1098-T Tax Document", false),
+        Tuple.Create("16. Is your tax residence in NY, CA, MN, PA, or HI?", "itemize", "We may be able to Itemize Per Diem and Expenses on you STATE tax return. Please answer the following questions", false),
+        Tuple.Create("17. Did you drive to work last year?", "driveToWork", "", true),
+        Tuple.Create("18. Do you fly “Reserve Days?”?", "flyReserveDays", "", true),
+    };
+}
+<div class="row formContainer" style="display: none;" id="ynQuestions">
+    <div style="z-index:100" class="form-wrapper">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <p style="font-size: 1.2em; font-weight: bold; margin: 0">Yes/No Questions</p>
+            </div>
+            <div class="panel-body">
+
+                @foreach (var question in questions)
+                {
+                    <div class="field input-group">
+                        <form action="" name="question-@question.Item2" style="display: @(question.Item4 ? "none" : "inherit")">
+                            @question.Item1<br />
+                            <label class="radio-inline">Yes&emsp;<input type="radio" name="@question.Item2" value="yes" /></label>
+                            <label class="radio-inline">No&emsp;<input type="radio" name="@question.Item2" value="no" /></label><br />
+                            <label style="color:red; visibility: hidden; padding-left:20px" id="@{@question.Item2}Label">@question.Item3</label>
+                        </form>
+                    </div>
+                    <br />
+                }
+            </div>
+        </div>
+        <br>
+        <div style="z-index:99" class="col-md-4 col-md-offset-4 col-sm-4 col-sm-offset-4">
+            <br />
+            <button id="save-ynQuestions-btn" style="width:100%;" type="submit" class="btn btn-primary submit-button">
+                Save Changes
+            </button>
+        </div>
+    </div>
+</div>

@@ -289,3 +289,47 @@
     font-size: 18px;
     color: darkgray;
 }
+
+@font-face {
+    font-family: 'LatoLight';
+    src: url('/fonts/lato-light.woff');
+}
+
+.promo-code-banner {
+    padding: 20px 0;
+    text-align: center;
+    font-size: 1.5em;
+    font-weight: bold;
+    line-height: 1;
+    color: #10213c;
+    max-width: 400px;
+    margin: 0 auto;
+    border: 10px solid #10213c;
+    background: white;
+    font-family: 'LatoLight';
+}
+
+    .promo-code-banner p, .promo-code-banner a {
+        color: #10213c;
+    }
+
+    .promo-code-banner p {
+        color: #10213c;
+        margin: 0;
+        padding: 0;
+    }
+
+    .promo-code-banner img {
+        width: 90%;
+    }
+
+    .promo-code-banner .promo-code, .promo-code-banner strong {
+        color: rgb(231, 65, 57);
+        font-family: 'Titillium Web', sans-serif;
+        font-weight: 900;
+        font-size: 1.5em;
+    }
+
+.text-small {
+    font-size: 0.7em;
+}

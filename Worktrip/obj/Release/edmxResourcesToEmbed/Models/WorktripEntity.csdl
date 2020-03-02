@@ -275,6 +275,7 @@
     <NavigationProperty Name="UserToPreparers" Relationship="WorktripModel.FK_UserToPreparer_TaxPreparer" FromRole="User" ToRole="UserToPreparer" />
     <NavigationProperty Name="UserToPreparers1" Relationship="WorktripModel.FK_UserToPreparer_User" FromRole="User" ToRole="UserToPreparer" />
     <NavigationProperty Name="UserMiscTaxInfoes" Relationship="WorktripModel.FK_MiscTax_User" FromRole="User" ToRole="UserMiscTaxInfo" />
+    <Property Name="SSN" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
   </EntityType>
   <Association Name="FK_PreparerNotes_TaxPreparer">
     <End Type="WorktripModel.User" Role="User" Multiplicity="1" />
@@ -507,6 +508,21 @@
     <Property Name="C1099R" Type="Boolean" />
     <NavigationProperty Name="Airport" Relationship="WorktripModel.FK_MiscTax_Airport" FromRole="UserMiscTaxInfo" ToRole="Airport" />
     <NavigationProperty Name="User" Relationship="WorktripModel.FK_MiscTax_User" FromRole="UserMiscTaxInfo" ToRole="User" />
+    <Property Name="Other" Type="Boolean" />
+    <Property Name="OwnBusiness" Type="Boolean" />
+    <Property Name="ScheduleK1" Type="Boolean" />
+    <Property Name="C1099G" Type="Boolean" />
+    <Property Name="C1099INT" Type="Boolean" />
+    <Property Name="MultipleW2s" Type="Boolean" />
+    <Property Name="NewHire" Type="Boolean" />
+    <Property Name="Itemize" Type="Boolean" />
+    <Property Name="DriveToWork" Type="Boolean" />
+    <Property Name="FlyReserveDays" Type="Boolean" />
+    <Property Name="Spouse" Type="String" MaxLength="4000" FixedLength="false" Unicode="true" />
+    <Property Name="TrainingExpenses" Type="Double" />
+    <Property Name="Dependants" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="AverageCostRoundTrip" Type="Double" />
+    <Property Name="AverageMilesRoundTrip" Type="Int32" />
   </EntityType>
   <Association Name="FK_MiscTax_Airport">
     <End Type="WorktripModel.Airport" Role="Airport" Multiplicity="0..1" />

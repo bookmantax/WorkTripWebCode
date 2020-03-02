@@ -90,6 +90,7 @@
     <Property Name="City" Type="nvarchar" MaxLength="256" />
     <Property Name="State" Type="nvarchar" MaxLength="256" />
     <Property Name="Zip" Type="nvarchar" MaxLength="5" />
+    <Property Name="SSN" Type="varchar" MaxLength="20" />
   </EntityType>
   <EntityType Name="UserActionsLog">
     <Key>
@@ -164,6 +165,21 @@
     <Property Name="HSA" Type="bit" />
     <Property Name="1098T" Type="bit" />
     <Property Name="1099R" Type="bit" />
+    <Property Name="Other" Type="bit" />
+    <Property Name="OwnBusiness" Type="bit" />
+    <Property Name="ScheduleK1" Type="bit" />
+    <Property Name="1099G" Type="bit" />
+    <Property Name="1099INT" Type="bit" />
+    <Property Name="MulipleW2s" Type="bit" />
+    <Property Name="NewHire" Type="bit" />
+    <Property Name="Itemize" Type="bit" />
+    <Property Name="DriveToWork" Type="bit" />
+    <Property Name="FlyReserveDays" Type="bit" />
+    <Property Name="Spouse" Type="nvarchar" MaxLength="4000" />
+    <Property Name="TrainingExpenses" Type="float" />
+    <Property Name="Dependants" Type="nvarchar(max)" />
+    <Property Name="AverageCostRoundTrip" Type="float" />
+    <Property Name="AverageMilesRoundTrip" Type="int" />
   </EntityType>
   <EntityType Name="UserPerDiem">
     <Key>

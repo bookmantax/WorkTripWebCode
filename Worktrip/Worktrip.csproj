@@ -345,6 +345,10 @@
     <Content Include="Content\img\sos.png" />
     <Content Include="Content\img\iphone-payment.png" />
     <Content Include="Content\img\voucher.png" />
+    <Content Include="Content\img\welcome-modal-1.png" />
+    <Content Include="Content\img\welcome-modal-2.png" />
+    <Content Include="Content\img\welcome-modal-3.png" />
+    <Content Include="Content\img\welcome-modal-4.png" />
     <Content Include="Content\img\worktrip-bg-pic.jpg" />
     <Content Include="Content\img\worktrip-bg-video.mp4" />
     <Content Include="Content\img\worktrip-vertical.png" />
@@ -1027,6 +1031,7 @@
     <Content Include="Views\Home\HomePage\Auth\_TextResetPasswordCode.cshtml" />
     <Content Include="Views\Home\HomePage\Auth\_SetNewPassword.cshtml" />
     <Content Include="Scripts\toastr\toastr.js.map" />
+    <Content Include="Views\Home\Dashboard\_WelcomePopup.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

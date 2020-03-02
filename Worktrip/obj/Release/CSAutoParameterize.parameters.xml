@@ -1,12 +1,12 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <parameters>
   <parameter name="DefaultConnection-Web.config Connection String" description="DefaultConnection Connection String used in web.config by the application to access the database." defaultValue="Data Source=(LocalDb)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\aspnet-Worktrip-20170119050107.mdf;Initial Catalog=aspnet-Worktrip-20170119050107;Integrated Security=True" tags="SqlConnectionString">
-    <parameterEntry kind="XmlFile" scope="D:\\WorkTrip\ Website\\WorkTripWebCode\\Worktrip\\obj\\Release\\Package\\PackageTmp\\Web\.config$" match="/configuration/connectionStrings/add[@name='DefaultConnection']/@connectionString" />
+    <parameterEntry kind="XmlFile" scope="C:\\Users\\Damian\\Desktop\\WorkTripWebCode\ -\ Copy\\Worktrip\\obj\\Release\\Package\\PackageTmp\\Web\.config$" match="/configuration/connectionStrings/add[@name='DefaultConnection']/@connectionString" />
   </parameter>
   <parameter name="WorktripAuth-Web.config Connection String" description="WorktripAuth Connection String used in web.config by the application to access the database." defaultValue="data source=worktrip.database.windows.net;initial catalog=worktrip;persist security info=True;user id=radmin;password=WaterSucksRandy1;MultipleActiveResultSets=True;" tags="SqlConnectionString">
-    <parameterEntry kind="XmlFile" scope="D:\\WorkTrip\ Website\\WorkTripWebCode\\Worktrip\\obj\\Release\\Package\\PackageTmp\\Web\.config$" match="/configuration/connectionStrings/add[@name='WorktripAuth']/@connectionString" />
+    <parameterEntry kind="XmlFile" scope="C:\\Users\\Damian\\Desktop\\WorkTripWebCode\ -\ Copy\\Worktrip\\obj\\Release\\Package\\PackageTmp\\Web\.config$" match="/configuration/connectionStrings/add[@name='WorktripAuth']/@connectionString" />
   </parameter>
   <parameter name="WorktripEntities-Web.config Connection String" description="WorktripEntities Connection String used in web.config by the application to access the database." defaultValue="metadata=res://*/Models.WorktripEntity.csdl|res://*/Models.WorktripEntity.ssdl|res://*/Models.WorktripEntity.msl;provider=System.Data.SqlClient;provider connection string=&quot;data source=worktrip.database.windows.net;initial catalog=worktrip;persist security info=True;user id=radmin;password=WaterSucksRandy1;MultipleActiveResultSets=True;App=EntityFramework&quot;" tags="SqlConnectionString">
-    <parameterEntry kind="XmlFile" scope="D:\\WorkTrip\ Website\\WorkTripWebCode\\Worktrip\\obj\\Release\\Package\\PackageTmp\\Web\.config$" match="/configuration/connectionStrings/add[@name='WorktripEntities']/@connectionString" />
+    <parameterEntry kind="XmlFile" scope="C:\\Users\\Damian\\Desktop\\WorkTripWebCode\ -\ Copy\\Worktrip\\obj\\Release\\Package\\PackageTmp\\Web\.config$" match="/configuration/connectionStrings/add[@name='WorktripEntities']/@connectionString" />
   </parameter>
 </parameters>

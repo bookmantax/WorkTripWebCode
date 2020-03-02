@@ -146,6 +146,7 @@
     <EntitySetMapping Name="Users">
       <EntityTypeMapping TypeName="WorktripModel.User">
         <MappingFragment StoreEntitySet="User">
+          <ScalarProperty Name="SSN" ColumnName="SSN" />
           <ScalarProperty Name="Zip" ColumnName="Zip" />
           <ScalarProperty Name="State" ColumnName="State" />
           <ScalarProperty Name="City" ColumnName="City" />
@@ -201,6 +202,21 @@
     <EntitySetMapping Name="UserMiscTaxInfoes">
       <EntityTypeMapping TypeName="WorktripModel.UserMiscTaxInfo">
         <MappingFragment StoreEntitySet="UserMiscTaxInfo">
+          <ScalarProperty Name="AverageMilesRoundTrip" ColumnName="AverageMilesRoundTrip" />
+          <ScalarProperty Name="AverageCostRoundTrip" ColumnName="AverageCostRoundTrip" />
+          <ScalarProperty Name="Dependants" ColumnName="Dependants" />
+          <ScalarProperty Name="TrainingExpenses" ColumnName="TrainingExpenses" />
+          <ScalarProperty Name="Spouse" ColumnName="Spouse" />
+          <ScalarProperty Name="FlyReserveDays" ColumnName="FlyReserveDays" />
+          <ScalarProperty Name="DriveToWork" ColumnName="DriveToWork" />
+          <ScalarProperty Name="Itemize" ColumnName="Itemize" />
+          <ScalarProperty Name="NewHire" ColumnName="NewHire" />
+          <ScalarProperty Name="MultipleW2s" ColumnName="MulipleW2s" />
+          <ScalarProperty Name="C1099INT" ColumnName="1099INT" />
+          <ScalarProperty Name="C1099G" ColumnName="1099G" />
+          <ScalarProperty Name="ScheduleK1" ColumnName="ScheduleK1" />
+          <ScalarProperty Name="OwnBusiness" ColumnName="OwnBusiness" />
+          <ScalarProperty Name="Other" ColumnName="Other" />
           <ScalarProperty Name="C1099R" ColumnName="1099R" />
           <ScalarProperty Name="C1098T" ColumnName="1098T" />
           <ScalarProperty Name="HSA" ColumnName="HSA" />
